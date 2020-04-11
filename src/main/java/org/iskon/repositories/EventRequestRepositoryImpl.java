@@ -6,9 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.iskon.models.EventRequest;
-import org.iskon.utils.JdbcSimpleInsertHelper;
 import org.iskon.utils.QueryBuilder;
 import org.iskon.utils.EventRequestRowMapper;
+import org.iskon.utils.FieldCacheType;
+import org.iskon.utils.JdbcModelHelper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlOutParameter;
@@ -25,22 +27,24 @@ public class EventRequestRepositoryImpl implements EventRequestRepository {
 	@Autowired
 	JdbcTemplate jdbcTemplate;
 
-	@Autowired
-	JdbcSimpleInsertHelper jdbcSimpleInsertHelper;
+	//@Autowired
+	JdbcModelHelper jdbcModelHelper;
 
 	@Autowired
 	QueryBuilder queryBuilder;
 
-	public EventRequestRepositoryImpl() {
-
+	@Autowired
+	public EventRequestRepositoryImpl(JdbcModelHelper jdbcModelHelper) {
+		this.jdbcModelHelper = jdbcModelHelper;
+		this.jdbcModelHelper.prepareObject(EventRequest.class);
 	}
 
 	@Override
 	public EventRequest submitNewEventRequest(EventRequest newEventRequest) {
 		newEventRequest.setApprovalStatus("NEW");
-		jdbcSimpleInsertHelper.prepareObject(newEventRequest);
-		List<String> columns = jdbcSimpleInsertHelper.getColumns(newEventRequest);
-		Map<String, Object> objectMap = jdbcSimpleInsertHelper.getDataMap(newEventRequest);
+		
+		List<String> columns = jdbcModelHelper.getColumns(newEventRequest, FieldCacheType.ForInsert);
+		Map<String, Object> objectMap = jdbcModelHelper.getDataMap(newEventRequest, FieldCacheType.ForInsert);
 
 		SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
 		simpleJdbcInsert.setTableName("event_request");
