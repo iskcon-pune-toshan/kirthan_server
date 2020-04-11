@@ -96,6 +96,8 @@ public class JdbcModelHelper {
 			fields = fieldsCache.getOrDefault(objClassStr, null);
 		if(opType == FieldCacheType.ForUpdate)
 			fields = updatefieldsCache.getOrDefault(objClassStr, null);
+		if(opType == FieldCacheType.Keys)
+			fields = keyfieldsCache.getOrDefault(objClassStr, null);
 		return fields;
 	}
 	

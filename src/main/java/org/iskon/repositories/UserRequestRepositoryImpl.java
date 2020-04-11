@@ -66,7 +66,7 @@ public class UserRequestRepositoryImpl implements UserRequestRepository {
 
 	@Override
 	public UserRequest submitUpdateUserRequest(UserRequest newUserRequest) {
-		newUserRequest.setApprovalStatus("UPDATE");
+		//newUserRequest.setApprovalStatus("UPDATE");
 		
 		Map.Entry<String, Object[]> kvpOfQueryAndArgs = queryBuilder.getUpdateEntryData(TableName, newUserRequest);
 

@@ -59,7 +59,7 @@ public class QueryBuilder {
 			throw new RuntimeException("No Updatable fields found in the Model");
 
 		List params = new ArrayList();
-		String columnTagsQuery = getQueryPart(queryMap, params, "?");
+		String columnTagsQuery = getQueryPart(queryMap, params, ",");
 		
 		queryMap = jdbcModelHelper.getDataMap(obj, FieldCacheType.Keys);
 		if (queryMap.isEmpty())
