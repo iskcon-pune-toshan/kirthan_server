@@ -9,6 +9,7 @@ public class UserRequest extends BaseModel {
 	String email;
 	String userName;
 	String password;
+	@UpdateAllowed
 	Long phoneNumber;
 	String addLineOne;
 	String addLineTwo;
@@ -21,8 +22,12 @@ public class UserRequest extends BaseModel {
 	String govtIdType;
 	String govtId;
 	Boolean isProcessed;
+	
+	@KeyField
 	Integer id;
+	@UpdateAllowed
 	String approvalStatus;
+	@UpdateAllowed
 	String approvalComments;
 	
 	String userId;

@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class EventRequest extends BaseModel {
 	
+	@KeyField
 	Integer eventId;
 	String eventTitle;
 	String eventDescription;

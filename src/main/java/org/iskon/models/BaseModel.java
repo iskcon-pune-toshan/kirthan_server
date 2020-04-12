@@ -5,8 +5,10 @@ import java.util.Date;
 public class BaseModel {
 
 	String createdBy;
+	@UpdateAllowed
 	String updatedBy;
 	Date createTime;
+	@UpdateAllowed
 	Date updateTime;
 
 
@@ -50,3 +52,4 @@ public class BaseModel {
 	 */
 
 }
+

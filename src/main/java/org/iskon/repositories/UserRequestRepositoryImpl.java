@@ -9,7 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.iskon.models.UserRequest;
-import org.iskon.utils.JdbcSimpleInsertHelper;
+import org.iskon.utils.FieldCacheType;
+import org.iskon.utils.JdbcModelHelper;
+
 import org.iskon.utils.QueryBuilder;
 import org.iskon.utils.UserRequestRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,28 +30,31 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserRequestRepositoryImpl implements UserRequestRepository {
 
+	private static String TableName = "user_request";
 	@Autowired
 	JdbcTemplate jdbcTemplate;
 
-	@Autowired
-	JdbcSimpleInsertHelper jdbcSimpleInsertHelper;
+	// @Autowired
+	JdbcModelHelper jdbcModelHelper;
 
 	@Autowired
 	QueryBuilder queryBuilder;
 
-	public UserRequestRepositoryImpl() {
-
+	@Autowired
+	public UserRequestRepositoryImpl(JdbcModelHelper jdbcModelHelper) {
+		this.jdbcModelHelper = jdbcModelHelper;
+		this.jdbcModelHelper.prepareObject(UserRequest.class);
 	}
 
 	@Override
 	public UserRequest submitNewUserRequest(UserRequest newUserRequest) {
 		newUserRequest.setApprovalStatus("NEW");
-		jdbcSimpleInsertHelper.prepareObject(newUserRequest);
-		List<String> columns = jdbcSimpleInsertHelper.getColumns(newUserRequest);
-		Map<String, Object> objectMap = jdbcSimpleInsertHelper.getDataMap(newUserRequest);
+		// jdbcSimpleInsertHelper.prepareObject(newUserRequest);
+		List<String> columns = jdbcModelHelper.getColumns(newUserRequest, FieldCacheType.ForInsert);
+		Map<String, Object> objectMap = jdbcModelHelper.getDataMap(newUserRequest, FieldCacheType.ForInsert);
 
 		SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-		simpleJdbcInsert.setTableName("user_request");
+		simpleJdbcInsert.setTableName(TableName);
 		simpleJdbcInsert.setColumnNames(columns);
 		simpleJdbcInsert.setGeneratedKeyName("id");
 
@@ -58,51 +63,29 @@ public class UserRequestRepositoryImpl implements UserRequestRepository {
 
 		return newUserRequest;
 	}
-	
+
 	@Override
 	public UserRequest submitUpdateUserRequest(UserRequest newUserRequest) {
-		newUserRequest.setApprovalStatus("UPDATE");
+		//newUserRequest.setApprovalStatus("UPDATE");
 		
-/*		jdbcSimpleInsertHelper.prepareObject(newUserRequest);
-		List<String> columns = jdbcSimpleInsertHelper.getColumns(newUserRequest);
-		Map<String, Object> objectMap = jdbcSimpleInsertHelper.getDataMap(newUserRequest);
-		
-//		jdbcTemplate.exec
-		
-//		jdbcTemplate.update(psc, generatedKeyHolder)
-		String sql = "update user_request set updatedby = ? where id = ?";
-		ParsedSql parsedSql = getParsedSql(sql);
-		String sqlToUse = NamedParameterUtils.substituteNamedParameters(parsedSql, paramSource);
-		Object[] params = NamedParameterUtils.buildValueArray(parsedSql, paramSource, null);
-		List<SqlParameter> declaredParameters = NamedParameterUtils.buildSqlParameterList(parsedSql, paramSource);
-		PreparedStatementCreatorFactory pscf = new PreparedStatementCreatorFactory(sqlToUse, declaredParameters);
-		
-		PreparedStatementCreator psc = new PreparedStatementCreatorFactory("update user_request set updatedby = ? where id = ?", declaredParameters)
-		
-		jdbcTemplate.update(psc);
-		
-		*/
-		
-		
-		int rows =jdbcTemplate.update("update user_request set updatedby = ? where id = ?", 
-							newUserRequest.getUpdatedBy(), 
-							newUserRequest.getId());
-		
-		System.out.println("rows updated: "+rows);
+		Map.Entry<String, Object[]> kvpOfQueryAndArgs = queryBuilder.getUpdateEntryData(TableName, newUserRequest);
+
+		int rows = jdbcTemplate.update(kvpOfQueryAndArgs.getKey(), kvpOfQueryAndArgs.getValue());
+
+		System.out.println("rows updated: " + rows);
 
 		return newUserRequest;
 	}
 
 	@Override
 	public UserRequest submitDeleteUserRequest(UserRequest newUserRequest) {
-		
-		int rows = jdbcTemplate.update("delete from user_request where id = ?",newUserRequest.getId());
-		
-		System.out.println("rows deleted: "+rows);
+
+		int rows = jdbcTemplate.update("delete from user_request where id = ?", newUserRequest.getId());
+
+		System.out.println("rows deleted: " + rows);
 
 		return newUserRequest;
 	}
-	
 
 	@Override
 	public List<UserRequest> getUserRequests(Map<String, Object> queryMap) {
@@ -119,21 +102,17 @@ public class UserRequestRepositoryImpl implements UserRequestRepository {
 	}
 
 	@Override
-	public Boolean processUserRequest(Integer id, String approvalstatus, String approvalcomments,
-			String usertype, String updatedby) {
-		SimpleJdbcCall call = new SimpleJdbcCall(jdbcTemplate)
-	            .withProcedureName("process_user_request")
-	            . declareParameters(
-	                    new SqlParameter("id", Types.INTEGER),
-	                    new SqlParameter("approvalstatus", Types.VARCHAR),
-	                    new SqlParameter("approvalcomments", Types.VARCHAR),
-	                    new SqlParameter("usertype", Types.VARCHAR),
-	                    new SqlParameter("updatedby", Types.VARCHAR),
-	                    new SqlParameter("updatetime", Types.TIMESTAMP),
-	                    new SqlOutParameter("operationstatus", Types.BOOLEAN),
-	                    new SqlOutParameter("errormessage", Types.VARCHAR));
+	public Boolean processUserRequest(Integer id, String approvalstatus, String approvalcomments, String usertype,
+			String updatedby) {
+		SimpleJdbcCall call = new SimpleJdbcCall(jdbcTemplate).withProcedureName("process_user_request")
+				.declareParameters(new SqlParameter("id", Types.INTEGER),
+						new SqlParameter("approvalstatus", Types.VARCHAR),
+						new SqlParameter("approvalcomments", Types.VARCHAR),
+						new SqlParameter("usertype", Types.VARCHAR), new SqlParameter("updatedby", Types.VARCHAR),
+						new SqlParameter("updatetime", Types.TIMESTAMP),
+						new SqlOutParameter("operationstatus", Types.BOOLEAN),
+						new SqlOutParameter("errormessage", Types.VARCHAR));
 
-		
 		Map<String, Object> inParamMap = new HashMap<String, Object>();
 		inParamMap.put("id", id);
 		inParamMap.put("approvalstatus", approvalstatus);
@@ -141,10 +120,9 @@ public class UserRequestRepositoryImpl implements UserRequestRepository {
 		inParamMap.put("usertype", usertype);
 		inParamMap.put("updatedby", updatedby);
 		inParamMap.put("updatetime", new Date());
-	    Map<String, Object> execute = call.execute(
-	    		new MapSqlParameterSource(inParamMap));
-	    
-	    return (Boolean) execute.get("operationstatus");
+		Map<String, Object> execute = call.execute(new MapSqlParameterSource(inParamMap));
+
+		return (Boolean) execute.get("operationstatus");
 	}
-	
+
 }
