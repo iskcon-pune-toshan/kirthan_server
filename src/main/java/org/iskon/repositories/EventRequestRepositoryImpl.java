@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.iskon.models.EventRequest;
+import org.iskon.models.UserRequest;
 import org.iskon.utils.QueryBuilder;
 import org.iskon.utils.EventRequestRowMapper;
 import org.iskon.utils.FieldCacheType;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class EventRequestRepositoryImpl implements EventRequestRepository {
 
+	private static String TableName = "event_request";
 	@Autowired
 	JdbcTemplate jdbcTemplate;
 
@@ -47,12 +49,35 @@ public class EventRequestRepositoryImpl implements EventRequestRepository {
 		Map<String, Object> objectMap = jdbcModelHelper.getDataMap(newEventRequest, FieldCacheType.ForInsert);
 
 		SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-		simpleJdbcInsert.setTableName("event_request");
+		simpleJdbcInsert.setTableName(TableName);
 		simpleJdbcInsert.setColumnNames(columns);
 		simpleJdbcInsert.setGeneratedKeyName("eventId");
 
 		Number eventId = simpleJdbcInsert.executeAndReturnKey(objectMap);
 		newEventRequest.setEventId(eventId.intValue());
+
+		return newEventRequest;
+	}
+	
+	@Override
+	public EventRequest submitUpdateEventRequest(EventRequest newEventRequest) {
+		//newEventRequest.setApprovalStatus("UPDATE");
+		
+		Map.Entry<String, Object[]> kvpOfQueryAndArgs = queryBuilder.getUpdateEntryData(TableName, newEventRequest);
+
+		int rows = jdbcTemplate.update(kvpOfQueryAndArgs.getKey(), kvpOfQueryAndArgs.getValue());
+
+		System.out.println("rows updated: " + rows);
+
+		return newEventRequest;
+	}
+
+	@Override
+	public EventRequest submitDeleteEventRequest(EventRequest newEventRequest) {
+
+		int rows = jdbcTemplate.update("delete from event_request where eventid = ?", newEventRequest.getEventId());
+
+		System.out.println("rows deleted: " + rows);
 
 		return newEventRequest;
 	}

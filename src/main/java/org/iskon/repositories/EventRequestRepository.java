@@ -13,4 +13,8 @@ public interface EventRequestRepository {
 	
 	Boolean processEventRequest(Integer id, String approvalstatus, String approvalcomments, String usertype, String updatedby);
 
+	EventRequest submitUpdateEventRequest(EventRequest eventRequest);
+
+	EventRequest submitDeleteEventRequest(EventRequest eventRequest);
+
 }

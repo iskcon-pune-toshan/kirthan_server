@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.iskon.models.EventRequest;
-
+//import org.iskon.models.UserRequest;
 import org.iskon.repositories.EventRequestRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +25,18 @@ public class EventRequestServiceImpl implements EventRequestService {
 	public EventRequest submitNewEventRequest(EventRequest eventRequest) 
 	{
 		return this.eventRequestRepository.submitNewEventRequest(eventRequest);
+	}
+	
+	@Override
+	public EventRequest submitUpdateEventRequest(EventRequest eventRequest) 
+	{
+		return this.eventRequestRepository.submitUpdateEventRequest(eventRequest);
+	}
+
+	@Override
+	public EventRequest submitDeleteEventRequest(EventRequest eventRequest) 
+	{
+		return this.eventRequestRepository.submitDeleteEventRequest(eventRequest);
 	}
 
 	@Override

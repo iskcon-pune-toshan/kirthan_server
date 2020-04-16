@@ -36,6 +36,20 @@ public class EventRequestController {
 		return req;
 	}
 	
+	@RequestMapping(value = "/submitupdateeventrequest", method = RequestMethod.PUT)
+	public EventRequest submitUpdateEventRequest(@RequestBody EventRequest newEventRequest) {
+		System.out.println(newEventRequest);
+		EventRequest req = eventRequestService.submitUpdateEventRequest(newEventRequest);
+		return req;
+	}
+	
+	@RequestMapping(value = "/submitdeleteeventrequest", method = RequestMethod.PUT)
+	public EventRequest submitDeleteEventRequest(@RequestBody EventRequest newEventRequest) {
+		System.out.println(newEventRequest);
+		EventRequest req = eventRequestService.submitDeleteEventRequest(newEventRequest);
+		return req;
+	}	
+	
 	@RequestMapping(value = "/geteventrequests", method = RequestMethod.PUT)
 	public List<EventRequest> getEventRequests(@RequestBody Map<String,Object> queryParams) {
 		//System.out.println("geteventrequests");

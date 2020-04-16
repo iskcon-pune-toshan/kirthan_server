@@ -13,6 +13,10 @@ public interface EventRequestService {
 	List<EventRequest> getEventRequests(Map<String,Object> query);
 	
 	Boolean processEventRequest(Map<String,Object> params);
+
+	EventRequest submitUpdateEventRequest(EventRequest newEventRequest);
+
+	EventRequest submitDeleteEventRequest(EventRequest newEventRequest);
 	
 }
 

@@ -12,6 +12,7 @@ public class EventRequest extends BaseModel {
 	String eventDuration;
 	String eventLocation;
 	String eventType;
+	@UpdateAllowed
 	Long phoneNumber;
 	String addLineOne;
 	String addLineTwo;
@@ -22,7 +23,9 @@ public class EventRequest extends BaseModel {
 	String state;
 	String country;
 	Boolean isProcessed;
+	@UpdateAllowed
 	String approvalStatus;
+	@UpdateAllowed
 	String approvalComments;
 	
 	public Integer getEventId() {
