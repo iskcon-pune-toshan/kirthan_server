@@ -27,6 +27,7 @@ public class UserRequestController {
 		UserRequest req = getDummyUserRequestObj();	
 		userreqs.add(req);
 		//userreqs.add(req);
+		//comment from janice machine
 		return userreqs;
 	}
 	
