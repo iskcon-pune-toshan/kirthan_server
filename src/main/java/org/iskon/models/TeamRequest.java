@@ -4,7 +4,7 @@ package org.iskon.models;
 public class TeamRequest extends BaseModel{
 	
 	@KeyField
-	Integer teamId;
+	Integer id;
 	@UpdateAllowed
 	String teamTitle;
 	@UpdateAllowed
@@ -33,11 +33,11 @@ public class TeamRequest extends BaseModel{
 	public void setApprovalComments(String approvalComments) {
 		this.approvalComments = approvalComments;
 	}
-	public Integer getTeamId() {
-		return teamId;
+	public Integer getId() {
+		return id;
 	}
-	public void setTeamId(Integer teamId) {
-		this.teamId = teamId;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 	public String getTeamTitle() {
 		return teamTitle;

@@ -23,11 +23,11 @@ public class EventRequestController {
 	
 	@RequestMapping(value = "/getdummyeventrequest", method = RequestMethod.GET)
 	public List<EventRequest> getDummyEventRequest() { 		
-		List<EventRequest> userreqs = new ArrayList<EventRequest>();
+		List<EventRequest> eventreqs = new ArrayList<EventRequest>();
 		EventRequest req = getDummyEventRequestObj();	
-		userreqs.add(req);
+		eventreqs.add(req);
 		//userreqs.add(req);
-		return userreqs;
+		return eventreqs;
 	}
 	
 	@RequestMapping(value = "/submitneweventrequest", method = RequestMethod.PUT)
@@ -77,7 +77,7 @@ public class EventRequestController {
 		er.setIsProcessed(false);
 		er.setCreatedBy("Srinivas");
 		er.setCreateTime(new Date());
-		er.setEventId(1);
+		er.setId(1);
 		er.setUpdatedBy("Manjunath");
 		er.setUpdateTime(new Date());
 		er.setAddLineThree("Add Line three");

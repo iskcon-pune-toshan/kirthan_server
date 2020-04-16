@@ -12,7 +12,7 @@ public class TeamRequestRowMapper implements RowMapper<TeamRequest> {
 	public TeamRequest mapRow(ResultSet rs, int rowNum) throws SQLException {
 
 		TeamRequest tr = new TeamRequest();
-		tr.setTeamId(rs.getInt("teamId"));
+		tr.setId(rs.getInt("Id"));
 		tr.setTeamTitle(rs.getString("teamTitle"));
 		tr.setTeamDescription(rs.getString("teamDescription"));
 		tr.setIsProcessed(rs.getBoolean("isprocessed"));

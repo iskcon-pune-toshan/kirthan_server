@@ -51,10 +51,10 @@ public class EventRequestRepositoryImpl implements EventRequestRepository {
 		SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
 		simpleJdbcInsert.setTableName(TableName);
 		simpleJdbcInsert.setColumnNames(columns);
-		simpleJdbcInsert.setGeneratedKeyName("eventId");
+		simpleJdbcInsert.setGeneratedKeyName("Id");
 
 		Number eventId = simpleJdbcInsert.executeAndReturnKey(objectMap);
-		newEventRequest.setEventId(eventId.intValue());
+		newEventRequest.setId(eventId.intValue());
 
 		return newEventRequest;
 	}
@@ -75,7 +75,7 @@ public class EventRequestRepositoryImpl implements EventRequestRepository {
 	@Override
 	public EventRequest submitDeleteEventRequest(EventRequest newEventRequest) {
 
-		int rows = jdbcTemplate.update("delete from event_request where eventid = ?", newEventRequest.getEventId());
+		int rows = jdbcTemplate.update("delete from event_request where id = ?", newEventRequest.getId());
 
 		System.out.println("rows deleted: " + rows);
 

@@ -54,10 +54,10 @@ public class TeamRequestRepositoryImpl implements TeamRequestRepository{
 		SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
 		simpleJdbcInsert.setTableName(TableName);
 		simpleJdbcInsert.setColumnNames(columns);
-		simpleJdbcInsert.setGeneratedKeyName("teamid");
+		simpleJdbcInsert.setGeneratedKeyName("Id");
 
-		Number id = simpleJdbcInsert.executeAndReturnKey(objectMap);
-		newTeamRequest.setTeamId(id.intValue());
+		Number teamid = simpleJdbcInsert.executeAndReturnKey(objectMap);
+		newTeamRequest.setId(teamid.intValue());
 
 		return newTeamRequest;
 	}
@@ -78,7 +78,7 @@ public class TeamRequestRepositoryImpl implements TeamRequestRepository{
 
 
 	@Override
-	public Boolean processTeamRequest(Integer teamId, String approvalstatus, String approvalcomments,
+	public Boolean processTeamRequest(Integer id, String approvalstatus, String approvalcomments,
 			String updatedby) {
 		    
 			SimpleJdbcCall call = new SimpleJdbcCall(jdbcTemplate)
@@ -94,7 +94,7 @@ public class TeamRequestRepositoryImpl implements TeamRequestRepository{
 
 			
 			Map<String, Object> inParamMap = new HashMap<String, Object>();
-			inParamMap.put("teamId", teamId);
+			inParamMap.put("teamId", id);
 			inParamMap.put("approvalstatus", approvalstatus);
 			inParamMap.put("approvalcomments", approvalcomments);
 			inParamMap.put("updatedby", updatedby);
@@ -121,7 +121,7 @@ public class TeamRequestRepositoryImpl implements TeamRequestRepository{
 	@Override
 	public TeamRequest submitDeleteTeamRequest(TeamRequest newTeamRequest) {
 
-		int rows = jdbcTemplate.update("delete from team where teamid = ?", newTeamRequest.getTeamId());
+		int rows = jdbcTemplate.update("delete from team where id = ?", newTeamRequest.getId());
 
 		System.out.println("rows deleted: " + rows);
 

@@ -5,7 +5,7 @@ import java.util.Date;
 public class EventRequest extends BaseModel {
 	
 	@KeyField
-	Integer eventId;
+	Integer id;
 	String eventTitle;
 	String eventDescription;
 	Date eventDate;
@@ -28,11 +28,12 @@ public class EventRequest extends BaseModel {
 	@UpdateAllowed
 	String approvalComments;
 	
-	public Integer getEventId() {
-		return eventId;
+	public Integer getId() {
+		return id;
 	}
-	public void setEventId(Integer eventId) {
-		this.eventId = eventId;
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 	public String getEventTitle() {
 		return eventTitle;

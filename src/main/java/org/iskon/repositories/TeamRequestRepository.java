@@ -11,7 +11,7 @@ public interface TeamRequestRepository {
 	
 	List<TeamRequest> getTeamRequests(Map<String,Object> query);
 	
-	Boolean processTeamRequest(Integer teamId, String approvalstatus, String approvalcomments, String updatedby);
+	Boolean processTeamRequest(Integer id, String approvalstatus, String approvalcomments, String updatedby);
 	
 	TeamRequest submitUpdateTeamRequest(TeamRequest teamRequest);
 

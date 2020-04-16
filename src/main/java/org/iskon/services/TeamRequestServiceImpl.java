@@ -50,7 +50,7 @@ public class TeamRequestServiceImpl implements TeamRequestService {
 		// validate input
 		// Obtain user from current principal after security is implemented
 		//System.out.println(params);
-		Boolean result = this.teamRequestRepository.processTeamRequest((Integer)params.get("teamId"), 
+		Boolean result = this.teamRequestRepository.processTeamRequest((Integer)params.get("id"), 
 				(String)params.get("approvalstatus"), (String)params.get("approvalcomments"),"manjunath");
 		
 		if(result)
