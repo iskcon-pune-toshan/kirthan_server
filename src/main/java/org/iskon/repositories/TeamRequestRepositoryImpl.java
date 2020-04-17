@@ -28,7 +28,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class TeamRequestRepositoryImpl implements TeamRequestRepository{
 	
-	private static String TableName = "team";
+	private static String TableName = "team_request";
 	@Autowired
 	JdbcTemplate jdbcTemplate;
 
@@ -41,12 +41,13 @@ public class TeamRequestRepositoryImpl implements TeamRequestRepository{
 	@Autowired
 	public TeamRequestRepositoryImpl(JdbcModelHelper jdbcModelHelper) {
 		this.jdbcModelHelper = jdbcModelHelper;
-		this.jdbcModelHelper.prepareObject(UserRequest.class);
+		this.jdbcModelHelper.prepareObject(TeamRequest.class);
 	}
 	
 	@Override
 	public TeamRequest submitNewTeamRequest(TeamRequest newTeamRequest) {
 		newTeamRequest.setApprovalStatus("NEW");
+		System.out.println("TeamRequestRespositoryImpl.java: "+newTeamRequest);
 		// jdbcSimpleInsertHelper.prepareObject(newUserRequest);
 		List<String> columns = jdbcModelHelper.getColumns(newTeamRequest, FieldCacheType.ForInsert);
 		Map<String, Object> objectMap = jdbcModelHelper.getDataMap(newTeamRequest, FieldCacheType.ForInsert);
@@ -54,7 +55,7 @@ public class TeamRequestRepositoryImpl implements TeamRequestRepository{
 		SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
 		simpleJdbcInsert.setTableName(TableName);
 		simpleJdbcInsert.setColumnNames(columns);
-		simpleJdbcInsert.setGeneratedKeyName("Id");
+		simpleJdbcInsert.setGeneratedKeyName("id");
 
 		Number teamid = simpleJdbcInsert.executeAndReturnKey(objectMap);
 		newTeamRequest.setId(teamid.intValue());

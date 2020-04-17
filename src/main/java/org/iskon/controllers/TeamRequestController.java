@@ -22,6 +22,7 @@ public class TeamRequestController {
 	
 	@RequestMapping(value = "/submitnewteamrequest", method = RequestMethod.PUT)
 	public TeamRequest submitNewTeamRequest(@RequestBody TeamRequest newTeamRequest) {
+		System.out.println(newTeamRequest);
 		TeamRequest req = teamRequestService.submitNewTeamRequest(newTeamRequest);
 		return req;
 	}
