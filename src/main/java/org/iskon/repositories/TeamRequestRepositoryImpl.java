@@ -47,7 +47,6 @@ public class TeamRequestRepositoryImpl implements TeamRequestRepository{
 	@Override
 	public TeamRequest submitNewTeamRequest(TeamRequest newTeamRequest) {
 		newTeamRequest.setApprovalStatus("NEW");
-		System.out.println("TeamRequestRespositoryImpl.java: "+newTeamRequest);
 		// jdbcSimpleInsertHelper.prepareObject(newUserRequest);
 		List<String> columns = jdbcModelHelper.getColumns(newTeamRequest, FieldCacheType.ForInsert);
 		Map<String, Object> objectMap = jdbcModelHelper.getDataMap(newTeamRequest, FieldCacheType.ForInsert);
