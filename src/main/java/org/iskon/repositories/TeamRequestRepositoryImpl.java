@@ -54,7 +54,7 @@ public class TeamRequestRepositoryImpl implements TeamRequestRepository{
 		SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
 		simpleJdbcInsert.setTableName(TableName);
 		simpleJdbcInsert.setColumnNames(columns);
-		simpleJdbcInsert.setGeneratedKeyName("id");
+		simpleJdbcInsert.setGeneratedKeyName("Id");
 
 		Number teamid = simpleJdbcInsert.executeAndReturnKey(objectMap);
 		newTeamRequest.setId(teamid.intValue());
@@ -65,7 +65,7 @@ public class TeamRequestRepositoryImpl implements TeamRequestRepository{
 	
 	public List<TeamRequest> getTeamRequests(Map<String, Object> queryMap) {
 
-		String query = queryBuilder.getSimpleAndQueryFromMap("select * from team", queryMap);
+		String query = queryBuilder.getSimpleAndQueryFromMap("select * from team_request", queryMap);
 
 		MapSqlParameterSource queryParams = queryBuilder.getNamedQueryParametersFromMap(queryMap);
 
@@ -121,7 +121,7 @@ public class TeamRequestRepositoryImpl implements TeamRequestRepository{
 	@Override
 	public TeamRequest submitDeleteTeamRequest(TeamRequest newTeamRequest) {
 
-		int rows = jdbcTemplate.update("delete from team where id = ?", newTeamRequest.getId());
+		int rows = jdbcTemplate.update("delete from team_request where id = ?", newTeamRequest.getId());
 
 		System.out.println("rows deleted: " + rows);
 
