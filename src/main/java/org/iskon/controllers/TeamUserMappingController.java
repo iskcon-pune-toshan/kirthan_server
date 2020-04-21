@@ -22,22 +22,35 @@ import org.springframework.web.bind.annotation.RestController;
 public class TeamUserMappingController {
 
 	@Autowired
-	TeamUserMappingService TeamUserMappingService;
+	TeamUserMappingService teamUserMappingService;
 	
 	
-	
-	@RequestMapping(value = "/submitteamusermapping", method = RequestMethod.PUT)
+/*	
+	@RequestMapping(value = "/submitnewteamusermapping", method = RequestMethod.PUT)
 	public TeamUserMapping submitNewTeamUserMapping(@RequestBody TeamUserMapping newTeamUserMapping) {
 		System.out.println(newTeamUserMapping);
-		TeamUserMapping req = TeamUserMappingService.submitNewTeamUserMapping(newTeamUserMapping);
+		TeamUserMapping req = teamUserMappingService.submitNewTeamUserMapping(newTeamUserMapping);
 		return req;
 	}
+*/	
+	@RequestMapping(value = "/submitnewteamusermapping", method = RequestMethod.PUT)
+	public List<TeamUserMapping> submitNewTeamUserMapping(@RequestBody List<TeamUserMapping> listTeamUserMapping) {
+		List<TeamUserMapping> listNewTeamUserMapping = new ArrayList<TeamUserMapping>();
+		for (TeamUserMapping newTeamUserMapping : listTeamUserMapping) {
+			System.out.println(newTeamUserMapping);
+			TeamUserMapping req = teamUserMappingService.submitNewTeamUserMapping(newTeamUserMapping);
+			listNewTeamUserMapping.add(req);
+		}
+		return listNewTeamUserMapping;
+		
+	}
+	
 	
 	
 	@RequestMapping(value = "/submitdeleteteamusermapping", method = RequestMethod.PUT)
 	public TeamUserMapping submitDeleteTeamUserMapping(@RequestBody TeamUserMapping newTeamUserMapping) {
 		System.out.println(newTeamUserMapping);
-		TeamUserMapping req = TeamUserMappingService.submitDeleteTeamUserMapping(newTeamUserMapping);
+		TeamUserMapping req = teamUserMappingService.submitDeleteTeamUserMapping(newTeamUserMapping);
 		return req;
 	}	
 	

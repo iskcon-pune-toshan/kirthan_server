@@ -1,23 +1,11 @@
 package org.iskon.models;
 
-public class TeamUserMapping {
+public class TeamUserMapping extends BaseModel {
 	
 	@KeyField
 	Integer id;
-	Integer teamid;
-	public Integer getTeamid() {
-		return teamid;
-	}
-	public void setTeamid(Integer teamid) {
-		this.teamid = teamid;
-	}
-	public Integer getUserid() {
-		return userid;
-	}
-	public void setUserid(Integer userid) {
-		this.userid = userid;
-	}
-	Integer userid;
+	Integer teamId;
+	Integer userId;
 	
 	public Integer getId() {
 		return id;
@@ -25,9 +13,16 @@ public class TeamUserMapping {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
-	
-	
-
-	
+	public Integer getTeamId() {
+		return teamId;
+	}
+	public void setTeamId(Integer teamId) {
+		this.teamId = teamId;
+	}
+	public Integer getUserId() {
+		return userId;
+	}
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
 }
