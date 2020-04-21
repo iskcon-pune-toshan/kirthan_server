@@ -2,10 +2,11 @@ package org.iskon.models;
 
 import java.util.Date;
 
-public class TeamUserMapping extends BaseModel {
+public class EventTeamUserMapping extends BaseModel {
 	
 	@KeyField
 	Integer id;
+	Integer eventId;
 	Integer teamId;
 	Integer userId;
 	
@@ -23,6 +24,12 @@ public class TeamUserMapping extends BaseModel {
 	}
 	public String getApprovalComments() {
 		return approvalComments;
+	}
+	public Integer getEventId() {
+		return eventId;
+	}
+	public void setEventId(Integer eventId) {
+		this.eventId = eventId;
 	}
 	public void setApprovalComments(String approvalComments) {
 		this.approvalComments = approvalComments;
