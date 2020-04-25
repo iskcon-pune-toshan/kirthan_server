@@ -5,13 +5,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.iskon.models.EventRequest;
-import org.iskon.models.UserRequest;
-import org.iskon.utils.QueryBuilder;
 import org.iskon.utils.EventRequestRowMapper;
 import org.iskon.utils.FieldCacheType;
 import org.iskon.utils.JdbcModelHelper;
-
+import org.iskon.utils.QueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlOutParameter;

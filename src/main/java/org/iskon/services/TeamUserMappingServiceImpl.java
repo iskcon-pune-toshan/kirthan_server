@@ -32,6 +32,11 @@ public class TeamUserMappingServiceImpl implements TeamUserMappingService {
 		return this.teamUserMappingRepository.submitDeleteTeamUserMapping(teamUserMapping);
 	}
 	
+	@Override
+	public List<TeamUserMapping> getTeamUserMappings(Map<String, Object> query) {
+		
+		return this.teamUserMappingRepository.getTeamUserMappings(query);
+	}
 
 	
 

@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.iskon.models.TeamRequest;
-import org.iskon.models.UserRequest;
 import org.iskon.utils.FieldCacheType;
 import org.iskon.utils.JdbcModelHelper;
 //import org.iskon.utils.JdbcSimpleInsertHelper;
@@ -62,7 +61,7 @@ public class TeamRequestRepositoryImpl implements TeamRequestRepository{
 		return newTeamRequest;
 	}
 	
-	
+	@Override
 	public List<TeamRequest> getTeamRequests(Map<String, Object> queryMap) {
 
 		String query = queryBuilder.getSimpleAndQueryFromMap("select * from team_request", queryMap);

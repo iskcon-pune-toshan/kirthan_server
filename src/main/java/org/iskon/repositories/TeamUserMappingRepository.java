@@ -11,4 +11,5 @@ public interface TeamUserMappingRepository {
 	
 	TeamUserMapping submitDeleteTeamUserMapping(TeamUserMapping newTeamUserMapping);
 	
+	List<TeamUserMapping> getTeamUserMappings(Map<String,Object> query);
 }

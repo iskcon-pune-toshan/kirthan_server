@@ -17,8 +17,6 @@ public class EventTeamUserMappingRowMapper implements RowMapper<EventTeamUserMap
 		eventteamUser.setEventId(rs.getInt("eventid"));
 		eventteamUser.setTeamId(rs.getInt("teamid"));
 		eventteamUser.setUserId(rs.getInt("userid"));
-		eventteamUser.setApprovalStatus(rs.getString("approvalstatus"));
-		eventteamUser.setApprovalComments(rs.getString("approvalcomments"));
 		eventteamUser.setCreatedBy(rs.getString("createdby"));
 		eventteamUser.setUpdatedBy(rs.getString("updatedby"));
 		eventteamUser.setCreateTime(rs.getDate("createtime"));

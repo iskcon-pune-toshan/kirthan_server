@@ -1,24 +1,17 @@
 package org.iskon.repositories;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Types;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.iskon.models.TeamUserMapping;
-
 import org.iskon.utils.FieldCacheType;
 import org.iskon.utils.JdbcModelHelper;
-
 import org.iskon.utils.QueryBuilder;
-
+import org.iskon.utils.TeamUserMappingRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
 
@@ -70,5 +63,18 @@ public class TeamUserMappingRepositoryImpl implements TeamUserMappingRepository 
 		return newTeamUserMapping;
 	}
 
+	@Override
+	public List<TeamUserMapping> getTeamUserMappings(Map<String, Object> queryMap) {
+
+		String query = queryBuilder.getSimpleAndQueryFromMap("select * from team_user_mapping", queryMap);
+
+		MapSqlParameterSource queryParams = queryBuilder.getNamedQueryParametersFromMap(queryMap);
+
+		NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(jdbcTemplate);
+
+		List<TeamUserMapping> teamRequests = template.query(query, queryParams, new TeamUserMappingRowMapper());
+
+		return teamRequests;
+	}
 
 }

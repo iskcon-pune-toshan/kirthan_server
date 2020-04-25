@@ -1,10 +1,10 @@
 package org.iskon.controllers;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import org.iskon.models.EventTeamUserMapping;
-
 import org.iskon.services.EventTeamUserMappingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,15 +20,6 @@ public class EventTeamUserMappingController {
 	@Autowired
 	EventTeamUserMappingService eventTeamUserMappingService;
 	
-	
-/*	
-	@RequestMapping(value = "/submitnewteamusermapping", method = RequestMethod.PUT)
-	public TeamUserMapping submitNewTeamUserMapping(@RequestBody TeamUserMapping newTeamUserMapping) {
-		System.out.println(newTeamUserMapping);
-		TeamUserMapping req = teamUserMappingService.submitNewTeamUserMapping(newTeamUserMapping);
-		return req;
-	}
-*/	
 	@RequestMapping(value = "/submitneweventteamusermapping", method = RequestMethod.PUT)
 	public List<EventTeamUserMapping> submitNewEventTeamUserMapping(@RequestBody List<EventTeamUserMapping> listEventTeamUserMapping) {
 		List<EventTeamUserMapping> listNewEventTeamUserMapping = new ArrayList<EventTeamUserMapping>();
@@ -38,16 +29,25 @@ public class EventTeamUserMappingController {
 			listNewEventTeamUserMapping.add(req);
 		}
 		return listNewEventTeamUserMapping;
-		
 	}
 	
+	@RequestMapping(value = "/geteventteamusermappings", method = RequestMethod.PUT)
+	public List<EventTeamUserMapping> getEventTeamUserMappings(@RequestBody Map<String,Object> queryParams) {
+		//System.out.println("queryParams: "+queryParams);
+		List<EventTeamUserMapping> req = eventTeamUserMappingService.getEventTeamUserMappings(queryParams);
+		return req;
+	}	
 	
 	
 	@RequestMapping(value = "/submitdeleteeventteamusermapping", method = RequestMethod.PUT)
-	public EventTeamUserMapping submitDeleteEventTeamUserMapping(@RequestBody EventTeamUserMapping newEventTeamUserMapping) {
-		System.out.println(newEventTeamUserMapping);
-		EventTeamUserMapping req = eventTeamUserMappingService.submitDeleteEventTeamUserMapping(newEventTeamUserMapping);
-		return req;
+	public List<EventTeamUserMapping> submitDeleteEventTeamUserMapping(@RequestBody List<EventTeamUserMapping> listEventTeamUserMapping) {
+		List<EventTeamUserMapping> listDeleteEventTeamUserMapping = new ArrayList<EventTeamUserMapping>();
+		for (EventTeamUserMapping deleteEventTeamUserMapping : listEventTeamUserMapping) {
+			System.out.println(deleteEventTeamUserMapping);
+			EventTeamUserMapping req = eventTeamUserMappingService.submitDeleteEventTeamUserMapping(deleteEventTeamUserMapping);
+			listDeleteEventTeamUserMapping.add(req);
+		}
+		return listDeleteEventTeamUserMapping;
 	}	
 	
 }

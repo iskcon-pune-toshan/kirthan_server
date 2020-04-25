@@ -8,7 +8,6 @@ import java.util.Map.Entry;
 
 import org.iskon.models.BaseModel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.Pair;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Component;
 

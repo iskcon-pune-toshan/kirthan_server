@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.iskon.models.TeamRequest;
-import org.iskon.models.UserRequest;
 import org.iskon.services.TeamRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;

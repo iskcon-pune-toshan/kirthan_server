@@ -1,14 +1,10 @@
 package org.iskon.controllers;
 
-import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 
 import org.iskon.models.TeamUserMapping;
-//import org.iskon.models.TeamRequest;
-//import org.iskon.models.UserRequests;
-//import org.iskon.services.UserRequestService;
 import org.iskon.services.TeamUserMappingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,13 +41,19 @@ public class TeamUserMappingController {
 		
 	}
 	
-	
-	
 	@RequestMapping(value = "/submitdeleteteamusermapping", method = RequestMethod.PUT)
 	public TeamUserMapping submitDeleteTeamUserMapping(@RequestBody TeamUserMapping newTeamUserMapping) {
 		System.out.println(newTeamUserMapping);
 		TeamUserMapping req = teamUserMappingService.submitDeleteTeamUserMapping(newTeamUserMapping);
 		return req;
+	}
+	
+	@RequestMapping(value = "/getteamusermappings", method = RequestMethod.PUT)
+	public List<TeamUserMapping> getTeamUserMappings(@RequestBody Map<String,Object> queryParams) {
+		//System.out.println("queryParams: "+queryParams);
+		List<TeamUserMapping> req = teamUserMappingService.getTeamUserMappings(queryParams);
+		return req;
 	}	
+	
 	
 }

@@ -4,46 +4,21 @@ import java.util.List;
 import java.util.Map;
 
 import org.iskon.models.EventTeamUserMapping;
-import org.iskon.utils.FieldCacheType;
-import org.iskon.utils.JdbcModelHelper;
-import org.iskon.utils.QueryBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.stereotype.Component;
-
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Types;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import org.iskon.models.UserRequest;
-import org.iskon.utils.FieldCacheType;
-import org.iskon.utils.JdbcModelHelper;
-
-import org.iskon.utils.QueryBuilder;
 import org.iskon.utils.EventTeamUserMappingRowMapper;
+import org.iskon.utils.FieldCacheType;
+import org.iskon.utils.JdbcModelHelper;
+import org.iskon.utils.QueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.core.PreparedStatementCreatorFactory;
-import org.springframework.jdbc.core.SqlOutParameter;
-import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
 @Component
 public class EventTeamUserMappingRepositoryImpl implements EventTeamUserMappingRepository {
 
-	private static String TableName = "event_team_user_mapping";
+	private static String TableName = "event_user_mapping";
 	@Autowired
 	JdbcTemplate jdbcTemplate;
 
@@ -81,10 +56,25 @@ public class EventTeamUserMappingRepositoryImpl implements EventTeamUserMappingR
 	@Override
 	public EventTeamUserMapping submitDeleteEventTeamUserMapping(EventTeamUserMapping newEventTeamUserMapping) {
 
-		int rows = jdbcTemplate.update("delete from event_team_user_mapping where id = ?", newEventTeamUserMapping.getId());
+		int rows = jdbcTemplate.update("delete from event_user_mapping where id = ?", newEventTeamUserMapping.getId());
 
 		System.out.println("rows deleted: " + rows);
 
 		return newEventTeamUserMapping;
 	}
+	
+	
+	@Override
+	public List<EventTeamUserMapping> getEventTeamUserMappings(Map<String, Object> queryMap) {
+
+		String query = queryBuilder.getSimpleAndQueryFromMap("select * from event_user_mapping", queryMap);
+
+		MapSqlParameterSource queryParams = queryBuilder.getNamedQueryParametersFromMap(queryMap);
+
+		NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(jdbcTemplate);
+
+		List<EventTeamUserMapping> teamRequests = template.query(query, queryParams, new EventTeamUserMappingRowMapper());
+
+		return teamRequests;
+	}	
 }

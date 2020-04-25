@@ -1,7 +1,5 @@
 package org.iskon.models;
 
-import java.util.Date;
-
 public class TeamUserMapping extends BaseModel {
 	
 	@KeyField
@@ -9,24 +7,7 @@ public class TeamUserMapping extends BaseModel {
 	Integer teamId;
 	Integer userId;
 	
-	@UpdateAllowed
-	String approvalStatus;
-	@UpdateAllowed
-	String approvalComments;
 
-	
-	public String getApprovalStatus() {
-		return approvalStatus;
-	}
-	public void setApprovalStatus(String approvalStatus) {
-		this.approvalStatus = approvalStatus;
-	}
-	public String getApprovalComments() {
-		return approvalComments;
-	}
-	public void setApprovalComments(String approvalComments) {
-		this.approvalComments = approvalComments;
-	}
 	public Integer getId() {
 		return id;
 	}
