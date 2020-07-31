@@ -20,12 +20,18 @@ public class QueryBuilder {
 	public QueryBuilder(JdbcModelHelper jdbcModelHelper) {
 		this.jdbcModelHelper = jdbcModelHelper;
 	}
-
+	
+	/**
+	 * 
+	 * @param baseQuery
+	 * @param arguments
+	 * @return SQL QUERY WITH QUERY PARAMETERS AS BINDING NOTATION
+	 * reference = ':' is a bind parameter in sql and is replaced in runTime)
+	 */
 	public String getSimpleAndQueryFromMap(String baseQuery, Map<String, Object> arguments) {
-
 		if (arguments.isEmpty())
 			return baseQuery;
-
+		
 		int mapSize = arguments.size();
 
 		String query = baseQuery + " where ";
@@ -38,10 +44,29 @@ public class QueryBuilder {
 			if (mapSize > 0)
 				query = query + " AND ";
 		}
-
 		return query;
 	}
-
+	
+	public String getSimpleOrQueryFromMap(String baseQuery,Map<String,Object> arguments) {
+		if(arguments.isEmpty())
+			return baseQuery;
+		int mapSize = arguments.size();
+		String query = baseQuery + " WHERE ";
+		
+		for(Entry<String,Object> kvp : arguments.entrySet()) {
+			String lowerCasedStr = kvp.getKey().toLowerCase();
+			query = query + lowerCasedStr + "=:" +lowerCasedStr;
+			mapSize--;
+			if(mapSize>0)
+				query = query + " OR ";
+		}
+		return query;
+	}
+	/**
+	 * 
+	 * @param queryMap
+	 * @return MapSqlParameterSource consisting of all the parameters to be passed to the query
+	 */
 	public MapSqlParameterSource getNamedQueryParametersFromMap(Map<String, Object> queryMap) {
 		MapSqlParameterSource queryParams = new MapSqlParameterSource();
 
@@ -51,9 +76,16 @@ public class QueryBuilder {
 		return queryParams;
 	}
 
+	/**
+	 * 
+	 * @param tableName
+	 * @param obj
+	 * @return
+	 */
+	
 	public Map.Entry<String, Object[]> getUpdateEntryData(String tableName, BaseModel obj) {
-		
 		Map<String, Object> queryMap = jdbcModelHelper.getDataMap(obj, FieldCacheType.ForUpdate);
+		//Returns all the fields that can be updated 
 		if (queryMap.isEmpty())
 			throw new RuntimeException("No Updatable fields found in the Model");
 
