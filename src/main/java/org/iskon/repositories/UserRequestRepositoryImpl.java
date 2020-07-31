@@ -84,7 +84,7 @@ public class UserRequestRepositoryImpl implements UserRequestRepository {
 	@Override
 	public List<UserRequest> getUserRequests(Map<String, Object> queryMap) {
 
-		String query = queryBuilder.getSimpleAndQueryFromMap("select * from user_request", queryMap);
+		String query = queryBuilder.getSimpleAndQueryFromMap("select * from user_request", queryMap,true);
 
 		MapSqlParameterSource queryParams = queryBuilder.getNamedQueryParametersFromMap(queryMap);
 

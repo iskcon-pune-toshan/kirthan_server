@@ -42,10 +42,14 @@ public class TeamUserMappingController {
 	}
 	
 	@RequestMapping(value = "/submitdeleteteamusermapping", method = RequestMethod.PUT)
-	public TeamUserMapping submitDeleteTeamUserMapping(@RequestBody TeamUserMapping newTeamUserMapping) {
-		System.out.println(newTeamUserMapping);
-		TeamUserMapping req = teamUserMappingService.submitDeleteTeamUserMapping(newTeamUserMapping);
-		return req;
+	public List<TeamUserMapping> submitDeleteTeamUserMapping(@RequestBody List<TeamUserMapping> listTeamUserMapping) {
+		List<TeamUserMapping> listDeleteTeamUserMapping = new ArrayList<TeamUserMapping>();
+		for (TeamUserMapping deleteTeamUserMapping : listTeamUserMapping) {
+			System.out.println(deleteTeamUserMapping);
+			TeamUserMapping req = teamUserMappingService.submitDeleteTeamUserMapping(deleteTeamUserMapping);
+			listDeleteTeamUserMapping.add(req);
+		}
+		return listDeleteTeamUserMapping;
 	}
 	
 	@RequestMapping(value = "/getteamusermappings", method = RequestMethod.PUT)

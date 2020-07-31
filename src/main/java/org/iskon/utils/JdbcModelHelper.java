@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.iskon.models.InsertNotAllowed;
 import org.iskon.models.KeyField;
 import org.iskon.models.UpdateAllowed;
 import org.springframework.stereotype.Component;
@@ -77,14 +78,26 @@ public class JdbcModelHelper {
 		Class<? extends Object> objClass = obj.getClass();
 		String objClassStr = objClass.toString();
 		
+		Field[] classFields = objClass.getDeclaredFields();
+		
 		List<FieldHolder> fields = getFieldsCache(opType, objClassStr);
 		if(fields == null)
 			throw new RuntimeException("Fields not Parsed. May be the prepare was not called.");
 		
 		List<String> columns = new ArrayList<String>();
 		
+		boolean insertflag = false;
 		for (FieldHolder fieldHolder : fields) {
-			columns.add(fieldHolder.getName().toLowerCase());
+			insertflag = false;
+			for (Field field : classFields) {
+				if(field.getAnnotation(InsertNotAllowed.class) != null && field.getName().equalsIgnoreCase(fieldHolder.getName().toLowerCase()) ) {
+					insertflag = true;
+					break;
+				}
+			}
+			if (insertflag == false) {
+				columns.add(fieldHolder.getName().toLowerCase());
+			}
 		}
 		
 		return columns;

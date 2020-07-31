@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.iskon.models.EventTeamUserMapping;
-import org.iskon.models.TeamUserMapping;
 import org.iskon.repositories.EventTeamUserMappingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

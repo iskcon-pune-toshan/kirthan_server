@@ -21,14 +21,17 @@ public class QueryBuilder {
 		this.jdbcModelHelper = jdbcModelHelper;
 	}
 
-	public String getSimpleAndQueryFromMap(String baseQuery, Map<String, Object> arguments) {
+	public String getSimpleAndQueryFromMap(String baseQuery, Map<String, Object> arguments, boolean whereCondition) {
 
 		if (arguments.isEmpty())
 			return baseQuery;
 
 		int mapSize = arguments.size();
+		
+		String query = baseQuery;
 
-		String query = baseQuery + " where ";
+		if(whereCondition == true)
+			query = query + " where ";
 
 		for (Entry<String, Object> kvp : arguments.entrySet()) {
 			String lowercasedStr = kvp.getKey().toLowerCase();
