@@ -40,7 +40,7 @@ public class EventTeamUserMappingRepositoryImpl implements EventTeamUserMappingR
 		// jdbcSimpleInsertHelper.prepareObject(newUserRequest);
 		List<String> columns = jdbcModelHelper.getColumns(newEventTeamUserMapping, FieldCacheType.ForInsert);
 		Map<String, Object> objectMap = jdbcModelHelper.getDataMap(newEventTeamUserMapping, FieldCacheType.ForInsert);
-
+		
 		SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
 		simpleJdbcInsert.setTableName(TableName);
 		simpleJdbcInsert.setColumnNames(columns);
@@ -66,8 +66,15 @@ public class EventTeamUserMappingRepositoryImpl implements EventTeamUserMappingR
 	
 	@Override
 	public List<EventTeamUserMapping> getEventTeamUserMappings(Map<String, Object> queryMap) {
+		
+		String strQuery = "select EUM.*, TR.teamTitle as teamname, concat(UR.firstname, ' ',UR.lastname) as username, ER.eventTitle as eventname " + 
+				"from kirtan.event_user_mapping EUM, kirtan.team_request TR, kirtan.user_request UR, kirtan.event_request ER " + 
+				"where EUM.userId = UR.id " + 
+				"and EUM.teamId = TR.id " + 
+				"and  EUM.eventId= ER.id and EUM.";
+		
 
-		String query = queryBuilder.getSimpleAndQueryFromMap("select * from event_user_mapping", queryMap);
+		String query = queryBuilder.getSimpleAndQueryFromMap(strQuery, queryMap, false);
 
 		MapSqlParameterSource queryParams = queryBuilder.getNamedQueryParametersFromMap(queryMap);
 

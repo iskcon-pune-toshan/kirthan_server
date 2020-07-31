@@ -64,7 +64,7 @@ public class TeamRequestRepositoryImpl implements TeamRequestRepository{
 	@Override
 	public List<TeamRequest> getTeamRequests(Map<String, Object> queryMap) {
 
-		String query = queryBuilder.getSimpleAndQueryFromMap("select * from team_request", queryMap);
+		String query = queryBuilder.getSimpleAndQueryFromMap("select * from team_request", queryMap,true);
 
 		MapSqlParameterSource queryParams = queryBuilder.getNamedQueryParametersFromMap(queryMap);
 

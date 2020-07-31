@@ -7,7 +7,22 @@ public class TeamUserMapping extends BaseModel {
 	Integer teamId;
 	Integer userId;
 	
+	String userName;
+	String teamName;
+	
 
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public String getTeamName() {
+		return teamName;
+	}
+	public void setTeamName(String teamName) {
+		this.teamName = teamName;
+	}
 	public Integer getId() {
 		return id;
 	}

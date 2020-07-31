@@ -21,6 +21,8 @@ import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
 
+//import org.springframework.data.convert.
+
 @Component
 public class EventRequestRepositoryImpl implements EventRequestRepository {
 
@@ -84,17 +86,17 @@ public class EventRequestRepositoryImpl implements EventRequestRepository {
 	@Override
 	public List<EventRequest> getEventRequests(Map<String, Object> queryMap) {
 
-		String query = queryBuilder.getSimpleAndQueryFromMap("select * from event_request", queryMap);
+		String query = queryBuilder.getSimpleAndQueryFromMap("select * from event_request", queryMap,true);
 
 		MapSqlParameterSource queryParams = queryBuilder.getNamedQueryParametersFromMap(queryMap);
 
 		NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(jdbcTemplate);
 
 		List<EventRequest> eventRequests = template.query(query, queryParams, new EventRequestRowMapper());
-
+		
 		return eventRequests;
 	}
-
+	
 	@Override
 	public Boolean processEventRequest(Integer id, String approvalstatus, String approvalcomments,
 			String usertype, String updatedby) {

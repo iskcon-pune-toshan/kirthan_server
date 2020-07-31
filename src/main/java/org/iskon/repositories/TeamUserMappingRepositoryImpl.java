@@ -40,6 +40,11 @@ public class TeamUserMappingRepositoryImpl implements TeamUserMappingRepository 
 		// jdbcSimpleInsertHelper.prepareObject(newUserRequest);
 		List<String> columns = jdbcModelHelper.getColumns(newTeamUserMapping, FieldCacheType.ForInsert);
 		Map<String, Object> objectMap = jdbcModelHelper.getDataMap(newTeamUserMapping, FieldCacheType.ForInsert);
+		
+		System.out.println("Before: "+columns.size());
+		columns.remove("teamname");
+		columns.remove("username");
+		System.out.println("After: "+columns.size());
 
 		SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
 		simpleJdbcInsert.setTableName(TableName);
@@ -65,8 +70,15 @@ public class TeamUserMappingRepositoryImpl implements TeamUserMappingRepository 
 
 	@Override
 	public List<TeamUserMapping> getTeamUserMappings(Map<String, Object> queryMap) {
+		
+		String strQuery = "select TUM.*, TR.teamTitle as teamname, concat(UR.firstname, ' ',UR.lastname) as username " +
+				" from kirtan.team_user_mapping TUM, kirtan.team_request TR, kirtan.user_request UR " +
+				" where TUM.userId = UR.id " +
+				" and TUM.teamId = TR.id and TUM.";
+		
+		//String strQuery = "select * from team_user_mapping";
 
-		String query = queryBuilder.getSimpleAndQueryFromMap("select * from team_user_mapping", queryMap);
+		String query = queryBuilder.getSimpleAndQueryFromMap(strQuery, queryMap,false);
 
 		MapSqlParameterSource queryParams = queryBuilder.getNamedQueryParametersFromMap(queryMap);
 

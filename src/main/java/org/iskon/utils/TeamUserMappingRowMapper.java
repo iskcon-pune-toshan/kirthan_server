@@ -16,6 +16,8 @@ public class TeamUserMappingRowMapper implements RowMapper<TeamUserMapping> {
 		teamUser.setId(rs.getInt("id"));
 		teamUser.setTeamId(rs.getInt("teamid"));
 		teamUser.setUserId(rs.getInt("userid"));
+		teamUser.setUserName(rs.getString("username"));
+		teamUser.setTeamName(rs.getString("teamname"));
 		teamUser.setCreatedBy(rs.getString("createdby"));
 		teamUser.setUpdatedBy(rs.getString("updatedby"));
 		teamUser.setCreateTime(rs.getDate("createtime"));

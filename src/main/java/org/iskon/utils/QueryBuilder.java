@@ -20,21 +20,18 @@ public class QueryBuilder {
 	public QueryBuilder(JdbcModelHelper jdbcModelHelper) {
 		this.jdbcModelHelper = jdbcModelHelper;
 	}
-	
-	/**
-	 * 
-	 * @param baseQuery
-	 * @param arguments
-	 * @return SQL QUERY WITH QUERY PARAMETERS AS BINDING NOTATION
-	 * reference = ':' is a bind parameter in sql and is replaced in runTime)
-	 */
-	public String getSimpleAndQueryFromMap(String baseQuery, Map<String, Object> arguments) {
+
+
+	public String getSimpleAndQueryFromMap(String baseQuery, Map<String, Object> arguments, boolean whereCondition) {
 		if (arguments.isEmpty())
 			return baseQuery;
 		
 		int mapSize = arguments.size();
+		
+		String query = baseQuery;
 
-		String query = baseQuery + " where ";
+		if(whereCondition == true)
+			query = query + " where ";
 
 		for (Entry<String, Object> kvp : arguments.entrySet()) {
 			String lowercasedStr = kvp.getKey().toLowerCase();

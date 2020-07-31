@@ -101,10 +101,10 @@ public class NotificationRepositoryIml implements NotificationRepository {
 		queryMap.put("id", ntfId);
 		String SQL_QUERY = "";
 		SQL_QUERY += queryBuilder.getSimpleAndQueryFromMap(
-				"select * from notifications", queryMap);
+				"select * from notifications", queryMap,true);
 		SQL_QUERY += " UNION ";
 		SQL_QUERY += queryBuilder.getSimpleAndQueryFromMap(
-				"select * from notification_approval", queryMap);
+				"select * from notification_approval", queryMap,true);
 		MapSqlParameterSource queryParam = queryBuilder
 				.getNamedQueryParametersFromMap(queryMap);
 		NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(

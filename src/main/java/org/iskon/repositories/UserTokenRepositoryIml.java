@@ -37,7 +37,7 @@ public class UserTokenRepositoryIml implements UserTokenRepository {
 		inputParam.put("userId",userId);
 		String sqlQuery = this.queryBuilder.getSimpleAndQueryFromMap(
 				"Select deviceToken from user_token", 
-				inputParam);
+				inputParam,true);
 		MapSqlParameterSource queryMap =this.queryBuilder.getNamedQueryParametersFromMap(inputParam);
 		NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(this.jdbcTemplate);		
 		String token = template.query(sqlQuery,queryMap,(rs)->{

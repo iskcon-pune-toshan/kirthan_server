@@ -43,7 +43,7 @@ public class NotificationListRepositoryIml implements NotificationListRepository
 		inputParam.put("groupId",eventId);
 		
 		String SQL_Query= queryBuilder.getSimpleAndQueryFromMap(
-				" select * from notification_list ", inputParam);
+				" select * from notification_list ", inputParam,true);
 		MapSqlParameterSource params = queryBuilder.getNamedQueryParametersFromMap(inputParam);
 		
 		NamedParameterJdbcTemplate namedJdbcTemplate = new NamedParameterJdbcTemplate(this.jdbcTemplate);
@@ -86,7 +86,7 @@ public class NotificationListRepositoryIml implements NotificationListRepository
 			queryMap.put("groupId",body.get("groupId"));
 			queryMap.put("userType",body.get("userType"));
 			String sqlQuery = this.queryBuilder.getSimpleAndQueryFromMap(
-				"delete from notification_list", queryMap);
+				"delete from notification_list", queryMap,true);
 			MapSqlParameterSource params = this.queryBuilder.getNamedQueryParametersFromMap(queryMap);
 			NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(this.jdbcTemplate);
 			int result = template.update(sqlQuery,params);
