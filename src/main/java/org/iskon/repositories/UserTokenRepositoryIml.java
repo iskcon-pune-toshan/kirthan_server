@@ -48,7 +48,20 @@ public class UserTokenRepositoryIml implements UserTokenRepository {
 		});		
 		return token;
 	}
-
+	
+	public List<String> fetchDeviceToken(List<Integer> userId) {
+		if(userId == null)
+			return null;
+		MapSqlParameterSource params = new MapSqlParameterSource("userIds",userId);
+		String sqlQuery = "SELECT DISTINCT deviceToken from user_token where userId in (:userIds)";
+		
+		NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(this.jdbcTemplate);		
+		List<String> tokenList = template.query(sqlQuery,params,(rs,rowNumber)->{
+				return rs.getString("deviceToken");
+		});		
+		
+		return tokenList;
+	}
 	@Override
 	public Boolean storeTokens(UserTokenModel user) {
 	try {	
@@ -72,7 +85,7 @@ public class UserTokenRepositoryIml implements UserTokenRepository {
 	}
 		
 	}
-
+	
 	@Override
 	public Boolean updateToken(int userId, String token) {
 		String sql =" update user_token set deviceToken =:devicetoken where userId =:userid";

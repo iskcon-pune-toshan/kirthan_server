@@ -2,9 +2,7 @@ package org.iskon.controllers;
 
 import java.util.Map;
 
-import org.iskon.models.NotificationListModel;
 import org.iskon.models.UserTokenModel;
-import org.iskon.repositories.NotificationListRepository;
 import org.iskon.repositories.NotificationRepository;
 import org.iskon.repositories.UserTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,39 +19,27 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class RecipientManagerController {
 	
 	@Autowired
-	private NotificationRepository ntfDb;
-	@Autowired
-	private NotificationListRepository ntfListDb;
-	
+	private NotificationRepository ntfDb;	
 	@Autowired
 	private UserTokenRepository userTokenDb;
 	
-	@PostMapping(path = "/subscribe/{eventId}")
-	public String subscribeToEvents(
-			@RequestBody Map<String, Object> body,
-			@PathVariable("eventId") int eventId) {
-		NotificationListModel user = new NotificationListModel((int) body.get("userId"), eventId,(String) body.get("userType"));
-		ntfListDb.addUser(user);
-		return "Subscribed to event";
-	}
+
 	
-	@GetMapping(path="/subscription")
-	public String getSubscription() {
-		return "Subscription list";
-	}
-	
-	@PostMapping(path= "/unsubscribe/{eventId}")
-	public String unSubscribeEvents(@RequestBody Map<String,Object> body,@PathVariable("eventId") int eventId) {
-		body.put("groupId",eventId);
-		return "Unsubscribed to event" + (ntfListDb.removeUser(body).toString());
-	}
+	/** Fetches the stored device token for the provided userId
+	 * 	
+	 * @param body user information required to authenticate/(uniquely identify) the user.
+	 * @return token A string containing the token for the given userID
+	 */
 	@GetMapping(path="/tokens")
 	public String getToken(@RequestBody Map<String,Object> body) {
 		
 		return userTokenDb.fetchDeviceToken((int) body.get("userId"));
 	
 	}
-	//Step 1 for receiving notifications
+	/**
+	 * 
+	 * @param body contains the userId,deviceToken,firebaseUid provided in the request body
+	 */
 	@PostMapping(path="/tokens")
 	public void storeTokens(@RequestBody Map<String,Object> body) {
 		UserTokenModel user = new UserTokenModel(
@@ -65,6 +51,10 @@ public class RecipientManagerController {
 		userTokenDb.storeTokens(user);				
 	}
 	
+	/**Updates the deviceToken for a given userID.
+	 * 
+	 * @param body Contains the userId and deviceToken provided in the incoming httpRequest.
+	 */
 	@PutMapping(path="/tokens")
 	public void updateToken(@RequestBody Map<String,Object> body) {
 		 int userId= (int) body.get("userId");

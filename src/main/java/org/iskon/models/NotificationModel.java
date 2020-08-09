@@ -6,40 +6,42 @@ import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/*  id               | varchar(36)  | NO   | PRI | NULL                                 |                   |
+| message          | varchar(255) | NO   |     | Kindly approve the following request |                   |
+| type(server-genertated)             | varchar(10)  | NO   |     | APPR                                 |                   |
+| createdAt        | timestamp    | NO   |     | CURRENT_TIMESTAMP                    | DEFAULT_GENERATED |
+| createdBy        | int          | NO   |     | NULL                                 |                   |
+| targetId         | int          | NO   |     | NULL                                 |                   |
+| action           | varchar(20)  | NO   |     | NULL                                 |                   |
+| mappingTableData | varchar(20)  | NO   |     | NULL                                 |                   |
+| status
+*/
+
 public class NotificationModel {
 	
-	private UUID id;
-	private String message;
-	private String type;
 	@KeyField
-	private String body; //to be implemented
+	private String title;
+	
+	private UUID id;
+	private String type;
+	private String message;
 	private int createdBy;
 	private LocalDateTime createdAt;
 	private int targetId;
+	private String mappingTableData;
 	
-	public NotificationModel(@JsonProperty("ntfId") String id,
-			@JsonProperty("notification") String message,
-			@JsonProperty("type") String type) {
-		this.id = UUID.fromString(id);
-		this.message =(String) message;
-		this.type = type;
-	}
-	
-	public NotificationModel(String message,String type) {
-		this.message = message;
-		this.type = type;
-		this.id = UUID.randomUUID();
-		this.createdAt = LocalDateTime.now();	
-	}
+
 	//creating a new notification
 	public NotificationModel(Map<String,Object> data) {
 		this.message =(String) data.get("message");
 		this.type = (String)data.get("type");
 		this.id = UUID.randomUUID();
 		this.createdAt = LocalDateTime.now();
-		this.createdBy =  Integer.parseInt((String)data.get("userId"));
+		this.createdBy =  (int) (data.get("userId"));
 		this.targetId = (int) data.get("targetId");
+		this.mappingTableData = (String) data.get("mappingTableData");
 	}
+	
 	//reading an existing notification
 	public NotificationModel(UUID id,Map<String,Object> ntf) {
 		this.id = id;
@@ -48,6 +50,7 @@ public class NotificationModel {
 		this.createdAt = (LocalDateTime) ntf.get("createdAt");
 		this.createdBy = (int) ntf.get("createdBy");
 		this.targetId = (int) ntf.get("targetId");
+		this.mappingTableData = (String) ntf.get("mappingTableData");
 	}
 	
 	public String getId() {
@@ -55,15 +58,22 @@ public class NotificationModel {
 	}
 	
 	public String getTitle() {
-		return this.message;
+		return this.title;
+	}
+	
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public String getMappingTable() {
+		return this.mappingTableData;
 	}
 	
 	public String getType() {
 		return this.type;	
 	}
 	
-	public String getBody() {
-		return this.body;
+	public String getMessage() {
+		return this.message;
 	}
 	public int getTargetId() {
 		return this.targetId;
@@ -75,7 +85,12 @@ public class NotificationModel {
 		return this.createdAt;
 	}
 
-	public void setBody(String data) {
-		this.body = data;
+
+	public void setMessage(String data) {
+		this.message = data;
 	}
+	public void setId(String senderId) {
+		System.out.println(senderId);
+	}
+	
 }

@@ -59,11 +59,7 @@ public class QueryBuilder {
 		}
 		return query;
 	}
-	/**
-	 * 
-	 * @param queryMap
-	 * @return MapSqlParameterSource consisting of all the parameters to be passed to the query
-	 */
+	
 	public MapSqlParameterSource getNamedQueryParametersFromMap(Map<String, Object> queryMap) {
 		MapSqlParameterSource queryParams = new MapSqlParameterSource();
 
@@ -72,13 +68,6 @@ public class QueryBuilder {
 		}
 		return queryParams;
 	}
-
-	/**
-	 * 
-	 * @param tableName
-	 * @param obj
-	 * @return
-	 */
 	
 	public Map.Entry<String, Object[]> getUpdateEntryData(String tableName, BaseModel obj) {
 		Map<String, Object> queryMap = jdbcModelHelper.getDataMap(obj, FieldCacheType.ForUpdate);

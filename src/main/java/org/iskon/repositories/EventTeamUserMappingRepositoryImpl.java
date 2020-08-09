@@ -73,15 +73,15 @@ public class EventTeamUserMappingRepositoryImpl implements EventTeamUserMappingR
 				"and EUM.teamId = TR.id " + 
 				"and  EUM.eventId= ER.id and EUM.";
 		
-
+		
 		String query = queryBuilder.getSimpleAndQueryFromMap(strQuery, queryMap, false);
-
+			
 		MapSqlParameterSource queryParams = queryBuilder.getNamedQueryParametersFromMap(queryMap);
-
+		
 		NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(jdbcTemplate);
-
+		
 		List<EventTeamUserMapping> teamRequests = template.query(query, queryParams, new EventTeamUserMappingRowMapper());
-
+		
 		return teamRequests;
 	}	
 }

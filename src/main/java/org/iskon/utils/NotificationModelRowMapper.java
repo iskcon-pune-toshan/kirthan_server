@@ -19,23 +19,9 @@ public class NotificationModelRowMapper implements RowMapper<NotificationModel>{
 		data.put("type",rs.getString("type"));
 		data.put("targetId",rs.getInt("targetId"));
 		data.put("createdBy",rs.getInt("createdBy"));
-		data.put("createdAt",LocalDateTime.now());
+		data.put("createdAt",rs.getTimestamp("createdAt").toLocalDateTime());
 		return new NotificationModel(
 				UUID.fromString(rs.getString("id")),data);
 	}
  
-	NotificationModel mapRow(ResultSet rs) throws SQLException {
-	if(rs.next()) {
-		Map<String,Object> data = new HashMap<>();
-		data.put("message",rs.getString("message"));
-		data.put("type",rs.getString("type"));
-		data.put("targetId",rs.getInt("targetId"));
-		data.put("createdBy",rs.getInt("createdBy"));
-		data.put("createdAt",LocalDateTime.now());
-		return new NotificationModel(
-				UUID.fromString(rs.getString("id")),data);}
-	else
-		return null;
-			
-	}
 }
