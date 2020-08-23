@@ -17,7 +17,7 @@ public class FireBaseMessagingService {
 						.setBody((String) ntf.get("message")).build())
 				.setAndroidConfig(AndroidConfig.builder()
 						.setNotification(AndroidNotification.builder()
-								.setIcon("stock_ticker_update")
+								.setIcon("flutter")
 								.setColor("#f45342").setChannelId(channelId)
 								.build())
 						.build())

@@ -23,7 +23,7 @@ import org.iskon.utils.HttpException;
 
 
 @RestController
-@RequestMapping("/notifications")
+@RequestMapping("/{userId}/notifications")
 public class NotificationController {
 
 	@Autowired
@@ -40,12 +40,13 @@ public class NotificationController {
 	 */
 	@GetMapping()
 	public ResponseEntity<Map<String,Object>> fetchNotificaion(
-			@RequestBody Map<String,Object> User) throws HttpException {
+			
+			@PathVariable("userId") String userId) throws HttpException {
 		Map<String,Object> response = new HashMap<>();
+		System.out.println("This was called");
 		HttpStatus respCode;
 		try {
-			String userId = (String) User.get("userId");
-			String userToken = (String) User.get("userToken");
+			//String userToken = (String) User.get("userToken");
 			if(userId == null || userId == "") {
 				throw new Exception("Invalid User Credentials");
 			}
@@ -122,7 +123,7 @@ public class NotificationController {
 		HttpStatus respCode = HttpStatus.OK;
 		try {
 			NotificationApprovalModel data = new NotificationApprovalModel(body);
-			String userId = (String) body.get("userId"); // createdBy
+			String userId =  body.get("userId").toString(); // createdBy
 			String targetId = body.get("targetId").toString(); 
 			if (userId == null) {
 				throw new HttpException("PLEASE LOGIN FIRST",
@@ -225,6 +226,7 @@ public class NotificationController {
 	public ResponseEntity<Map<String,Object>> updateNotificationById(
 			@RequestBody Map<String,Object> body,
 			@PathVariable("ntfId") String ntfId){
+		System.out.println("Update Called");
 		Map<String,Object> response = new HashMap<>();
 		HttpStatus respCode ;
 		body.put("ntfId",ntfId);

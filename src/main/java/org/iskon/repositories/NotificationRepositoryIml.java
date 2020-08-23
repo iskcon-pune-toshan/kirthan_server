@@ -67,7 +67,7 @@ public class NotificationRepositoryIml implements NotificationRepository {
 		List<NotificationModel> notifications = template.query(SQL_QUERY,
 				queryParams, new NotificationModelRowMapper());
 		SQL_QUERY =
-				"SELECT ntf.id,ntf.message,ntF.type,ntf.targetId,ntf.createdBy,ntf.createdAt,ntf.action FROM " + " notification_approval as ntf "
+				"SELECT ntf.id,ntf.message,ntF.type,ntf.targetId,ntf.createdBy,ntf.createdAt,ntf.action,ntf.mappingTableData FROM " + " notification_approval as ntf "
 						+ " LEFT JOIN notification_tracker as ntf_trk "
 						+ "	ON ntf.id = ntf_trk.ntfId"
 						+ " where ntf_trk.userId = :userid"

@@ -42,12 +42,14 @@ public class RecipientManagerController {
 	 */
 	@PostMapping(path="/tokens")
 	public void storeTokens(@RequestBody Map<String,Object> body) {
-		UserTokenModel user = new UserTokenModel(
+		System.out.println("Store procedure called");
+		/*UserTokenModel user = new UserTokenModel(
 						(int)body.get("userId"),
 						(String)body.get("deviceToken"),
 						(String) body.get("firebaseUid"),
 						(int)body.get("userId"),
-						(int)body.get("userId"));
+						(int)body.get("userId"));*/
+		UserTokenModel user = new UserTokenModel(4,(String) body.get("deviceToken"),"randomUid",4,4);
 		userTokenDb.storeTokens(user);				
 	}
 	
@@ -57,7 +59,7 @@ public class RecipientManagerController {
 	 */
 	@PutMapping(path="/tokens")
 	public void updateToken(@RequestBody Map<String,Object> body) {
-		 int userId= (int) body.get("userId");
+		 int userId= 4;
 		 String token = (String) body.get("deviceToken");
 		 userTokenDb.updateToken(userId,token);
 	}

@@ -27,7 +27,7 @@ public class NotificationApprovalModel {
 		this.type = (String)data.get("type");
 		this.id = UUID.randomUUID();
 		this.createdAt = LocalDateTime.now();
-		this.createdBy =  Integer.parseInt((String)data.get("userId"));
+		this.createdBy =  (int) (data.get("userId"));
 		this.targetId = (int) data.get("targetId");
 		this.action = "WAIT";
 		this.mappingTableData = (String) data.get("mappingTableData");
