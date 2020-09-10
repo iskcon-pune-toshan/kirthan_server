@@ -2,6 +2,7 @@ package org.iskon.repositories;
 
 
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -125,6 +126,24 @@ public class TeamRequestRepositoryImpl implements TeamRequestRepository{
 		System.out.println("rows deleted: " + rows);
 
 		return newTeamRequest;
+	}
+
+	@Override
+	public List<Integer> getEventRequestsCountByStatus(){
+			ArrayList<Integer> data = new ArrayList<>();
+			ArrayList<String> status = new ArrayList<>();
+			status.add("Approved");
+			status.add("NEW");
+			status.add("Rejected");
+			String sql;
+			for(String i : status){
+				sql = String.format("Select count(id) from team_request where approvalstatus = '%s'", i);
+				data.add(this.jdbcTemplate.query(sql,(rs)->{
+					rs.next();
+					return (rs.getInt("count(id)"));
+				}));	
+			}
+				return data;
 	}
 	
 }

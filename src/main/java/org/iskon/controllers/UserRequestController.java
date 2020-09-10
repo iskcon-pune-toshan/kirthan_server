@@ -1,9 +1,11 @@
 package org.iskon.controllers;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Optional;
 
 import org.iskon.models.UserRequest;
 //import org.iskon.models.UserRequests;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -20,6 +23,23 @@ public class UserRequestController {
 
 	@Autowired
 	UserRequestService userRequestService;
+	
+	@RequestMapping(value="/users/count",method = RequestMethod.GET)
+	public List<Integer> getUserCount(){
+		return	userRequestService.getUserRequestsCountByStatus();
+	}
+	
+	@RequestMapping(value="/users",method = RequestMethod.GET)
+		public List<UserRequest> getUserRequest(@RequestParam("status") Optional<String> status,@RequestParam("city") Optional<String> city) { 		
+			List<UserRequest> userreqs;	
+			Map<String,Object> query = new HashMap<String,Object>();
+			if(status.isPresent())query.put("approvalstatus",status.get());
+			else query.put("approvalstatus","null");
+			System.out.print(query);
+ 			userreqs = this.userRequestService.getUserRequests(query);
+			System.out.println(userreqs);
+ 			return userreqs;
+		}
 	
 	@RequestMapping(value = "/getdummyuserrequest", method = RequestMethod.GET)
 	public List<UserRequest> getDummyUserRequest() { 		
@@ -44,6 +64,8 @@ public class UserRequestController {
 		UserRequest req = userRequestService.submitUpdateUserRequest(newUserRequest);
 		return req;
 	}
+	
+	
 	
 	@RequestMapping(value = "/submitdeleteuserrequest", method = RequestMethod.PUT)
 	public UserRequest submitDeleteUserRequest(@RequestBody UserRequest newUserRequest) {

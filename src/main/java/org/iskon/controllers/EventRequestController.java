@@ -1,9 +1,11 @@
 package org.iskon.controllers;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Optional;
 
 import org.iskon.models.EventRequest;
 //import org.iskon.models.UserRequests;
@@ -12,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 
 
 @RestController
@@ -20,6 +24,24 @@ public class EventRequestController {
 
 	@Autowired
 	EventRequestService eventRequestService;
+	
+	@RequestMapping(value ="/event/count",method = RequestMethod.GET)
+	public List<Integer> getEventRequestsCountByStatus(){
+			
+		return	eventRequestService.getEventRequestsCountByStatus();
+		
+	}
+	
+	@RequestMapping(value ="/event",method = RequestMethod.GET)
+	public List<EventRequest> getEvents(@RequestParam("status") Optional<String> status){
+		if(status.isPresent()) {
+			Map<String,Object> queryParam = new HashMap<String,Object>(); 
+			queryParam.put("approvalStatus",status.get().toString());
+			List<EventRequest>	result = this.eventRequestService.getEventRequests(queryParam);	
+			return result;
+		}
+		return null;
+	}
 	
 	@RequestMapping(value = "/getdummyeventrequest", method = RequestMethod.GET)
 	public List<EventRequest> getDummyEventRequest() { 		

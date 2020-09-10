@@ -1,6 +1,7 @@
 package org.iskon.repositories;
 
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +21,8 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
+
+import com.google.common.base.Optional;
 
 //import org.springframework.data.convert.
 
@@ -82,18 +85,38 @@ public class EventRequestRepositoryImpl implements EventRequestRepository {
 
 		return newEventRequest;
 	}
-
+	
+	public List<Integer> getEventRequestsCountByStatus(){
+		ArrayList<Integer> data = new ArrayList<>();
+		System.out.println("I was here");
+		ArrayList<String> status = new ArrayList<>();
+		status.add("Approved");
+		status.add("NEW");
+		status.add("Rejected");
+		String sql;
+		for(String i : status) {
+			sql = String.format("Select count(id) from event_request where approvalstatus = '%s'", i);
+			data.add(this.jdbcTemplate.query(sql,(rs)->{
+				rs.next();
+				return (rs.getInt("count(id)"));
+			}));	
+		}
+		
+		
+			return data;
+	}
 	@Override
 	public List<EventRequest> getEventRequests(Map<String, Object> queryMap) {
-
-		String query = queryBuilder.getSimpleAndQueryFromMap("select * from event_request", queryMap,true);
-
-		MapSqlParameterSource queryParams = queryBuilder.getNamedQueryParametersFromMap(queryMap);
-
-		NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(jdbcTemplate);
-
-		List<EventRequest> eventRequests = template.query(query, queryParams, new EventRequestRowMapper());
+		//queryMap.clear();
+		//queryMap.put("approvalStatus","Approved");
 		
+		String query = queryBuilder.getSimpleAndQueryFromMap("select * from event_request", queryMap,true);
+		System.out.print(query);	
+		MapSqlParameterSource queryParams = queryBuilder.getNamedQueryParametersFromMap(queryMap);
+		System.out.print(queryParams);
+		NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(jdbcTemplate);
+		List<EventRequest> eventRequests = template.query(query, queryParams, new EventRequestRowMapper());
+		System.out.println(eventRequests);
 		return eventRequests;
 	}
 	

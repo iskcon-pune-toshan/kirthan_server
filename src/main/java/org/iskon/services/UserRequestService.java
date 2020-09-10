@@ -7,6 +7,7 @@ import org.iskon.models.UserRequest;
 
 public interface UserRequestService {
 	
+	List<Integer> getUserRequestsCountByStatus();
 	UserRequest submitNewUserRequest(UserRequest userRequest);
 	
 	UserRequest submitUpdateUserRequest(UserRequest userRequest);

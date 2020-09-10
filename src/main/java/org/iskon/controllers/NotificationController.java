@@ -33,7 +33,7 @@ public class NotificationController {
 	 * Fetches all the notifications associated with a given userId.
 	 * Requires user to be an authenticated user.
 	 * Implementation : User authentication needs to be added. 
-	 * @param User Json like object containing details that are required to process the request.In the current implementation that would be the userId.Example:{"userId" : "4"}
+	 * @param userId  String storing the unique id of the user userId. Retrieved from the url.
 	 * @return response Json like object consisting of a message body that stores all the notifications in an array.
 	 * @throws HttpException User-Built exception that generates an errorCode corresponding to the httpStatusCode.
 	 * 
@@ -220,6 +220,7 @@ public class NotificationController {
 	 * 	body : {"userId": integer, "response",Boolean} (response: 1 = Approved, 0=Rejected).
 	 * 		
 	 * @param body Stores all the information from the Http request body. Should consist of the notificationId and the response for the same. 
+	 * @param  ntfId NotificationId representing the uniqe string allocated to notifications.
 	 * @return response returns a map with status information about the operation
 	 */
 	@PutMapping(path="/{ntfId}")

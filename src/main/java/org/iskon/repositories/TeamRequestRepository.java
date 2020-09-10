@@ -8,7 +8,7 @@ import org.iskon.models.TeamRequest;
 public interface TeamRequestRepository {
 
 	TeamRequest submitNewTeamRequest(TeamRequest newTeamRequest);
-	
+	List<Integer> getEventRequestsCountByStatus();
 	List<TeamRequest> getTeamRequests(Map<String,Object> query);
 	
 	Boolean processTeamRequest(Integer id, String approvalstatus, String approvalcomments, String updatedby);

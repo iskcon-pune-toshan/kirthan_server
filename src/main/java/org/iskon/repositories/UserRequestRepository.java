@@ -12,8 +12,9 @@ public interface UserRequestRepository {
 	UserRequest submitUpdateUserRequest(UserRequest newUserRequest);
 	
 	UserRequest submitDeleteUserRequest(UserRequest newUserRequest);
+	Boolean processUserRequest(Integer id, String approvalstatus, String approvalcomments, String usertype, String updatedby);
+	
+	List<Integer> getUserRequestsCountByStatus();
 	
 	List<UserRequest> getUserRequests(Map<String,Object> query);
-	
-	Boolean processUserRequest(Integer id, String approvalstatus, String approvalcomments, String usertype, String updatedby);
 }

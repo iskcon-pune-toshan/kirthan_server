@@ -57,4 +57,10 @@ public class UserRequestServiceImpl implements UserRequestService {
 		
 		return result;
 	}
+
+	@Override
+	public List<Integer> getUserRequestsCountByStatus() {
+		
+		return this.userRequestRepository.getUserRequestsCountByStatus();
+	}
 }

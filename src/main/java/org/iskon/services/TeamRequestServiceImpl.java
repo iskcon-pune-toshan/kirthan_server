@@ -60,4 +60,9 @@ public class TeamRequestServiceImpl implements TeamRequestService {
 		return result;
 	}
 
+	@Override
+	public List<Integer> getEventRequestsCountByStatus() {
+		return this.teamRequestRepository.getEventRequestsCountByStatus();
+	}
+
 }

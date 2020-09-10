@@ -2,6 +2,7 @@ package org.iskon.services;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.iskon.models.EventRequest;
 //import org.iskon.models.UserRequest;
@@ -38,10 +39,13 @@ public class EventRequestServiceImpl implements EventRequestService {
 	{
 		return this.eventRequestRepository.submitDeleteEventRequest(eventRequest);
 	}
-
+	
+	@Override
+	public List<Integer> getEventRequestsCountByStatus(){
+		return this.eventRequestRepository.getEventRequestsCountByStatus();
+	}
 	@Override
 	public List<EventRequest> getEventRequests(Map<String, Object> query) {
-		
 		return this.eventRequestRepository.getEventRequests(query);
 	}
 
