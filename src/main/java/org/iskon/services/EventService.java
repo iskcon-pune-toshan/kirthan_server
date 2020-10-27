@@ -10,6 +10,8 @@ public interface EventService {
 
 	Event addEvent(Event event);
 	
+	Event getEventById(int id);
+
 	List<Event> getEvents(EventSearch event);
 	
 	Boolean processEvent(Event event);

@@ -10,5 +10,7 @@ import java.util.List;
 
 @Repository
 public interface TeamJpaRepository extends JpaRepository<Team, Integer> {
-    List<Team> findAll(Specification<Team> eventSpecification);
+    List<Team> findAll(Specification<Team> eventSpecification);	
+    Team getTeamById(int id);
+
 }

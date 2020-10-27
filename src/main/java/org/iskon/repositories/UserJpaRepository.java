@@ -11,4 +11,6 @@ import java.util.List;
 @Repository
 public interface UserJpaRepository extends JpaRepository<User, Integer> {
     List<User> findAll(Specification<User> eventSpecification);
+    User findById(int id);
+
 }

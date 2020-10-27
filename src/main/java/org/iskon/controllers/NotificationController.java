@@ -232,6 +232,7 @@ public class NotificationController {
 //		return new ResponseEntity<Map<String,Object>>(resp, HttpStatus.FORBIDDEN);
 //	}
 //
+	
 	/** Update the response to a approval seeking notification in the notification_approval table.
 	 * 	Current statuses used : Approved,Rejected,Wait(Waiting for response)
 	 * 	body : {"userId": integer, "response",Boolean} (response: 1 = Approved, 0=Rejected).
@@ -256,32 +257,34 @@ public class NotificationController {
 		if (updatedNtf.getTargetType().equalsIgnoreCase("event")) // this is for event
 		{
 			System.out.println("Called");
-			/*
-			 * Event event = eventService.getEventById(updatedNtf.getTargetId());
-			 * event.setApprovalComments(updatedNtf.getAction());
-			 * event.setApprovalStatus(updatedNtf.getAction()); event.setUpdatedTime(new
-			 * Date()); event.setUpdatedBy( "System"); event.setIsProcessed(true);
-			 * eventService.processEvent(event);
-			 */		}
+			
+			  Event event = eventService.getEventById(updatedNtf.getTargetId());
+			  event.setApprovalComments(updatedNtf.getAction());
+			  event.setApprovalStatus(updatedNtf.getAction()); 
+			  event.setUpdatedTime(new Date()); 
+			  event.setUpdatedBy( "System"); 
+			  event.setIsProcessed(true);
+			  eventService.processEvent(event);
+			}
 		else if (updatedNtf.getTargetType().equalsIgnoreCase("team")) // this is for user
 		{
-			/*
-			 * Team team = teamService.getTeamById(updatedNtf.getTargetId());
-			 * team.setApprovalComments(updatedNtf.getAction());
-			 * team.setApprovalStatus(updatedNtf.getAction()); team.setIsProcessed(true);
-			 * team.setUpdatedBy("System");
-			 * team.setUpdatedTime(updatedNtf.getUpdatedTime());
-			 * teamService.processTeam(team);
-			 */		}
+			
+			  Team team = teamService.getTeamById(updatedNtf.getTargetId());
+			  team.setApprovalComments(updatedNtf.getAction());
+			  team.setApprovalStatus(updatedNtf.getAction()); team.setIsProcessed(true);
+			  team.setUpdatedBy("System");
+			  team.setUpdatedTime(updatedNtf.getUpdatedTime());
+			  teamService.processTeam(team);
+			 		}
 		else if (updatedNtf.getTargetType().equalsIgnoreCase("user")) // this is for team
 		{
-			/*
-			 * User user = userService.getUserById(updatedNtf.getTargetId());
-			 * user.setApprovalComments(updatedNtf.getAction());
-			 * user.setApprovalStatus(updatedNtf.getAction()); user.setIsProcessed(true);
-			 * user.setUpdatedBy("System"); user.setUpdatedTime(new Date());
-			 * userService.processUser(user);
-			 */		}
+			
+			  User user = userService.getUserById(updatedNtf.getTargetId());
+			  user.setApprovalComments(updatedNtf.getAction());
+			  user.setApprovalStatus(updatedNtf.getAction()); user.setIsProcessed(true);
+			  user.setUpdatedBy("System"); user.setUpdatedTime(new Date());
+			  userService.processUser(user);
+			 		}
 
 		if(resp)respCode = HttpStatus.OK;
 		else respCode = HttpStatus.BAD_REQUEST;

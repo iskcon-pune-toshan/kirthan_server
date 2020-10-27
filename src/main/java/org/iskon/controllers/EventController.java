@@ -2,7 +2,9 @@ package org.iskon.controllers;
 
 import org.iskon.models.Event;
 import org.iskon.models.EventSearch;
+import org.iskon.models.NotificationApproval;
 import org.iskon.services.EventService;
+import org.iskon.services.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/event")
@@ -19,6 +22,8 @@ public class EventController {
 	@Autowired
 	private EventService eventService;
 
+	@Autowired
+	private NotificationService ntfService;
 	@GetMapping("/getdummyevent")
 	public List<Event> getDummyEvent() { 		
 		List<Event> eventreqs = new ArrayList<Event>();
@@ -30,8 +35,15 @@ public class EventController {
 	@PutMapping("/addevent")
 	public Event addEvent(@RequestBody Event newEvent) {
 		Event req = eventService.addEvent(newEvent);
-		/*NotificationWrapper nw = new NotificationWrapper();
-		nw.populateEventNotification(req);*/
+		NotificationApproval ntf = new NotificationApproval();
+		ntf.setBroadcastType("multiple");
+		ntf.setCreatedBy(1);
+		ntf.setCreatedTime(newEvent.getCreatedTime());
+		ntf.setMappingTableData("event");
+		ntf.setTargetType("event");
+		ntf.setTargetId(newEvent.getId());
+		ntf.setUuid(UUID.randomUUID());
+		ntfService.saveNotificationAppr(ntf);
 		return req;
 	}
 	
@@ -39,9 +51,15 @@ public class EventController {
 	public Event updateEvent(@RequestBody Event newEvent) {
 		System.out.println(newEvent);
 		Event req = eventService.updateEvent(newEvent);
-		/*NotificationWrapper nw = new NotificationWrapper();
-		nw.populateEventNotification(req);*/
-		
+		NotificationApproval ntf = new NotificationApproval();
+		ntf.setBroadcastType("multiple");
+		ntf.setCreatedBy(1);
+		ntf.setCreatedTime(newEvent.getCreatedTime());
+		ntf.setMappingTableData("event");
+		ntf.setTargetType("event");
+		ntf.setTargetId(newEvent.getId());
+		ntf.setUuid(UUID.randomUUID());
+		ntfService.saveNotificationAppr(ntf);
 		return req;
 	}
 	

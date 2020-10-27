@@ -8,6 +8,26 @@ import java.util.Date;
 @Table(name="event")
 public class Event implements Serializable {
 
+	public void setIsProcessed(Boolean isProcessed) {
+		this.isProcessed = isProcessed;
+	}
+
+	public void setApprovalStatus(String approvalStatus) {
+		this.approvalStatus = approvalStatus;
+	}
+
+	public void setApprovalComments(String approvalComments) {
+		this.approvalComments = approvalComments;
+	}
+
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+
+	public void setUpdatedTime(Date updatedTime) {
+		this.updatedTime = updatedTime;
+	}
+
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private Integer id;

@@ -9,6 +9,30 @@ import java.util.Date;
 @Table(name="user")
 public class User implements Serializable {
 
+	public Boolean getIsProcessed() {
+		return isProcessed;
+	}
+
+	public void setIsProcessed(Boolean isProcessed) {
+		this.isProcessed = isProcessed;
+	}
+
+	public void setApprovalStatus(String approvalStatus) {
+		this.approvalStatus = approvalStatus;
+	}
+
+	public void setApprovalComments(String approvalComments) {
+		this.approvalComments = approvalComments;
+	}
+
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+
+	public void setUpdatedTime(Date updatedTime) {
+		this.updatedTime = updatedTime;
+	}
+
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private Integer id;

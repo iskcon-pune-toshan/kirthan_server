@@ -23,13 +23,18 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserJpaRepository userJpaRepository;
-
+	
 	@Override
 	public User addUser(User event)
 	{
 		return userJpaRepository.save(event);
 	}
-
+	
+	@Override
+	public User getUserById(int id) {
+		return userJpaRepository.findById(id);
+	}
+	
 	@Override
 	public User updateUser(User event)
 	{

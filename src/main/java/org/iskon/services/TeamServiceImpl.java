@@ -22,7 +22,12 @@ public class TeamServiceImpl implements TeamService {
 
 	@Autowired
 	private TeamJpaRepository teamJpaRepository;
-
+	
+	@Override
+	public Team getTeamById(int id) {
+		return teamJpaRepository.getTeamById(id);
+	}
+	
 	@Override
 	public Team addTeam(Team event)
 	{

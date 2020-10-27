@@ -8,6 +8,8 @@ import org.iskon.models.TeamSearch;
 public interface TeamService {
 
     Team addTeam(Team teamRequest);
+    
+    Team getTeamById(int id);
 
 	List<Team> getTeams(TeamSearch query);
 

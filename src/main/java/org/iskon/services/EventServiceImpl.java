@@ -21,6 +21,11 @@ public class EventServiceImpl implements EventService {
 	private EventJpaRepository eventJpaRepository;
 
 	@Override
+	public Event getEventById(int id){
+		return eventJpaRepository.findById(id);
+	}
+	
+	@Override
 	public Event addEvent(Event event)
 	{
 		return eventJpaRepository.save(event);
