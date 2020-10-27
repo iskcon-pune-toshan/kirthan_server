@@ -21,9 +21,7 @@ public class EventController {
 
 	@Autowired
 	private EventService eventService;
-
-	@Autowired
-	private NotificationService ntfService;
+	
 	@GetMapping("/getdummyevent")
 	public List<Event> getDummyEvent() { 		
 		List<Event> eventreqs = new ArrayList<Event>();
@@ -35,31 +33,17 @@ public class EventController {
 	@PutMapping("/addevent")
 	public Event addEvent(@RequestBody Event newEvent) {
 		Event req = eventService.addEvent(newEvent);
-		NotificationApproval ntf = new NotificationApproval();
-		ntf.setBroadcastType("multiple");
-		ntf.setCreatedBy(1);
-		ntf.setCreatedTime(newEvent.getCreatedTime());
-		ntf.setMappingTableData("event");
-		ntf.setTargetType("event");
-		ntf.setTargetId(newEvent.getId());
-		ntf.setUuid(UUID.randomUUID());
-		ntfService.saveNotificationAppr(ntf);
+		NotificationWrapper ntfWrapper = new NotificationWrapper();
+		ntfWrapper.generateNotification(newEvent);
 		return req;
 	}
 	
 	@PutMapping("/updateevent")
 	public Event updateEvent(@RequestBody Event newEvent) {
-		System.out.println(newEvent);
+		System.out.println(newEvent);	
 		Event req = eventService.updateEvent(newEvent);
-		NotificationApproval ntf = new NotificationApproval();
-		ntf.setBroadcastType("multiple");
-		ntf.setCreatedBy(1);
-		ntf.setCreatedTime(newEvent.getCreatedTime());
-		ntf.setMappingTableData("event");
-		ntf.setTargetType("event");
-		ntf.setTargetId(newEvent.getId());
-		ntf.setUuid(UUID.randomUUID());
-		ntfService.saveNotificationAppr(ntf);
+		NotificationWrapper ntfWrapper = new NotificationWrapper();
+		ntfWrapper.generateNotification(newEvent);
 		return req;
 	}
 	
@@ -67,8 +51,6 @@ public class EventController {
 	public void deleteEvent(@RequestBody Event newEvent) {
 		System.out.println(newEvent);
 		eventService.deleteEvent(newEvent);
-		/*NotificationWrapper nw = new NotificationWrapper();
-		nw.populateEventNotification(newEvent);*/
 	}
 	
 	@PutMapping("/getevents")

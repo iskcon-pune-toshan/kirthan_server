@@ -34,8 +34,8 @@ public class UserController {
 	public User addUser(@RequestBody User newUser) {
 		System.out.println(newUser);
 		User req = userService.addUser(newUser);
-//		NotificationWrapper nw = new NotificationWrapper();
-//		nw.populateUserNotification(req);
+		NotificationWrapper nw = new NotificationWrapper();
+		nw.generateNotification(req);
 		return req;
 	}
 
@@ -43,8 +43,8 @@ public class UserController {
 	public User updateUser(@RequestBody User newUser) {
 		System.out.println(newUser);
 		User req = userService.updateUser(newUser);
-//		NotificationWrapper nw = new NotificationWrapper();
-//		nw.populateUserNotification(req);
+		NotificationWrapper nw = new NotificationWrapper();
+		nw.generateNotification(req);
 		return req;
 	}
 
