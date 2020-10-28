@@ -42,8 +42,8 @@ public class NotificationService {
 		Notification ntf = ntfDb.findByNotificationId(ntfId);
 		NotificationApproval ntfAppr = ntfApprovalDb.findByUuid(ntfId);
 		Map<String,Object> result = new HashMap<>();
-		System.out.println(ntf);
-		System.out.println(ntfAppr);
+		//System.out.println(ntf);
+		//System.out.println(ntfAppr);
 		
 		if(ntf == null) 
 			if(ntfAppr == null)
@@ -52,8 +52,8 @@ public class NotificationService {
 				 result.put("ntf_appr", ntfAppr);
 		else
 			 result.put("ntf",ntf);
-		System.out.println("called");
-		System.out.println(result);
+	//	System.out.println("called");
+	//	System.out.println(result);
 		return result;
 	}
 
@@ -62,7 +62,7 @@ public class NotificationService {
 		try {
 			Notification savedNtf = ntfDb.save(ntf);
 			Map<String,String> ntfData= new HashMap<>();
-			System.out.println(userIds);
+			//System.out.println(userIds);
 			for(int userId : userIds) {
 				NotificationTracker ntfTracker = new NotificationTracker(savedNtf.getTargetId(), userId, savedNtf.getUuid().toString());
 				String token = userTokenDb.findDeviceTokenByUserId(userId);
@@ -120,7 +120,7 @@ public class NotificationService {
 			if (ntf.getBroadcastType().equalsIgnoreCase("single")) {
 				List<Integer> ids = new ArrayList<>();
 				ids.add(ntf.getTargetId());
-				System.out.println(ids);
+				//System.out.println(ids);
 				return handleNotification(ntf,ids);
 			}
 			else if (ntf.getTargetType().equals("multiple")) {
@@ -191,7 +191,7 @@ public class NotificationService {
 		ntfToBeUpdated.setUpdatedBy(userId);
 		ntfToBeUpdated.setUpdatedTime(new Date());
 		NotificationApproval updatedNotification = ntfApprovalDb.save(ntfToBeUpdated);
-		System.out.println(updatedNotification);
+		//System.out.println(updatedNotification);
 		Notification newNtf = new Notification();
 		newNtf.setMessage("Your previous request has been "+ updatedNotification.getAction()+" by admin :"+ updatedNotification.getTargetId());
 		newNtf.setTargetType(updatedNotification.getTargetType());
@@ -202,7 +202,7 @@ public class NotificationService {
 		newNtf.setUpdatedTime(new Date());
 		newNtf.setCreatedBy(updatedNotification.getUpdatedBy());
 		newNtf.setCreatedTime(new Date());
-		System.out.println(newNtf);
+		//System.out.println(newNtf);
 		newNtf.setUuid(UUID.randomUUID());
 		newNtf.setTitle("Status Update");
 		List<Integer> userIds = new ArrayList<Integer>();
@@ -210,29 +210,7 @@ public class NotificationService {
 		if(!this.handleNotification(newNtf, userIds))
 			System.out.println("Couldnt send message");
 		return updatedNotification;
-		//updatedNotification.setTitle(title);
-		//updatedNotification.setCreatedBy(createdBy);
-
-//		updatedNotification.setType(updatedNotification.getT);
-		//updatedNotification.setUpdateTime(updateTime);
-		//updatedNotification.setCreateTime(createTime);
-		//updatedNotification.setId(id);
-				//updatedNotification.setUuid(uuid);
-			//updatedNotification.setMessage(data);
-			//updatedNotification.setAction(action);
-			//updatedNotification.setUpdatedBy(updatedBy);
-		//newNtf.put("message","Your previous request has been "+ updatedNotification.getAction()+" by admin :"+metaData.get("userId"));
-
-		//newNtf.put("targetType",updatedNotification.getTargetType());
-		//newNtf.put("targetId",updatedNotification.getTargetId());
-		//metaData.put("broadcastType","Single");
 		
-		//newNtf.put("userId",metaData.get("userId"));
-		//updatedNotification.setMappingTableData("none");
-		//newNtf.put("mappingTableData","none");
-	
-		//NotificationModel ntf = new NotificationModel(newNtf);
-		//Notification ntf = new Notification(newNtf);
 	
 	}
 }
