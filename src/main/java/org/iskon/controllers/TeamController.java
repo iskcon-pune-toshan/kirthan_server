@@ -19,12 +19,14 @@ public class TeamController {
 	@Autowired
 	private TeamService teamService;
 
+	@Autowired
+	private NotificationWrapper nw ;
 
 	@RequestMapping(value = "/addteam", method = RequestMethod.PUT)
 	public Team addTeam(@RequestBody Team newTeam) {
 		Team req = teamService.addTeam(newTeam);
 
-		NotificationWrapper nw = new NotificationWrapper();
+		//NotificationWrapper nw = new NotificationWrapper();
 		nw.generateNotification(req);
 		return req;
 	}
@@ -34,7 +36,7 @@ public class TeamController {
 		System.out.println(newTeam);
 		Team req = teamService.updateTeam(newTeam);
 
-		NotificationWrapper nw = new NotificationWrapper();
+//		NotificationWrapper nw = new NotificationWrapper();
 		nw.generateNotification(req);
 		return req;
 	}

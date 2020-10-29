@@ -8,9 +8,9 @@ import org.iskon.models.Team;
 import org.iskon.models.User;
 import org.iskon.services.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-
-
+@Component
 public class NotificationWrapper {
 	
 	@Autowired 
