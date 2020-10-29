@@ -5,21 +5,23 @@ import java.util.UUID;
 import org.iskon.models.Event;
 import org.iskon.models.NotificationApproval;
 import org.iskon.models.Team;
-import org.iskon.models.User;
 import org.iskon.services.NotificationService;
+import org.iskon.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-
-
-public class NotificationWrapper {
+@Component
+public class NotificationWrapper{
 	
-	@Autowired 
+	@Autowired
 	NotificationService ntfService;
+	
 	
 	public boolean generateNotification(Event event) {
 		NotificationApproval ntf = new NotificationApproval();
 		ntf.setBroadcastType("single");
 		ntf.setCreatedBy(1);
+		ntf.setMessage("New Event Created!Need Approval");
 		ntf.setCreatedTime(event.getCreatedTime());
 		ntf.setMappingTableData("event");
 		ntf.setTargetType("event");
@@ -36,6 +38,8 @@ public class NotificationWrapper {
 		ntf.setMappingTableData("event");
 		ntf.setTargetType("event");
 		ntf.setTargetId(team.getId());
+		ntf.setMessage("New Event Created!Need Approval");
+
 		ntf.setUuid(UUID.randomUUID());
 		return ntfService.saveNotificationAppr(ntf);
 	}
@@ -48,6 +52,8 @@ public class NotificationWrapper {
 		ntf.setMappingTableData("event");
 		ntf.setTargetType("event");
 		ntf.setTargetId(user.getId());
+		ntf.setMessage("New Event Created!Need Approval");
+
 		ntf.setUuid(UUID.randomUUID());
 		return ntfService.saveNotificationAppr(ntf);
 	}
