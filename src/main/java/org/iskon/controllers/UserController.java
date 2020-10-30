@@ -9,6 +9,7 @@ import java.util.Map;
 import org.iskon.models.User;
 import org.iskon.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,8 +22,12 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
+
 	@Autowired
 	private NotificationWrapper nw;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@RequestMapping(value = "/getdummyuser", method = RequestMethod.GET)
 	public List<User> getDummyUser() {
@@ -35,9 +40,10 @@ public class UserController {
 	@RequestMapping(value = "/adduser", method = RequestMethod.PUT)
 	public User addUser(@RequestBody User newUser) {
 		System.out.println(newUser);
+		newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+		System.out.println("User after encrypted password :" + newUser.getPassword());
 		User req = userService.addUser(newUser);
-		//NotificationWrapper nw = new NotificationWrapper();
-		nw.generateNotification(req);
+//		NotificationWrapper nw = new NotificationWrapper();
 		return req;
 	}
 
