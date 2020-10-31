@@ -35,15 +35,12 @@ import org.iskon.models.TeamUserSearch;
 			public Predicate toPredicate(Root<TeamUser> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
 				List<Predicate> predicates = new ArrayList<>();
 
-				if(teamusersearch.getId()!=null)
-					predicates.add(root.get("id").in(teamusersearch.getId()));
+				
 
 				
 				if(teamusersearch.getCreatedBy() != null)
 					predicates.add(root.get("createdBy").in(teamusersearch.getCreatedBy()));
 
-				if(teamusersearch.getTeamId()!=null)
-					predicates.add(root.get("teamId").in(teamusersearch.getTeamId()));
 
 				
 
