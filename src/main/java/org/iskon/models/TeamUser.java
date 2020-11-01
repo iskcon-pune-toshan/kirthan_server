@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@Table(name="team_user_mapping")
+@Table(name="team_user")
 public class TeamUser implements Serializable {
 
 	@Id
@@ -29,13 +29,28 @@ public class TeamUser implements Serializable {
 
 	@Column(name = "updated_time")
 	private Date updatedTime;
+	
+	@Transient
+	private String teamName;
+	
+	@Transient
+	private String userName;
+
+	
+	public String getTeamName() {
+		return teamName;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
 
 	private TeamUser(){
 
 	}
 
 	private TeamUser(Integer id, Integer userId, Integer teamId, String createdBy, String updatedBy,
-					 Date createdTime, Date updatedTime) {
+					 Date createdTime, Date updatedTime, String teamName, String userName) {
 		this.id = id;
 		this.userId = userId;
 		this.teamId = teamId;
@@ -43,11 +58,13 @@ public class TeamUser implements Serializable {
 		this.updatedBy = updatedBy;
 		this.createdTime = createdTime;
 		this.updatedTime = updatedTime;
+		this.teamName = teamName;
+		this.userName = userName;
 	}
 
 	public static TeamUser buildTeamUser(Integer id, Integer userId, Integer teamId, String createdBy, String updatedBy,
-										 Date createdTime, Date updatedTime) {
-		return new TeamUser(id, userId, teamId, createdBy, updatedBy, createdTime, updatedTime);
+										 Date createdTime, Date updatedTime, String teamName, String userName) {
+		return new TeamUser(id, userId, teamId, createdBy, updatedBy, createdTime, updatedTime, teamName, userName);
 	}
 
 	public Integer getId() {
@@ -77,4 +94,14 @@ public class TeamUser implements Serializable {
 	public Date getUpdatedTime() {
 		return updatedTime;
 	}
+
+	public void setTeamName(String teamName) {
+		this.teamName = teamName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	
+	
 }

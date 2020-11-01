@@ -12,5 +12,7 @@ public interface TeamUserService {
 	void deleteTeamUser(TeamUser newTeamUserMapping);
 
 	List<TeamUser> getTeamUsers(TeamUserSearch query);
+	
+	List<TeamUser> getTeamUsersWithDescription();
 
 }
