@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.iskon.models.EventTeamUser;
 import org.iskon.models.EventTeamUserSearch;
+import org.iskon.models.TeamUser;
 
 public interface EventTeamUserService {
 
@@ -13,5 +14,7 @@ public interface EventTeamUserService {
 	void deleteEventTeamUser(EventTeamUser newEventTeamUserMapping);
 
 	List<EventTeamUser> getEventTeamUsers(EventTeamUserSearch query);
+	
+	List<EventTeamUser> getEventTeamUsersWithDescription();
 
 }

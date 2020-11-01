@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@Table(name="event_user_mapping")
+@Table(name = "event_team_user")
 public class EventTeamUser implements Serializable {
 
 	@Id
@@ -33,12 +33,21 @@ public class EventTeamUser implements Serializable {
 	@Column(name = "updated_time")
 	private Date updatedTime;
 
+	@Transient
+	private String eventTitle;
+
+	@Transient
+	private String teamName;
+
+	@Transient
+	private String userName;
+
 	private EventTeamUser() {
 
 	}
 
 	private EventTeamUser(Integer id, Integer eventId, Integer teamId, Integer userId, String createdBy,
-						  String updatedBy, Date createdTime, Date updatedTime) {
+			String updatedBy, Date createdTime, Date updatedTime) {
 		this.id = id;
 		this.eventId = eventId;
 		this.teamId = teamId;
@@ -49,9 +58,23 @@ public class EventTeamUser implements Serializable {
 		this.updatedTime = updatedTime;
 	}
 
+	public EventTeamUser(Integer id, Integer eventId, Integer teamId, Integer userId, String createdBy,
+			String updatedBy, Date createdTime, Date updatedTime, String teamName, String userName, String eventTitle) {
+		this.id = id;
+		this.eventId = eventId;
+		this.teamId = teamId;
+		this.userId = userId;
+		this.createdBy = createdBy;
+		this.updatedBy = updatedBy;
+		this.createdTime = createdTime;
+		this.updatedTime = updatedTime;
+		this.eventTitle = eventTitle;
+		this.teamName = teamName;
+		this.userName = userName;
+	}
+
 	public static EventTeamUser buildEventTeamUser(Integer id, Integer eventId, Integer teamId, Integer userId,
-												   String createdBy, String updatedBy, Date createdTime,
-												   Date updatedTime) {
+			String createdBy, String updatedBy, Date createdTime, Date updatedTime) {
 		return new EventTeamUser(id, eventId, teamId, userId, createdBy, updatedBy, createdTime, updatedTime);
 	}
 
@@ -86,6 +109,18 @@ public class EventTeamUser implements Serializable {
 	public Date getUpdatedTime() {
 		return updatedTime;
 	}
+
+	public String getEventTitle() {
+		return eventTitle;
+	}
+
+	public String getTeamName() {
+		return teamName;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+	
+	
 }
-
-
