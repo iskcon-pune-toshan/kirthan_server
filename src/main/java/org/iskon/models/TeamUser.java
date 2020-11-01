@@ -36,21 +36,25 @@ public class TeamUser implements Serializable {
 	@Transient
 	private String userName;
 
-	
-	public String getTeamName() {
-		return teamName;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
 
 	private TeamUser(){
 
 	}
 
 	private TeamUser(Integer id, Integer userId, Integer teamId, String createdBy, String updatedBy,
-					 Date createdTime, Date updatedTime, String teamName, String userName) {
+					 Date createdTime, Date updatedTime) {
+		this.id = id;
+		this.userId = userId;
+		this.teamId = teamId;
+		this.createdBy = createdBy;
+		this.updatedBy = updatedBy;
+		this.createdTime = createdTime;
+		this.updatedTime = updatedTime;
+
+	}
+
+	public TeamUser(Integer id, Integer userId, Integer teamId, String createdBy, String updatedBy,
+					 Date createdTime, Date updatedTime, String teamName, String userName ) {
 		this.id = id;
 		this.userId = userId;
 		this.teamId = teamId;
@@ -60,11 +64,12 @@ public class TeamUser implements Serializable {
 		this.updatedTime = updatedTime;
 		this.teamName = teamName;
 		this.userName = userName;
+
 	}
 
 	public static TeamUser buildTeamUser(Integer id, Integer userId, Integer teamId, String createdBy, String updatedBy,
-										 Date createdTime, Date updatedTime, String teamName, String userName) {
-		return new TeamUser(id, userId, teamId, createdBy, updatedBy, createdTime, updatedTime, teamName, userName);
+										 Date createdTime, Date updatedTime) {
+		return new TeamUser(id, userId, teamId, createdBy, updatedBy, createdTime, updatedTime);
 	}
 
 	public Integer getId() {
@@ -95,13 +100,13 @@ public class TeamUser implements Serializable {
 		return updatedTime;
 	}
 
-	public void setTeamName(String teamName) {
-		this.teamName = teamName;
+	public String getTeamName() {
+		return teamName;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public String getUserName() {
+		return userName;
 	}
-	
-	
+
+
 }
