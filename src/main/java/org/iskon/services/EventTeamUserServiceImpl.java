@@ -21,15 +21,15 @@ public class EventTeamUserServiceImpl implements EventTeamUserService {
 	private EventTeamUserJpaRepository eventteamuserJpaRepository;
 
 	@Override
-	public EventTeamUser addEventTeamUser(EventTeamUser event)
+	public List<EventTeamUser> addEventTeamUser(List<EventTeamUser> listEventTeamUser)
 	{
-		return eventteamuserJpaRepository.save(event);
+		return eventteamuserJpaRepository.saveAll(listEventTeamUser);
 	}
 
 	@Override
-	public void deleteEventTeamUser(EventTeamUser event)
+	public void deleteEventTeamUser(List<EventTeamUser> listEventTeamUser)
 	{
-		eventteamuserJpaRepository.delete(event);
+		eventteamuserJpaRepository.deleteAll(listEventTeamUser);
 	}
 
 	@Override

@@ -24,14 +24,14 @@ public class EventTeamUserController {
 	private EventTeamUserService eventTeamUserMappingService;
 
 	@RequestMapping(value = "/addeventteamuser", method = RequestMethod.PUT)
-	public EventTeamUser addEventTeamUser(@RequestBody EventTeamUser listEventTeamUserMapping) {
+	public List<EventTeamUser> addEventTeamUser(@RequestBody List<EventTeamUser> listEventTeamUser) {
 //		List<EventTeamUser> listNewEventTeamUserMapping = new ArrayList<EventTeamUser>();
 //		for (EventTeamUser newEventTeamUserMapping : listEventTeamUserMapping) {
 //			System.out.println(newEventTeamUserMapping);
 //			EventTeamUser req = eventTeamUserMappingService.addEventTeamUser(newEventTeamUserMapping);
 //			listNewEventTeamUserMapping.add(req);
 //		}
-		EventTeamUser req = eventTeamUserMappingService.addEventTeamUser(listEventTeamUserMapping);
+		List<EventTeamUser> req = eventTeamUserMappingService.addEventTeamUser(listEventTeamUser);
 		return req;
 	}
 
@@ -44,8 +44,10 @@ public class EventTeamUserController {
 
 
 	@RequestMapping(value = "/deleteeventteamuser", method = RequestMethod.PUT)
-	public void deleteEventTeamUser(@RequestBody EventTeamUser listEventTeamUserMapping) {
-		eventTeamUserMappingService.deleteEventTeamUser(listEventTeamUserMapping);
+	public List<EventTeamUser> deleteEventTeamUser(@RequestBody List<EventTeamUser> listEventTeamUser) {
+		//System.out.println("Delete Event Team: "+listEventTeamUser.size());
+		eventTeamUserMappingService.deleteEventTeamUser(listEventTeamUser);
+		return listEventTeamUser;
 		//List<EventTeamUser> listDeleteEventTeamUserMapping = new ArrayList<EventTeamUser>();
 //		for (EventTeamUser deleteEventTeamUserMapping : listEventTeamUserMapping) {
 //			System.out.println(deleteEventTeamUserMapping);
