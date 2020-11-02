@@ -32,29 +32,36 @@ public class TeamUserController {
 	}
 */
 	@RequestMapping(value = "/addteamuser", method = RequestMethod.PUT)
-	public TeamUser addTeamUser(@RequestBody TeamUser listTeamUserMapping) {
-//		List<TeamUser> listNewTeamUserMapping = new ArrayList<TeamUser>();
-//		for (TeamUser newTeamUserMapping : listTeamUserMapping) {
-//			System.out.println(newTeamUserMapping);
-//			TeamUser req = teamUserMappingService.addTeamUser(newTeamUserMapping);
-//			listNewTeamUserMapping.add(req);
-//		}
-		TeamUser tr=teamUserMappingService.addTeamUser(listTeamUserMapping);
-		return tr;
-
+	public List<TeamUser> addTeamUser(@RequestBody List<TeamUser> listTeamUser) {
+		List<TeamUser> res = teamUserMappingService.addTeamUser(listTeamUser);
+		
+		return res;
+		
+		/*
+		 * List<TeamUser> listNewTeamUserMapping = new ArrayList<TeamUser>(); for
+		 * (TeamUser newTeamUserMapping : listTeamUserMapping) {
+		 * System.out.println(newTeamUserMapping); 
+		 * TeamUser req =
+		 * teamUserMappingService.addTeamUser(newTeamUserMapping);
+		 * listNewTeamUserMapping.add(req); } //TeamUser
+		 * tr=teamUserMappingService.addTeamUser(listTeamUserMapping); return
+		 * listNewTeamUserMapping;
+		 */
 	}
 
 	@RequestMapping(value = "/deleteteamuser", method = RequestMethod.PUT)
-	public void deleteTeamUser(@RequestBody TeamUser listTeamUserMapping) {
-		teamUserMappingService.deleteTeamUser(listTeamUserMapping);
-//		List<TeamUser> listDeleteTeamUserMapping = new ArrayList<TeamUser>();
-//		for (TeamUser deleteTeamUserMapping : listTeamUserMapping) {
-//			System.out.println(deleteTeamUserMapping);
-//			TeamUser req = teamUserMappingService.deleteTeamUser(deleteTeamUserMapping);
-//			listDeleteTeamUserMapping.add(req);
-//		}
-//		return listDeleteTeamUserMapping;
-	}
+	public List<TeamUser> deleteTeamUser(@RequestBody List<TeamUser> listTeamUser) {
+		 teamUserMappingService.deleteTeamUser(listTeamUser);
+		 
+		 return listTeamUser;
+		/*
+		 * //teamUserMappingService.deleteTeamUser(listTeamUserMapping); List<TeamUser>
+		 * listDeleteTeamUserMapping = new ArrayList<TeamUser>(); for (TeamUser
+		 * deleteTeamUserMapping : listTeamUserMapping) {
+		 * System.out.println(deleteTeamUserMapping);
+		 * teamUserMappingService.deleteTeamUser(deleteTeamUserMapping);
+		 * //listDeleteTeamUserMapping.add(req); } return listTeamUserMapping;
+		 */	}
 
 	@RequestMapping(value = "/getteamusers", method = RequestMethod.PUT)
 	public List<TeamUser> getTeamUsers(@RequestBody TeamUserSearch queryParams) {

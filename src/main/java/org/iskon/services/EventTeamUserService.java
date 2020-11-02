@@ -9,9 +9,9 @@ import org.iskon.models.TeamUser;
 
 public interface EventTeamUserService {
 
-	EventTeamUser addEventTeamUser(EventTeamUser newEventTeamUserMapping);
+	List<EventTeamUser> addEventTeamUser(List<EventTeamUser> listEventTeamUser);
 
-	void deleteEventTeamUser(EventTeamUser newEventTeamUserMapping);
+	void deleteEventTeamUser(List<EventTeamUser> listEventTeamUser);
 
 	List<EventTeamUser> getEventTeamUsers(EventTeamUserSearch query);
 	

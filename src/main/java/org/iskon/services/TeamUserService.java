@@ -7,9 +7,9 @@ import org.iskon.models.TeamUser;
 
 public interface TeamUserService {
 
-	TeamUser addTeamUser(TeamUser newTeamUserMapping);
+	List<TeamUser> addTeamUser(List<TeamUser> listTeamUser);
 
-	void deleteTeamUser(TeamUser newTeamUserMapping);
+	void deleteTeamUser(List<TeamUser> newTeamUserMapping);
 
 	List<TeamUser> getTeamUsers(TeamUserSearch query);
 	

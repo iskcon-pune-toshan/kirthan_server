@@ -34,7 +34,7 @@ public class EventTeamUser implements Serializable {
 	private Date updatedTime;
 
 	@Transient
-	private String eventTitle;
+	private String eventName;
 
 	@Transient
 	private String teamName;
@@ -59,7 +59,7 @@ public class EventTeamUser implements Serializable {
 	}
 
 	public EventTeamUser(Integer id, Integer eventId, Integer teamId, Integer userId, String createdBy,
-			String updatedBy, Date createdTime, Date updatedTime, String teamName, String userName, String eventTitle) {
+			String updatedBy, Date createdTime, Date updatedTime, String teamName, String userName, String eventName) {
 		this.id = id;
 		this.eventId = eventId;
 		this.teamId = teamId;
@@ -68,7 +68,7 @@ public class EventTeamUser implements Serializable {
 		this.updatedBy = updatedBy;
 		this.createdTime = createdTime;
 		this.updatedTime = updatedTime;
-		this.eventTitle = eventTitle;
+		this.eventName = eventName;
 		this.teamName = teamName;
 		this.userName = userName;
 	}
@@ -110,8 +110,9 @@ public class EventTeamUser implements Serializable {
 		return updatedTime;
 	}
 
-	public String getEventTitle() {
-		return eventTitle;
+
+	public String getEventName() {
+		return eventName;
 	}
 
 	public String getTeamName() {
