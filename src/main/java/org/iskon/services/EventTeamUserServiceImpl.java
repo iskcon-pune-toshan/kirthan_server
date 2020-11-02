@@ -53,6 +53,11 @@ public class EventTeamUserServiceImpl implements EventTeamUserService {
 			}
 		});
 	}
-
+	
+	@Override
+	public List<EventTeamUser> getEventTeamUsersWithDescription()
+	{
+		return eventteamuserJpaRepository.findAllWithDescription();
+	}
 }
 

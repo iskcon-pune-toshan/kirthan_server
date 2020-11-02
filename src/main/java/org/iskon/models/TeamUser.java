@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@Table(name="team_user_mapping")
+@Table(name="team_user")
 public class TeamUser implements Serializable {
 
 	@Id
@@ -29,6 +29,13 @@ public class TeamUser implements Serializable {
 
 	@Column(name = "updated_time")
 	private Date updatedTime;
+	
+	@Transient
+	private String teamName;
+	
+	@Transient
+	private String userName;
+
 
 	private TeamUser(){
 
@@ -43,6 +50,21 @@ public class TeamUser implements Serializable {
 		this.updatedBy = updatedBy;
 		this.createdTime = createdTime;
 		this.updatedTime = updatedTime;
+
+	}
+
+	public TeamUser(Integer id, Integer userId, Integer teamId, String createdBy, String updatedBy,
+					 Date createdTime, Date updatedTime, String teamName, String userName ) {
+		this.id = id;
+		this.userId = userId;
+		this.teamId = teamId;
+		this.createdBy = createdBy;
+		this.updatedBy = updatedBy;
+		this.createdTime = createdTime;
+		this.updatedTime = updatedTime;
+		this.teamName = teamName;
+		this.userName = userName;
+
 	}
 
 	public static TeamUser buildTeamUser(Integer id, Integer userId, Integer teamId, String createdBy, String updatedBy,
@@ -77,4 +99,14 @@ public class TeamUser implements Serializable {
 	public Date getUpdatedTime() {
 		return updatedTime;
 	}
+
+	public String getTeamName() {
+		return teamName;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+
 }

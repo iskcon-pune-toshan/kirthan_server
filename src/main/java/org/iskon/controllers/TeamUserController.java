@@ -62,7 +62,14 @@ public class TeamUserController {
 		List<TeamUser> req =teamUserMappingService.getTeamUsers(queryParams);
 		return req;
 	}
-	
+
+	@RequestMapping(value = "/getteamuserswithdescription", method = RequestMethod.PUT)
+	public List<TeamUser> getTeamUsersWithDescription() {
+		//System.out.println("queryParams: "+queryParams);
+		List<TeamUser> req =teamUserMappingService.getTeamUsersWithDescription();
+		return req;
+	}
+
 
 
 }

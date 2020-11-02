@@ -42,6 +42,50 @@ import org.iskon.models.TeamUserSearch;
 					predicates.add(root.get("createdBy").in(teamusersearch.getCreatedBy()));
 
 
+				/*
+				 * if(teamusersearch.getId()!=null)
+				 * predicates.add(root.get("id").in(teamusersearch.getId()));
+				 * 
+				 * 
+				 * if(teamusersearch.getCreatedBy() != null)
+				 * predicates.add(root.get("createdBy").in(teamusersearch.getCreatedBy()));
+				 * 
+				 * if(teamusersearch.getTeamId()!=null)
+				 * predicates.add(root.get("teamId").in(teamusersearch.getTeamId()));
+				 */
+				/*
+				 * if(teamusersearch.getId()!=null)
+				 * predicates.add(root.get("id").in(teamusersearch.getId()));
+				 * 
+				 * 
+				 * if(teamusersearch.getCreatedBy() != null)
+				 * predicates.add(root.get("createdBy").in(teamusersearch.getCreatedBy()));
+				 * 
+				 * if(teamusersearch.getTeamId()!=null)
+				 * predicates.add(root.get("teamId").in(teamusersearch.getTeamId()));
+				 */
+				/*
+				 * if(teamusersearch.getId()!=null)
+				 * predicates.add(root.get("id").in(teamusersearch.getId()));
+				 * 
+				 * 
+				 * if(teamusersearch.getCreatedBy() != null)
+				 * predicates.add(root.get("createdBy").in(teamusersearch.getCreatedBy()));
+				 * 
+				 * if(teamusersearch.getTeamId()!=null)
+				 * predicates.add(root.get("teamId").in(teamusersearch.getTeamId()));
+				 */
+				/*
+				 * if(teamusersearch.getId()!=null)
+				 * predicates.add(root.get("id").in(teamusersearch.getId()));
+				 * 
+				 * 
+				 * if(teamusersearch.getCreatedBy() != null)
+				 * predicates.add(root.get("createdBy").in(teamusersearch.getCreatedBy()));
+				 * 
+				 * if(teamusersearch.getTeamId()!=null)
+				 * predicates.add(root.get("teamId").in(teamusersearch.getTeamId()));
+				 */
 				
 
 				return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
@@ -49,5 +93,9 @@ import org.iskon.models.TeamUserSearch;
 		});
 	  }
   
+  @Override 
+  public List<TeamUser> getTeamUsersWithDescription() {
+	  return teamuserJpaRepository.findAllWithDescription();
+	 }
  }
  

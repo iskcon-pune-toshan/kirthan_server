@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.iskon.models.EventTeamUserSearch;
+import org.iskon.models.TeamUser;
 
 
 @RestController
@@ -53,5 +54,13 @@ public class EventTeamUserController {
 //		}
 		//return listDeleteEventTeamUserMapping;
 	}
+	
+	@RequestMapping(value = "/geteventteamuserswithdescription", method = RequestMethod.PUT)
+	public List<EventTeamUser> getEventTeamUsersWithDescription() {
+		//System.out.println("queryParams: "+queryParams);
+		List<EventTeamUser> req =eventTeamUserMappingService.getEventTeamUsersWithDescription();
+		return req;
+	}
+	
 
 }
