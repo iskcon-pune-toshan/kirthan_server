@@ -20,7 +20,7 @@ public class NotificationWrapper{
 	public boolean generateNotification(Event event) {
 		NotificationApproval ntf = new NotificationApproval();
 		ntf.setBroadcastType("single");
-		ntf.setCreatedBy(1);
+		ntf.setCreatedBy("SYSTEM");
 		ntf.setMessage("New Event Created!Need Approval");
 		ntf.setCreatedTime(event.getCreatedTime());
 		ntf.setMappingTableData("event");
@@ -33,7 +33,7 @@ public class NotificationWrapper{
 	public boolean generateNotification(Team team) {
 		NotificationApproval ntf = new NotificationApproval();
 		ntf.setBroadcastType("single");
-		ntf.setCreatedBy(1);
+		ntf.setCreatedBy("SYSTEM");
 		ntf.setMessage("New Team Created! Needed Approval");
 		ntf.setCreatedTime(team.getCreatedTime());
 		ntf.setMappingTableData("team");
@@ -47,7 +47,7 @@ public class NotificationWrapper{
 	public boolean generateNotification(User user) {
 		NotificationApproval ntf = new NotificationApproval();
 		ntf.setBroadcastType("single");
-		ntf.setCreatedBy(1);
+		ntf.setCreatedBy("SYSTEM");
 		ntf.setCreatedTime(user.getCreatedTime());
 		ntf.setMappingTableData("user");
 		ntf.setTargetType("user");
