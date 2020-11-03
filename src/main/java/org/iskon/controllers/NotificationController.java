@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import org.iskon.authentication.JwtUtil;
 import org.iskon.models.Event;
 import org.iskon.models.Notification;
 import org.iskon.models.NotificationApproval;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/{userId}/notifications")
@@ -53,8 +55,9 @@ public class NotificationController {
 	 */
 	@GetMapping()
 	public ResponseEntity<Map<String,Object>> fetchNotificaion(
-
-		@PathVariable("userId") String userId) throws HttpException {
+		HttpServletRequest request,
+			@PathVariable("userId") String userId) throws HttpException {
+		System.out.println(request.getAttribute("user"));
 		Map<String,Object> response = new HashMap<>();
 		System.out.println("This was called");
 		HttpStatus respCode;
