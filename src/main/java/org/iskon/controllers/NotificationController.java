@@ -100,7 +100,7 @@ public class NotificationController {
 		try {
 			//Notification data = new Notification(body);
 			//Notification data = new Notification();
-			int userId = data.getCreatedBy();
+			String userId = data.getCreatedBy();
 			int targetId = data.getTargetId();
 			data.setUuid(UUID.randomUUID());
 			data.setCreatedTime(new Date());
@@ -134,7 +134,7 @@ public class NotificationController {
 	@PostMapping(path="/getApproval")
 	public ResponseEntity<Map<String,Object>> saveNotificationAppr(
 			@RequestBody NotificationApproval ntfa,
-			@PathVariable("userId") int userId){
+			@PathVariable("userId") String userId){
 	//public ResponseEntity<Map<String,Object>> saveNotificationAppr(@RequestBody Map<String,Object> body){
 
 		Map<String, Object> response = new HashMap<>();
@@ -245,7 +245,7 @@ public class NotificationController {
 	 */
 	@PutMapping(path="/{ntfId}")
 	public ResponseEntity<Map<String,Object>> updateNotificationById(
-			@PathVariable("userId") int userId,
+			@PathVariable("userId") String userId,
 			@RequestBody Map<String,Object> body,
 			@PathVariable("ntfId") String ntfId){
 		System.out.println("Update Called");

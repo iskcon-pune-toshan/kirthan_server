@@ -184,7 +184,7 @@ public class NotificationService {
 	}
 
 	@Transactional
-	public NotificationApproval updateApproval(String status,String ntfId,int userId) {
+	public NotificationApproval updateApproval(String status,String ntfId,String userId) {
 
 		NotificationApproval ntfToBeUpdated = ntfApprovalDb.findByUuid(ntfId);
 		ntfToBeUpdated.setAction(status);
@@ -196,7 +196,9 @@ public class NotificationService {
 		newNtf.setMessage("Your previous request has been "+ updatedNotification.getAction()+" by admin :"+ updatedNotification.getTargetId());
 		newNtf.setTargetType(updatedNotification.getTargetType());
 		newNtf.setBroadcastType("single");
-		newNtf.setTargetId(updatedNotification.getCreatedBy());
+		// TO DO
+		//newNtf.setTargetId(updatedNotification.getCreatedBy());
+		newNtf.setTargetId(1);
 		newNtf.setMappingTableData("none");
 		newNtf.setUpdatedBy(updatedNotification.getUpdatedBy());
 		newNtf.setUpdatedTime(new Date());

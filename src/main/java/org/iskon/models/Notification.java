@@ -44,10 +44,10 @@ public class Notification implements Serializable {
 	private String title;
 
 	@Column(name = "created_by")
-	private int createdBy;
+	private String createdBy;
 
 	@Column(name = "updated_by")
-	private int updatedBy;
+	private String updatedBy;
 
 	@Column(name = "created_time")
 	private Date createdTime;
@@ -119,19 +119,20 @@ public class Notification implements Serializable {
 		this.title = title;
 	}
 
-	public int getCreatedBy() {
+
+	public String getCreatedBy() {
 		return createdBy;
 	}
 
-	public int getUpdatedBy() {
-		return updatedBy;
-	}
-
-	public void setCreatedBy(int createdBy) {
+	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
 	}
 
-	public void setUpdatedBy(int updatedBy) {
+	public String getUpdatedBy() {
+		return updatedBy;
+	}
+
+	public void setUpdatedBy(String updatedBy) {
 		this.updatedBy = updatedBy;
 	}
 
