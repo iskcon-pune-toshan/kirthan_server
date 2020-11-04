@@ -23,10 +23,10 @@ public class UserToken implements Serializable {
 	private String firebaseUid;
 
 	@Column(name = "created_by")
-	private int createdBy;
+	private String createdBy;
 
 	@Column(name = "updated_by")
-	private int updatedBy;
+	private String updatedBy;
 
 	@Column(name = "created_time")
 	private Date createdTime;
@@ -38,8 +38,8 @@ public class UserToken implements Serializable {
 
 	}
 
-	private UserToken(Integer id, Integer userId, String deviceToken, String firebaseUid, int createdBy,
-					  int updatedBy, Date createdTime, Date updatedTime) {
+	private UserToken(Integer id, Integer userId, String deviceToken, String firebaseUid, String createdBy,
+					  String updatedBy, Date createdTime, Date updatedTime) {
 		this.id = id;
 		this.userId = userId;
 		this.deviceToken = deviceToken;
@@ -51,7 +51,7 @@ public class UserToken implements Serializable {
 	}
 
 	public static UserToken buildUserToken(Integer id, Integer userId, String deviceToken, String firebaseUid,
-										   int createdBy, int updatedBy, Date Date1,
+										   String createdBy, String updatedBy, Date Date1,
 										   Date localDate2) {
 		return new UserToken(id, userId, deviceToken, firebaseUid, createdBy, updatedBy, Date1, localDate2);
 	}
@@ -72,11 +72,11 @@ public class UserToken implements Serializable {
 		return firebaseUid;
 	}
 
-	public int getCreatedBy() {
+	public String getCreatedBy() {
 		return createdBy;
 	}
 
-	public int getUpdatedBy() {
+	public String getUpdatedBy() {
 		return updatedBy;
 	}
 

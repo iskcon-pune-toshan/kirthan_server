@@ -3,7 +3,10 @@ package org.iskon.controllers;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.iskon.authentication.JwtUtil;
 import org.iskon.models.Event;
@@ -23,10 +26,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/{userId}/notifications")
@@ -53,17 +57,22 @@ public class NotificationController {
 	 * @throws HttpException User-Built exception that generates an errorCode corresponding to the httpStatusCode.
 	 *
 	 */
+	private String getJwt(String authorizationHeader) {
+		JwtUtil jwtUtil = new JwtUtil();
+		String jwt = authorizationHeader.replace("Bearer ", "");
+		return jwtUtil.extractUsername(jwt);
+		
+	}
 	@GetMapping()
-	public ResponseEntity<Map<String,Object>> fetchNotificaion(
-		HttpServletRequest request,
-			@PathVariable("userId") String userId) throws HttpException {
-		System.out.println(request.getAttribute("user"));
+	public ResponseEntity<Map<String,Object>> fetchNotificaion(HttpServletRequest request) throws HttpException {
+		String jwtUsername = getJwt(request.getHeader("Authorization"));
+		System.out.println(jwtUsername);
 		Map<String,Object> response = new HashMap<>();
 		System.out.println("This was called");
 		HttpStatus respCode;
 		try {
 		
-			response = ntfs.getAll(Integer.parseInt(userId));
+			response = ntfs.getAll( jwtUsername );
 			respCode = HttpStatus.OK;
 		}
 		catch(RuntimeException err) {
@@ -94,23 +103,19 @@ public class NotificationController {
 	 */
 	@PostMapping
 	public ResponseEntity<Map<String, Object>> saveNotification(
-				@RequestBody Notification data) throws HttpException {
+			@RequestBody Notification data,@RequestHeader("Authorization") String authHeader) throws HttpException {
+		String username = getJwt(authHeader);
 		Map<String, Object> response = new HashMap<>();
 		HttpStatus respCode = HttpStatus.OK;
 		try {
-			//Notification data = new Notification(body);
-			//Notification data = new Notification();
-			String userId = data.getCreatedBy();
+			data.setCreatedBy(username);
 			int targetId = data.getTargetId();
 			data.setUuid(UUID.randomUUID());
 			data.setCreatedTime(new Date());
-			System.out.println(data.toString());
-			// people to send notification to
 			if (targetId == 0) {
 				throw new HttpException("Incorrect Target id",
 						HttpStatus.FORBIDDEN);
 			}
-			System.out.println(data.getUuid());
 			Boolean result = ntfs.saveNotification(data);
 			if(result)
 				response.put("status","Saved" );
@@ -134,17 +139,12 @@ public class NotificationController {
 	@PostMapping(path="/getApproval")
 	public ResponseEntity<Map<String,Object>> saveNotificationAppr(
 			@RequestBody NotificationApproval ntfa,
-			@PathVariable("userId") String userId){
-	//public ResponseEntity<Map<String,Object>> saveNotificationAppr(@RequestBody Map<String,Object> body){
-
+			@RequestHeader("Authorization") String authHeader){
+		String username = getJwt(authHeader);
 		Map<String, Object> response = new HashMap<>();
-		System.out.println("Approval testing");
 		HttpStatus respCode = HttpStatus.OK;
-
 		try {
-			//NotificationApproval data = new NotificationApproval(body);
-			//String userId =  ntfa.getCreatedBy(); // createdBy
-			ntfa.setCreatedBy(userId);
+			ntfa.setCreatedBy(username);
 			ntfa.setUuid(UUID.randomUUID());	
 			ntfa.setCreatedTime(new Date());
 			int targetId = ntfa.getTargetId();
@@ -200,22 +200,23 @@ public class NotificationController {
 //	 * @throws HttpException throws exception with corresponding Http Status code and error message
 //	 */
 //
-	@GetMapping(path="/{ntfId}")
+	@GetMapping(path="/one")
 	public ResponseEntity<Map<String,Object>> fetchNtfById(
-			@PathVariable("userId") int userId,
-			@PathVariable("ntfId") String ntfId) throws HttpException {
+			@RequestBody Map<String,Object> body,
+			@RequestHeader("Authorization") String authHeader) throws HttpException {
+		String ntfId = (String) body.get("ntfId");
+		String username = getJwt(authHeader);
 		Map<String, Object> response = new HashMap<>();
 		HttpStatus respCode;
 		try {
-			if ( userId == 0 || ntfId == null)
+			if ( ntfId == null)
 				throw new Exception("Invalid Credentials");
-			response.put("message", ntfs.getOne(ntfId, (userId)));
+			response.put("message", ntfs.getOne(ntfId,username));
 			respCode = HttpStatus.OK;
 		} catch (RuntimeException err) {
 			response.put("message", err.getMessage());
 			respCode = HttpStatus.INTERNAL_SERVER_ERROR;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			response.put("message", e.getMessage());
 			respCode = HttpStatus.BAD_REQUEST;
 		}
@@ -243,18 +244,18 @@ public class NotificationController {
 	 * @param body Stores all the information from the Http request body. Should consist of the notificationId and the response for the same.
 	 * @return response returns a map with status information about the operation
 	 */
-	@PutMapping(path="/{ntfId}")
+	@PutMapping(path="/update")
 	public ResponseEntity<Map<String,Object>> updateNotificationById(
-			@PathVariable("userId") String userId,
-			@RequestBody Map<String,Object> body,
-			@PathVariable("ntfId") String ntfId){
-		System.out.println("Update Called");
+			@RequestHeader("Authorization") String authHeader,
+			@RequestBody Map<String,Object> body){
+		String userName = getJwt(authHeader);
+		String ntfId = (String) body.get("ntfId");
 		Map<String,Object> response = new HashMap<>();
 		HttpStatus respCode ;
 		body.put("ntfId",ntfId);
 		String status = "Rejected";
 		if((int) body.get("response") == 1 ) status = "Approved";
-		NotificationApproval updatedNtf = ntfs.updateApproval(status,ntfId,userId);
+		NotificationApproval updatedNtf = ntfs.updateApproval(status,ntfId,userName);
 		Boolean resp = true;
 		if(updatedNtf == null) resp = false; 
 		if (updatedNtf.getTargetType().equalsIgnoreCase("event")) // this is for event
@@ -282,12 +283,14 @@ public class NotificationController {
 		else if (updatedNtf.getTargetType().equalsIgnoreCase("user")) // this is for team
 		{
 			
-			  User user = userService.getUserById(updatedNtf.getTargetId());
-			  user.setApprovalComments(updatedNtf.getAction());
-			  user.setApprovalStatus(updatedNtf.getAction()); user.setIsProcessed(true);
-			  user.setUpdatedBy("System"); user.setUpdatedTime(new Date());
-			  userService.processUser(user);
-			 		}
+			  User userTarget = userService.getUserById(updatedNtf.getTargetId());
+			  userTarget.setApprovalComments(updatedNtf.getAction());
+			  userTarget.setApprovalStatus(updatedNtf.getAction()); 
+			  userTarget.setIsProcessed(true);
+			  userTarget.setUpdatedBy("System");
+			  userTarget.setUpdatedTime(new Date());
+			  userService.processUser(userTarget);
+				}
 
 		if(resp)respCode = HttpStatus.OK;
 		else respCode = HttpStatus.BAD_REQUEST;

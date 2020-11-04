@@ -31,20 +31,17 @@ public class NotificationService {
 	@Autowired
 	NotificationTrackerJpaRepository ntfTrackerRepo;
 
-	public	Map<String,Object> getAll(int userId) {
+	public	Map<String,Object> getAll(String username) {
 		Map<String,Object> result = new HashMap<>();
-		result.put("ntf",  ntfDb.findByUserId(userId));
-		result.put("ntf_appr",ntfApprovalDb.findByUserId(userId));
+		result.put("ntf",  ntfDb.findByUserName(username));
+		result.put("ntf_appr",ntfApprovalDb.findByUserName( username ));
 		return result;
 	}
 
-	public Map<String,Object> getOne(String ntfId, int userId) {
-		Notification ntf = ntfDb.findByNotificationId(ntfId);
-		NotificationApproval ntfAppr = ntfApprovalDb.findByUuid(ntfId);
+	public Map<String,Object> getOne(String ntfId, String userName) {
+		Notification ntf = ntfDb.findByUuid(ntfId,userName);
+		NotificationApproval ntfAppr = ntfApprovalDb.findByUuid(ntfId,userName);
 		Map<String,Object> result = new HashMap<>();
-		//System.out.println(ntf);
-		//System.out.println(ntfAppr);
-		
 		if(ntf == null) 
 			if(ntfAppr == null)
 				return null;
@@ -52,8 +49,6 @@ public class NotificationService {
 				 result.put("ntf_appr", ntfAppr);
 		else
 			 result.put("ntf",ntf);
-	//	System.out.println("called");
-	//	System.out.println(result);
 		return result;
 	}
 
@@ -184,20 +179,20 @@ public class NotificationService {
 	}
 
 	@Transactional
-	public NotificationApproval updateApproval(String status,String ntfId,String userId) {
-
-		NotificationApproval ntfToBeUpdated = ntfApprovalDb.findByUuid(ntfId);
+	public NotificationApproval updateApproval(String status,String ntfId,String username) {
+		NotificationApproval ntfToBeUpdated = ntfApprovalDb.findByUuid(ntfId,username);
+		if(ntfToBeUpdated == null) {
+			System.out.println("Notificatiob to be updated does not exists");
+			return null;
+		}
 		ntfToBeUpdated.setAction(status);
-		ntfToBeUpdated.setUpdatedBy(userId);
+		ntfToBeUpdated.setUpdatedBy(username);
 		ntfToBeUpdated.setUpdatedTime(new Date());
 		NotificationApproval updatedNotification = ntfApprovalDb.save(ntfToBeUpdated);
-		//System.out.println(updatedNotification);
 		Notification newNtf = new Notification();
 		newNtf.setMessage("Your previous request has been "+ updatedNotification.getAction()+" by admin :"+ updatedNotification.getTargetId());
 		newNtf.setTargetType(updatedNotification.getTargetType());
 		newNtf.setBroadcastType("single");
-		// TO DO
-		//newNtf.setTargetId(updatedNotification.getCreatedBy());
 		newNtf.setTargetId(1);
 		newNtf.setMappingTableData("none");
 		newNtf.setUpdatedBy(updatedNotification.getUpdatedBy());
