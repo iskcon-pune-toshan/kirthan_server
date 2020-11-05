@@ -9,7 +9,7 @@ public interface NotificationJpaRepository extends JpaRepository<Notification,In
 	
 	@Query(	  " SELECT n FROM " 
 			+ " Notification n, NotificationTracker as ntf_trk, User u"
-			+ " where n.uuid = ntf_trk.notificationId  and ntf_trk.userId = u.id and u.email = :username"
+			+ " where (n.uuid = ntf_trk.notificationId  and ntf_trk.userId = u.id and u.email = :username)"
 			+ " ORDER BY n.createdTime DESC")	
 	List<Notification> findByUserName(String username);
 	
