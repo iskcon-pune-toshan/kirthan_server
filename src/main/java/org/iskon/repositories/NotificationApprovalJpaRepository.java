@@ -17,13 +17,11 @@ public interface NotificationApprovalJpaRepository extends JpaRepository<Notific
 	
 	@Query(
 	  " SELECT n FROM " 
-	+ " NotificationApproval n "
-	+ " LEFT JOIN NotificationTracker as ntf_trk "
-	+ "	ON n.uuid = ntf_trk.notificationId"
-	+ " where ntf_trk.userId = :userId "
+	+ " NotificationApproval n, NotificationTracker as ntf_trk, User u"
+	+ " where n.uuid = ntf_trk.notificationId  and ntf_trk.userId = u.id and u.email = :username"
 	+ " ORDER BY n.createdTime DESC")
-	List<NotificationApproval> findByUserId(int userId);
-	
-	@Query("Select  n from NotificationApproval n where n.uuid = :uuid")
-	NotificationApproval findByUuid(String uuid);
+	List<NotificationApproval> findByUserName(String username);
+		
+	@Query("Select  n from NotificationApproval n where n.uuid = :uuid and n.createdBy = :username")
+	NotificationApproval findByUuid(String uuid,String username);
 }

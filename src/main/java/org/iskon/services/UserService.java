@@ -2,6 +2,7 @@ package org.iskon.services;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.iskon.models.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,7 +17,9 @@ public interface UserService {
 	User updateUser(User user);
 
 	void deleteUser(User user);
-
+	
+	Optional<User> getUserByEmailId(String username);
+	
 	List<User> getUsers(UserSearch query);
 
 	Boolean processUser(User params);

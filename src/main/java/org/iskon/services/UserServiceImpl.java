@@ -11,6 +11,7 @@ import org.iskon.exceptions.UsernameNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -80,6 +81,12 @@ public class UserServiceImpl implements UserService {
 
 		return userJpaRepository.save(event) !=null;
 
+	}
+
+	@Override
+	public Optional<User> getUserByEmailId(String username) {
+		
+		return userJpaRepository.findByEmail(username);
 	}
 
 
