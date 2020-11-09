@@ -2,6 +2,7 @@ package org.iskon.controllers;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -12,6 +13,7 @@ import org.iskon.authentication.JwtUtil;
 import org.iskon.models.Event;
 import org.iskon.models.Notification;
 import org.iskon.models.NotificationApproval;
+import org.iskon.models.NotificationUi;
 import org.iskon.models.Team;
 import org.iskon.models.User;
 import org.iskon.services.EventService;
@@ -64,27 +66,8 @@ public class NotificationController {
 		
 	}
 	@GetMapping()
-	public ResponseEntity<Map<String,Object>> fetchNotificaion(HttpServletRequest request) throws HttpException {
-		String jwtUsername = getJwt(request.getHeader("Authorization"));
-		System.out.println(jwtUsername);
-		Map<String,Object> response = new HashMap<>();
-		System.out.println("This was called");
-		HttpStatus respCode;
-		try {
-		
-			response = ntfs.getAll( jwtUsername );
-			respCode = HttpStatus.OK;
-		}
-		catch(RuntimeException err) {
-			err.printStackTrace();
-			response.put("message",err.getMessage());
-			respCode = HttpStatus.INTERNAL_SERVER_ERROR;
-		}
-		catch(Exception err) {
-			response.put("message",err.getMessage());
-			respCode = HttpStatus.BAD_REQUEST;
-		}
-		return new ResponseEntity<>(response,respCode);
+	public List<NotificationUi> fetchNotificaion(@RequestHeader("Authorization") String authHead) throws HttpException {
+		return ntfs.getAll(getJwt(authHead));
 	}
 
 
@@ -102,95 +85,26 @@ public class NotificationController {
 	 * @throws HttpException thows an exception with errCode and errMessage corresponding to the httpStatus code
 	 */
 	@PostMapping
-	public ResponseEntity<Map<String, Object>> saveNotification(
+	public Boolean saveNotification(
 			@RequestBody Notification data,@RequestHeader("Authorization") String authHeader) throws HttpException {
 		String username = getJwt(authHeader);
-		Map<String, Object> response = new HashMap<>();
-		HttpStatus respCode = HttpStatus.OK;
-		try {
-			data.setCreatedBy(username);
-			int targetId = data.getTargetId();
-			data.setUuid(UUID.randomUUID());
-			data.setCreatedTime(new Date());
-			if (targetId == 0) {
-				throw new HttpException("Incorrect Target id",
-						HttpStatus.FORBIDDEN);
-			}
-			Boolean result = ntfs.saveNotification(data);
-			if(result)
-				response.put("status","Saved" );
-			else{
-				response.put("status","Failed");
-			}
-		} catch (RuntimeException err) {
-			response.put("message", "Something went wrong");
-			err.printStackTrace();
-		} catch (HttpException err) {
-			response.put("message", err.getMessage());
-			respCode = err.getStatusCode();
-		} catch (Exception err) {
-			response.put("message",err.getMessage());
-			respCode = HttpStatus.INTERNAL_SERVER_ERROR;
-		}
-
-		return new ResponseEntity<>(response, respCode);
+		data.setCreatedBy(username);
+		data.setUuid(UUID.randomUUID());
+		data.setCreatedTime(new Date());
+		return ntfs.saveNotification(data);
 	}
 
 	@PostMapping(path="/getApproval")
-	public ResponseEntity<Map<String,Object>> saveNotificationAppr(
+	public Boolean saveNotificationAppr(
 			@RequestBody NotificationApproval ntfa,
 			@RequestHeader("Authorization") String authHeader){
-		String username = getJwt(authHeader);
-		Map<String, Object> response = new HashMap<>();
-		HttpStatus respCode = HttpStatus.OK;
-		try {
+			String username = getJwt(authHeader);
 			ntfa.setCreatedBy(username);
 			ntfa.setUuid(UUID.randomUUID());	
 			ntfa.setCreatedTime(new Date());
-			int targetId = ntfa.getTargetId();
-			if (targetId <0) {
-				throw new HttpException("Incorrect Target id",
-						HttpStatus.FORBIDDEN);
-			}
-			Boolean result = ntfs.saveNotificationAppr(ntfa);
-			if(result)
-				response.put("status","Saved" );
-			else{
-				response.put("status","Failed");
-			}
-		} catch (RuntimeException err) {
-			response.put("message", "Oops!Something went wrong");
-			err.printStackTrace();
-		} catch (HttpException err) {
-			response.put("message", err.getMessage());
-			respCode = err.getStatusCode();
-		} catch (Exception err) {
-			response.put("message","Sorry!Something went wrong");
-			respCode = HttpStatus.INTERNAL_SERVER_ERROR;
-		}
-
-		return new ResponseEntity<>(response, respCode);
+			return ntfs.saveNotificationAppr(ntfa);			
 	}
-//	/** Method not allowed
-//	 * @return <b>HttpStatusCode</b>: 403 <b>Message</b>:Not allowed
-//	 */
-//	@PutMapping
-//	public ResponseEntity<Map<String, Object>> updateNofifications() {
-//		Map<String, Object> response = new HashMap<>();
-//		HttpStatus respCode = HttpStatus.METHOD_NOT_ALLOWED;
-//		response.put("message", "Oops!Method Not allowed");
-//		return new ResponseEntity<>(response, respCode);
-//	}
-//
-//	/**Method not allowed
-//	 * @return <b>HttpStatus</b>:403
-//	 */
-//	@DeleteMapping
-//	public ResponseEntity<String> deleteNotification() {
-//		return new ResponseEntity<>(" Method Not Allowed", HttpStatus.FORBIDDEN);
-//	}
-//
-//
+
 //	/**
 //	 * Fetches the detailed information stored in a database about a notification given the notificationId.
 //	 * @param body Stores all the inforamtion received from the request body. The request Body should be a json object.It should contain all
@@ -200,43 +114,16 @@ public class NotificationController {
 //	 * @throws HttpException throws exception with corresponding Http Status code and error message
 //	 */
 //
-	@GetMapping(path="/one")
-	public ResponseEntity<Map<String,Object>> fetchNtfById(
+	@GetMapping(path="/getSingleNotification")
+	public NotificationUi fetchNtfById(
 			@RequestBody Map<String,Object> body,
 			@RequestHeader("Authorization") String authHeader) throws HttpException {
 		String ntfId = (String) body.get("ntfId");
 		String username = getJwt(authHeader);
-		Map<String, Object> response = new HashMap<>();
-		HttpStatus respCode;
-		try {
-			if ( ntfId == null)
-				throw new Exception("Invalid Credentials");
-			response.put("message", ntfs.getOne(ntfId,username));
-			respCode = HttpStatus.OK;
-		} catch (RuntimeException err) {
-			response.put("message", err.getMessage());
-			respCode = HttpStatus.INTERNAL_SERVER_ERROR;
-		} catch (Exception e) {
-			response.put("message", e.getMessage());
-			respCode = HttpStatus.BAD_REQUEST;
-		}
-		return new ResponseEntity<Map<String,Object>>(response, respCode);
+		return ntfs.getOne(ntfId,username);	
 	}
 	
 
-
-//	/**Method Not allowed
-//	 *
-//	 * @return this method is not allowed
-//	 */
-//	@PostMapping(path="/{ntfId}")
-//	public ResponseEntity<Map<String,Object>> saveNotificationById(){
-//		Map<String,Object> resp = new HashMap<>();
-//			resp.put("message","Method Not Allowed");
-//		return new ResponseEntity<Map<String,Object>>(resp, HttpStatus.FORBIDDEN);
-//	}
-//
-	
 	/** Update the response to a approval seeking notification in the notification_approval table.
 	 * 	Current statuses used : Approved,Rejected,Wait(Waiting for response)
 	 * 	body : {"userId": integer, "response",Boolean} (response: 1 = Approved, 0=Rejected).
@@ -245,13 +132,11 @@ public class NotificationController {
 	 * @return response returns a map with status information about the operation
 	 */
 	@PutMapping(path="/update")
-	public ResponseEntity<Map<String,Object>> updateNotificationById(
+	public Boolean updateNotificationById(
 			@RequestHeader("Authorization") String authHeader,
 			@RequestBody Map<String,Object> body){
 		String userName = getJwt(authHeader);
 		String ntfId = (String) body.get("ntfId");
-		Map<String,Object> response = new HashMap<>();
-		HttpStatus respCode ;
 		body.put("ntfId",ntfId);
 		String status = "Rejected";
 		if((int) body.get("response") == 1 ) status = "Approved";
@@ -292,26 +177,8 @@ public class NotificationController {
 			  userService.processUser(userTarget);
 				}
 
-		if(resp)respCode = HttpStatus.OK;
-		else respCode = HttpStatus.BAD_REQUEST;
-		return new ResponseEntity<>(response,respCode);
+		return resp;
 	}
-
-//	/**To be implemented<br>
-//	 * <b>Doubt</b>
-//	 * <p>
-//	 * 	Whether everyone should be allowed to delete notifications belonging to them or are only admin allowed to delete notifications
-//	 * 	Or no one is allowed to delete notifications and notifications will be archived after a certain time period.
-//	 * </p>
-//	 * @return response status of the operation
-//	 */
-//	@DeleteMapping(path="/{ntfId}")
-//	public String deleteNotificationById(){
-//		//Depends on the app-policy
-//		//to be implemented
-//		return "Not implemented";
-//	}
-//
 
 }
 

@@ -10,6 +10,7 @@ import java.util.UUID;
 import org.iskon.models.Notification;
 import org.iskon.models.NotificationApproval;
 import org.iskon.models.NotificationTracker;
+import org.iskon.models.NotificationUi;
 import org.iskon.repositories.NotificationApprovalJpaRepository;
 import org.iskon.repositories.NotificationJpaRepository;
 import org.iskon.repositories.NotificationTrackerJpaRepository;
@@ -31,25 +32,22 @@ public class NotificationService {
 	@Autowired
 	NotificationTrackerJpaRepository ntfTrackerRepo;
 
-	public	Map<String,Object> getAll(String username) {
-		Map<String,Object> result = new HashMap<>();
-		result.put("ntf",  ntfDb.findByUserName(username));
-		result.put("ntf_appr",ntfApprovalDb.findByUserName( username ));
+	public	List<NotificationUi> getAll(String username) {
+		List<NotificationUi> result = ntfApprovalDb.findByUserName( username );
+		result.addAll(ntfDb.findByUserName(username));
 		return result;
 	}
 
-	public Map<String,Object> getOne(String ntfId, String userName) {
-		Notification ntf = ntfDb.findByUuid(ntfId,userName);
-		NotificationApproval ntfAppr = ntfApprovalDb.findByUuid(ntfId,userName);
-		Map<String,Object> result = new HashMap<>();
+	public NotificationUi getOne(String ntfId, String userName) {
+		NotificationUi ntf = ntfDb.findByUuid(ntfId,userName);
+		NotificationUi ntfAppr = ntfApprovalDb.findByUuid(ntfId,userName);
 		if(ntf == null) 
 			if(ntfAppr == null)
 				return null;
 			else
-				 result.put("ntf_appr", ntfAppr);
+				 return ntfAppr;
 		else
-			 result.put("ntf",ntf);
-		return result;
+			 return ntf;
 	}
 
 
@@ -180,7 +178,7 @@ public class NotificationService {
 
 	@Transactional
 	public NotificationApproval updateApproval(String status,String ntfId,String username) {
-		NotificationApproval ntfToBeUpdated = ntfApprovalDb.findByUuid(ntfId,username);
+		NotificationApproval ntfToBeUpdated = ntfApprovalDb.findNotificationApprovalByUuid(ntfId,username);
 		if(ntfToBeUpdated == null) {
 			System.out.println("Notificatiob to be updated does not exists");
 			return null;
