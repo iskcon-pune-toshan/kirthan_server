@@ -5,10 +5,8 @@ import java.util.Map;
 
 import org.iskon.authentication.JwtUtil;
 import org.iskon.models.UserToken;
-import org.iskon.repositories.NotificationJpaRepository;
 import org.iskon.repositories.UserTokenJpaRepository;
 import org.iskon.services.UserService;
-import org.iskon.services.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -57,7 +55,6 @@ public class RecipientManagerController {
 	/**Updates the deviceToken for a given userID.
 	 * @param body Contains the userId and deviceToken provided in the incoming httpRequest.
 	 */
-	
 	@Transactional 
 	@PutMapping(path="/tokens")
 	public int updateToken(@RequestBody Map<String,Object> body,@RequestHeader("Authorization") String authHeader) {
@@ -67,5 +64,4 @@ public class RecipientManagerController {
 		String token = (String) body.get("deviceToken");
 		return userTokenDb.updateTokenByUserId(username,token);
 	}
-	
 }
