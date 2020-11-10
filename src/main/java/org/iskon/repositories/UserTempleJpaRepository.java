@@ -14,5 +14,5 @@ public interface UserTempleJpaRepository extends JpaRepository<UserTemple, Integ
 
 	@Query(" SELECT new org.iskon.models.UserTemple(UT.id, UT.templeId, UT.roleId, UT.userId, T.templeName, U.userName) "
 			+ " FROM UserTemple UT, Temple T, User U " + " where UT.templeId = T.id " + " and UT.userId = U.id ")
-	List<UserTemple> findAllTwo();
+	List<UserTemple> findAllWithDescription();
 }
