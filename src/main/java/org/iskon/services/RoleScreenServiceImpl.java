@@ -2,6 +2,7 @@ package org.iskon.services;
 
 import org.iskon.models.RoleScreen;
 import org.iskon.models.RoleScreenSearch;
+import org.iskon.models.UserTemple;
 import org.iskon.repositories.RoleScreenJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
@@ -21,22 +22,11 @@ public class RoleScreenServiceImpl implements RoleScreenService {
 	private RoleScreenJpaRepository rolescreenJpaRepository;
 
 	@Override
-	public RoleScreen addRoleScreen(RoleScreen role)
+	public List<RoleScreen> addRoleScreen(List<RoleScreen> listRoleScreen)
 	{
-		return rolescreenJpaRepository.save(role);
+		return rolescreenJpaRepository.saveAll(listRoleScreen);
 	}
 
-	@Override
-	public RoleScreen updateRoleScreen(RoleScreen role)
-	{
-		return rolescreenJpaRepository.save(role);
-	}
-
-	@Override
-	public void deleteRoleScreen(RoleScreen role)
-	{
-		rolescreenJpaRepository.delete(role);
-	}
 
 	@Override
 	public List<RoleScreen> getRoleScreen(RoleScreenSearch roleSearch)
@@ -50,16 +40,29 @@ public class RoleScreenServiceImpl implements RoleScreenService {
 				if(roleSearch.getId() != null)
 					predicates.add(root.get("id").in(roleSearch.getId()));
 
-				if (roleSearch.getRoleId() != null)
-					predicates.add(root.get("roleId").in(roleSearch.getRoleId()));
-				
-				if (roleSearch.getScreenId() != null)
-					predicates.add(root.get("screenId").in(roleSearch.getScreenId()));
+				/*
+				 * if (roleSearch.getRoleId() != null)
+				 * predicates.add(root.get("roleId").in(roleSearch.getRoleId()));
+				 * 
+				 * if (roleSearch.getScreenId() != null)
+				 * predicates.add(root.get("screenId").in(roleSearch.getScreenId()));
+				 */
 			
 
 				return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
 			}
 		});
+	}
+	
+	@Override
+	public void deleteRoleScreen(List<RoleScreen> newRoleScreenMapping)
+	{
+		rolescreenJpaRepository.deleteAll(newRoleScreenMapping);
+	}
+	
+	@Override
+	public List<RoleScreen> getRoleScreenWithDescription() {
+		return rolescreenJpaRepository.findAllWithDescription();
 	}
 
 	

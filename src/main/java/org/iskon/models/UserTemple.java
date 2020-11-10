@@ -83,11 +83,7 @@ public class UserTemple implements Serializable {
 		return userName;
 	}
 	
-	/*
-	 * public String getTempleName() { return templeName; }
-	 * 
-	 * public String getUserName() { return userName; }
-	 */
+	
 	
 	
 
