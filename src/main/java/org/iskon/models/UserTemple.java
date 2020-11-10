@@ -9,6 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.springframework.data.jdbc.repository.query.Query;
 @Entity
 @Table(name="user_temple")
 public class UserTemple implements Serializable {
@@ -25,6 +28,12 @@ public class UserTemple implements Serializable {
 	@Column(name="user_id")
 	private Integer userId;
 	
+	@Transient
+	private String templeName;
+	
+	@Transient
+	private String userName;
+	
 	private UserTemple(){
 
 	}
@@ -34,6 +43,16 @@ public class UserTemple implements Serializable {
 		this.templeId = templeId;
 		this.roleId = roleId;
 		this.userId = userId;
+	}
+	
+	
+	public UserTemple(Integer id, Integer templeId, Integer roleId, Integer userId,String templeName,String userName) {
+		this.id = id;
+		this.templeId = templeId;
+		this.roleId = roleId;
+		this.userId = userId;
+		this.templeName = templeName;
+		this.userName = userName;
 	}
 
 	public static UserTemple buildRoleScreen(Integer id, Integer templeId, Integer roleId, Integer userId) {
@@ -55,6 +74,21 @@ public class UserTemple implements Serializable {
 	public Integer getUserId() {
 		return userId;
 	}
+
+	public String getTempleName() {
+		return templeName;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+	
+	/*
+	 * public String getTempleName() { return templeName; }
+	 * 
+	 * public String getUserName() { return userName; }
+	 */
+	
 	
 
 }

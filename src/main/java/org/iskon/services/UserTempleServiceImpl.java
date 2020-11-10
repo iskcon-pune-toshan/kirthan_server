@@ -1,5 +1,6 @@
 package org.iskon.services;
 
+//import org.iskon.models.TeamUser;
 import org.iskon.models.UserTemple;
 import org.iskon.models.UserTempleSearch;
 import org.iskon.repositories.UserTempleJpaRepository;
@@ -20,50 +21,49 @@ public class UserTempleServiceImpl implements UserTempleService {
 	@Autowired
 	private UserTempleJpaRepository usertempleJpaRepository;
 
-	@Override
-	public UserTemple addUserTemple(UserTemple usertemple)
-	{
-		return usertempleJpaRepository.save(usertemple);
+	/*
+	 * @Override public List<UserTemple> addUserTemple(List<UserTemple>
+	 * listUsertemple) { return usertempleJpaRepository.saveAll(listUsertemple); }
+	 */
+
+	/*
+	 * @Override public UserTemple updateUserTemple(UserTemple usertemple) { return
+	 * usertempleJpaRepository.save(usertemple); }
+	 */
+
+	/*
+	 * @Override public void deleteUserTemple(List<UserTemple> listUsertemple) {
+	 * usertempleJpaRepository.deleteAll(listUsertemple); }
+	 */
+
+	/*
+	 * @Override public List<UserTemple> getUserTemple(UserTempleSearch eventSearch)
+	 * { return usertempleJpaRepository.findAll(new Specification<UserTemple>() {
+	 * 
+	 * @Override public Predicate toPredicate(Root<UserTemple> root,
+	 * CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+	 * List<Predicate> predicates = new ArrayList<>();
+	 * 
+	 * if (eventSearch.getId() != null)
+	 * predicates.add(root.get("id").in(eventSearch.getId()));
+	 * 
+	 * if (eventSearch.getRoleId() != null)
+	 * predicates.add(root.get("roleId").in(eventSearch.getRoleId()));
+	 * 
+	 * if (eventSearch.getTempleId() != null)
+	 * predicates.add(root.get("templeId").in(eventSearch.getTempleId()));
+	 * 
+	 * if (eventSearch.getUserId() != null)
+	 * predicates.add(root.get("userId").in(eventSearch.getUserId()));
+	 * 
+	 * return criteriaBuilder.and(predicates.toArray(new
+	 * Predicate[predicates.size()])); } }); }
+	 * 
+	 */
+	/*
+	 * @Override public List<UserTemple> getUserTempleWithDescription() { return
+	 * usertempleJpaRepository.findAllWithDescription(); }
+	 */
+	  
+	 
 	}
-
-	@Override
-	public UserTemple updateUserTemple(UserTemple usertemple)
-	{
-		return usertempleJpaRepository.save(usertemple);
-	}
-
-	@Override
-	public void deleteUserTemple(UserTemple usertemple)
-	{
-		usertempleJpaRepository.delete(usertemple);
-	}
-
-	@Override
-	public List<UserTemple> getUserTemple(UserTempleSearch eventSearch)
-	{
-		return usertempleJpaRepository.findAll(new Specification<UserTemple>(){
-
-			@Override
-			public Predicate toPredicate(Root<UserTemple> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
-				List<Predicate> predicates = new ArrayList<>();
-
-				if(eventSearch.getId() != null)
-					predicates.add(root.get("id").in(eventSearch.getId()));
-
-				if(eventSearch.getRoleId() != null)
-					predicates.add(root.get("roleId").in(eventSearch.getRoleId()));
-				
-				if(eventSearch.getTempleId() != null)
-					predicates.add(root.get("templeId").in(eventSearch.getTempleId()));
-				
-				if(eventSearch.getUserId() != null)
-					predicates.add(root.get("userId").in(eventSearch.getUserId()));
-
-
-				return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
-			}
-		});
-	}
-
-	
-}
