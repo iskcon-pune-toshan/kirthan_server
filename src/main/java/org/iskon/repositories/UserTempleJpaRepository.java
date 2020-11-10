@@ -3,10 +3,11 @@ package org.iskon.repositories;
 import java.util.List;
 
 import org.iskon.models.UserTemple;
-import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.Query;
+
 
 @Repository
 public interface UserTempleJpaRepository extends JpaRepository<UserTemple, Integer> {
