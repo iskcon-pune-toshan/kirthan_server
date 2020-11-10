@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 @Entity
 @Table(name="role_screen")
 public class RoleScreen implements Serializable {
@@ -37,12 +38,19 @@ public class RoleScreen implements Serializable {
 	@Column(name="process")
 	private Boolean process;
 	
-	private RoleScreen(){
-
+	@Transient
+	private String roleName;
+	
+	@Transient
+	private String screenName;
+	
+	
+	private RoleScreen() {
+		
 	}
 
-	private RoleScreen(Integer id, Integer roleId, Integer screenId, Boolean create, Boolean update
-			, Boolean delete, Boolean view, Boolean process) {
+	private RoleScreen(Integer id, Integer roleId, Integer screenId, Boolean create, Boolean update, Boolean delete,
+			Boolean view, Boolean process) {
 		this.id = id;
 		this.roleId = roleId;
 		this.screenId = screenId;
@@ -51,6 +59,20 @@ public class RoleScreen implements Serializable {
 		this.delete = delete;
 		this.view = view;
 		this.process = process;
+	}
+
+	public RoleScreen(Integer id, Integer roleId, Integer screenId, Boolean create, Boolean update
+			, Boolean delete, Boolean view, Boolean process,String roleName,String screenName) {
+		this.id = id;
+		this.roleId = roleId;
+		this.screenId = screenId;
+		this.create = create;
+		this.update = update;
+		this.delete = delete;
+		this.view = view;
+		this.process = process;
+		this.roleName = roleName;
+		this.screenName = screenName;
 	}
 
 	public static RoleScreen buildRoleScreen(Integer id, Integer roleId, Integer screenId, Boolean create, Boolean update
@@ -90,6 +112,13 @@ public class RoleScreen implements Serializable {
 		return process;
 	}
 	
+	public String getRoleName() {
+		return roleName;
+	}
+	
+	public String getScreenName() {
+		return screenName;
+	}
 
 }
 
