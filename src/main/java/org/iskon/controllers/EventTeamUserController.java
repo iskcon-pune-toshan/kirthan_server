@@ -1,19 +1,15 @@
 package org.iskon.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import org.iskon.models.Event;
 import org.iskon.models.EventTeamUser;
+import org.iskon.models.EventTeamUserSearch;
 import org.iskon.services.EventTeamUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.iskon.models.EventTeamUserSearch;
-import org.iskon.models.TeamUser;
 
 
 @RestController

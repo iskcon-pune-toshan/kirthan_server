@@ -97,6 +97,21 @@ public class Event implements Serializable {
 
 	@Column(name = "updated_time")
 	private Date updatedTime;
+	
+	@Column(name = "source_longitude")
+	private Double sourceLongitude;
+	
+	@Column(name = "source_latitude")
+	private Double sourceLatitude;
+	
+	@Column(name = "destination_longitude")
+	private Double destinationLongitude;
+	
+	@Column(name = "destination_latitude")
+	private Double destinationLatitude;
+	
+	@Column(name = "event_mobility")
+	private String eventMobility;
 
 	private Event(){
 
@@ -106,7 +121,8 @@ public class Event implements Serializable {
 				  String eventLocation, String eventType, Long phoneNumber, String addLineOne, String addLineTwo,
 				  String addLineThree, String locality, String city, Integer pincode, String state, String country,
 				  Boolean isProcessed, String approvalStatus, String approvalComments,
-				  String createdBy, String updatedBy, Date createdTime, Date updatedTime) {
+				  String createdBy, String updatedBy, Date createdTime, Date updatedTime, Double sourceLongitude,
+				  Double sourceLatitude, Double destinationLongitude, Double destinationLatitude, String eventMobility ) {
 		this.id = id;
 		this.eventTitle = eventTitle;
 		this.eventDescription = eventDescription;
@@ -130,6 +146,11 @@ public class Event implements Serializable {
 		this.updatedBy = updatedBy;
 		this.createdTime = createdTime;
 		this.updatedTime = updatedTime;
+		this.sourceLongitude = sourceLongitude;
+		this.sourceLatitude = sourceLatitude;
+		this.destinationLongitude = destinationLongitude;
+		this.destinationLatitude = destinationLatitude;
+		this.eventMobility = eventMobility;
 	}
 
 	public static Event buildEvent(Integer id, String eventTitle, String eventDescription, Date eventDate,
@@ -137,10 +158,13 @@ public class Event implements Serializable {
 								   String addLineOne, String addLineTwo, String addLineThree, String locality,
 								   String city, Integer pincode, String state, String country, Boolean isProcessed,
 								   String approvalStatus, String approvalComments,
-								   String createdBy, String updatedBy, Date createdTime, Date updatedTime) {
+								   String createdBy, String updatedBy, Date createdTime, Date updatedTime, 
+								   Double sourceLongitude, Double sourceLatitude, Double destinationLongitude,
+								   Double destinationLatitude, String eventMobility) {
 		return new Event(id, eventTitle, eventDescription, eventDate,eventDuration, eventLocation, eventType,
 				phoneNumber, addLineOne, addLineTwo, addLineThree, locality,city, pincode, state, country,
-				isProcessed, approvalStatus, approvalComments, createdBy, updatedBy, createdTime, updatedTime);
+				isProcessed, approvalStatus, approvalComments, createdBy, updatedBy, createdTime, updatedTime, 
+				sourceLongitude, sourceLatitude, destinationLongitude, destinationLatitude, eventMobility);
 	}
 
 	public Integer getId() {
@@ -234,4 +258,27 @@ public class Event implements Serializable {
 	public Date getUpdatedTime() {
 		return updatedTime;
 	}
+	
+	public Double getSourceLongitude() {
+		return sourceLongitude;
+	}
+
+	public Double getSourceLatitude() {
+		return sourceLatitude;
+	}
+
+	public Double getDestinationLongitude() {
+		return destinationLongitude;
+	}
+
+	public Double getDestinationLatitude() {
+		return destinationLatitude;
+	}
+
+	public String getEventMobility() {
+		return eventMobility;
+	}
+
+	
+	
 }
