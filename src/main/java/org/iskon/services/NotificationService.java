@@ -16,7 +16,6 @@ import org.iskon.models.User;
 import org.iskon.repositories.NotificationApprovalJpaRepository;
 import org.iskon.repositories.NotificationJpaRepository;
 import org.iskon.repositories.NotificationTrackerJpaRepository;
-import org.iskon.repositories.UserTokenJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,8 +26,7 @@ public class NotificationService {
 	private NotificationJpaRepository ntfDb;
 	@Autowired
 	private NotificationApprovalJpaRepository ntfApprovalDb;
-	@Autowired
-	private UserTokenJpaRepository userTokenDb;
+
 	@Autowired
 	NotificationTrackerJpaRepository ntfTrackerRepo;
 
