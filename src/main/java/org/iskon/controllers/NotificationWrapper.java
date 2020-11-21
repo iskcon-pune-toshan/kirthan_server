@@ -19,7 +19,7 @@ public class NotificationWrapper{
 	
 	public boolean generateNotification(Event event) {
 		NotificationApproval ntf = new NotificationApproval();
-		ntf.setBroadcastType("single");
+		ntf.setBroadcastType("multiple");
 		ntf.setCreatedBy("SYSTEM");
 		ntf.setMessage("New Event Created!Need Approval");
 		ntf.setCreatedTime(event.getCreatedTime());
@@ -32,14 +32,13 @@ public class NotificationWrapper{
 	
 	public boolean generateNotification(Team team) {
 		NotificationApproval ntf = new NotificationApproval();
-		ntf.setBroadcastType("single");
+		ntf.setBroadcastType("multiple");
 		ntf.setCreatedBy("SYSTEM");
 		ntf.setMessage("New Team Created! Needed Approval");
 		ntf.setCreatedTime(team.getCreatedTime());
-		ntf.setMappingTableData("team");
-		ntf.setTargetType("team");
+		ntf.setMappingTableData("team_user");
+		ntf.setTargetType("team_user");
 		ntf.setTargetId(team.getId());
-		ntf.setMessage("New Event Created!Need Approval");
 		ntf.setUuid(UUID.randomUUID());
 		return ntfService.saveNotificationAppr(ntf);
 	}
@@ -53,8 +52,6 @@ public class NotificationWrapper{
 		ntf.setTargetType("user");
 		ntf.setMessage("New User Created! Need Approval");
 		ntf.setTargetId(user.getId());
-		ntf.setMessage("New Event Created!Need Approval");
-
 		ntf.setUuid(UUID.randomUUID());
 		return ntfService.saveNotificationAppr(ntf);
 	}

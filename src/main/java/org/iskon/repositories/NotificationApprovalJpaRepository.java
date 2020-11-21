@@ -26,7 +26,7 @@ public interface NotificationApprovalJpaRepository extends JpaRepository<Notific
 	@Query("Select new org.iskon.models.NotificationUi(n.uuid,n.message,n.targetType,n.targetId,n.createdBy,n.createdTime,n.updatedBy,n.updatedTime,n.action) from NotificationApproval n where n.uuid = :uuid and n.createdBy = :username")
 	NotificationUi findByUuid(String uuid,String username);
 
-	@Query("Select n from NotificationApproval n where n.uuid = :uuid and n.createdBy = :username")
-	NotificationApproval findNotificationApprovalByUuid(String uuid,String username);
+	@Query("Select n from NotificationApproval n where n.uuid = :uuid")
+	NotificationApproval findNotificationApprovalByUuid(String uuid);
 
 }

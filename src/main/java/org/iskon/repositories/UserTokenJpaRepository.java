@@ -1,13 +1,16 @@
 package org.iskon.repositories;
 
+import java.util.List;
+
 import org.iskon.models.UserToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 public interface UserTokenJpaRepository extends JpaRepository<UserToken,Integer>{
-	@Query("select DISTINCT deviceToken from UserToken where userId = :userId")	
-	String findDeviceTokenByUserId(int userId);
+	
+	@Query("select distinct deviceToken from UserToken where userId = :userId")	
+	List<String> findDeviceTokenByUserId(int userId);
 	
 	
 	
