@@ -16,17 +16,20 @@ import org.iskon.models.User;
 import org.iskon.repositories.NotificationApprovalJpaRepository;
 import org.iskon.repositories.NotificationJpaRepository;
 import org.iskon.repositories.NotificationTrackerJpaRepository;
+import org.iskon.repositories.UserTokenJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 @Service
 public class NotificationService {
 	@Autowired
 	private NotificationJpaRepository ntfDb;
 	@Autowired
 	private NotificationApprovalJpaRepository ntfApprovalDb;
-
+	@Autowired
+	private UserTokenJpaRepository userTokenDb;
 	@Autowired
 	NotificationTrackerJpaRepository ntfTrackerRepo;
 
@@ -51,7 +54,7 @@ public class NotificationService {
 			 return ntf;
 	}
 
-
+	
 	private Boolean handleNotification(Notification ntf,List<Integer> userIds) {	
 		try {
 			Notification savedNtf = ntfDb.save(ntf);
@@ -59,7 +62,7 @@ public class NotificationService {
 			for(int userId : userIds) {
 				NotificationTracker ntfTracker = new NotificationTracker(userId, ntf.getTargetId(),
 						savedNtf.getUuid().toString());
-				String token = userService.getUserById(userId).getDeviceToken();
+				List<String> token = userTokenDb.findDeviceTokenByUserId(userId);
 				if (token == null) {
 					System.out.println("No token found for the given userId! Thus no notification can be sent to"
 							+ "the user.");
@@ -70,16 +73,22 @@ public class NotificationService {
 					FireBaseMessagingService fcm = new FireBaseMessagingService();
 					ntfData.put("title", savedNtf.getTitle());
 					ntfData.put("message",savedNtf.getMessage());
-					String response = fcm.sendToUser(ntfData, token);
-					if(response != null) ntfTracker.setStatus(true); 
-					else ntfTracker.setStatus(false);;
+					Boolean flag = false;
+					String response="";
+					for(String s : token) {
+						response = fcm.sendToUser(ntfData, s);
+						if(response != null) flag = true; 
+						else {
+							userTokenDb.deleteDeviceTokenById(userId,s);
+						}
+					}
+					ntfTracker.setStatus(flag);
 				}
 				ntfTrackerRepo.save(ntfTracker);
 			}
 			return true;
 		}
 		catch(Exception err) {
-			
 			System.out.println("Error at HandleNotification"+err.getMessage());
 			err.printStackTrace();;
 			return false;
@@ -90,7 +99,7 @@ public class NotificationService {
 	private Boolean handleNotificationApproval(NotificationApproval ntf,List<Integer> userIds ) {
 		NotificationApproval savedNtf = ntfApprovalDb.save(ntf);
 		for(int userId : userIds) {
-			String token = userService.getUserById(userId).getDeviceToken();
+			List<String> token = userTokenDb.findDeviceTokenByUserId(userId);
 			NotificationTracker ntfTracker = new NotificationTracker(userId, ntf.getTargetId() , savedNtf.getUuid().toString());
 			if (token == null) {
 				System.out.println("No token found for the given userId! Thus no notification can be sent to the user.");
@@ -101,9 +110,13 @@ public class NotificationService {
 				Map<String,String> ntfData = new HashMap<>();
 				ntfData.put("title",savedNtf.getTitle());
 				ntfData.put("message",savedNtf.getMessage());
-				String response = fcm.sendToUser(ntfData, token);
-				if(response != null) ntfTracker.setStatus(true); 
-				else ntfTracker.setStatus(false);
+				Boolean flag = false;
+				String response="";
+				for(String s : token) {
+					response = fcm.sendToUser(ntfData, s);
+					if(response != null) flag = true; 
+				}
+				ntfTracker.setStatus(flag);
 			}
 			ntfTrackerRepo.save(ntfTracker);
 		}
@@ -165,7 +178,6 @@ public class NotificationService {
 			return false;
 	}
 
-	@Transactional
 	public NotificationApproval updateApproval(String status,String ntfId,String username) {
 		NotificationApproval ntfToBeUpdated = ntfApprovalDb.findNotificationApprovalByUuid(ntfId); 
 		if(ntfToBeUpdated == null) {

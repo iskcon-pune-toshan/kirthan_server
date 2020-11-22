@@ -65,15 +65,6 @@ public class UserController {
 //		nw.populateUserNotification(req);
 		
 	}
-
-	@RequestMapping(value= "/token",method = RequestMethod.PUT)
-	public void updateDeviceToken(@RequestBody Map<String,Object> requestBody,@RequestHeader("Authorization")String authHeader) {
-		JwtUtil jwtUtil = new JwtUtil();
-		authHeader  = authHeader.replace("Bearer ","");
-		String username = jwtUtil.extractUsername(authHeader);
-		System.out.println(username+(String)requestBody.get("deviceToken") );
-		userService.updateDeviceToken(username, (String) requestBody.get("deviceToken"));
-	}
 	
 	@RequestMapping(value = "/getuser", method = RequestMethod.PUT)
 	public List<User> getUser(@RequestBody UserSearch queryParams) {

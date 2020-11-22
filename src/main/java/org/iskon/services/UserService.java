@@ -19,9 +19,7 @@ public interface UserService {
 	void deleteUser(User user);
 	
 	Optional<User> getUserByEmailId(String username);
-	
-	void updateDeviceToken(String username,String deviceToken);
-	
+		
 	List<User> getUsers(UserSearch query);
 
 	Boolean processUser(User params);

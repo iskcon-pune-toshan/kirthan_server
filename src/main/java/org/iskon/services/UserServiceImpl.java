@@ -89,13 +89,5 @@ public class UserServiceImpl implements UserService {
 		return userJpaRepository.findByEmail(username);
 	}
 
-	@Transactional
-	@Override
-	public void updateDeviceToken(String username, String deviceToken) {
-		System.out.println(username);
-		userJpaRepository.updateDeviceTokenByUserName(username,deviceToken);
-	}
-
-
 
 }

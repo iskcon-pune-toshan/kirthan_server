@@ -13,11 +13,12 @@ import java.util.Optional;
 
 @Repository
 public interface UserJpaRepository extends JpaRepository<User, Integer> {
-    List<User> findAll(Specification<User> eventSpecification);
-    User findById(int id);
+    
+	List<User> findAll(Specification<User> eventSpecification);
+    
+	User findById(int id);
+ 
     Optional<User> findByEmail(String email);
 	
-    @Modifying
-    @Query("Update User u set u.deviceToken = :deviceToken where u.email = :username ")
-    void updateDeviceTokenByUserName(String username,String deviceToken	);
+ 
 }
