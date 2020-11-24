@@ -9,14 +9,6 @@ import java.util.Date;
 @Table(name="user")
 public class User implements Serializable {
 
-	public String getDeviceToken() {
-		return deviceToken;
-	}
-
-	public void setDeviceToken(String deviceToken) {
-		this.deviceToken = deviceToken;
-	}
-
 	public Boolean getIsProcessed() {
 		return isProcessed;
 	}
@@ -118,8 +110,6 @@ public class User implements Serializable {
 	@Column(name = "updated_time")
 	private Date updatedTime;
 	
-	@Column(name = "device_token")
-	private String deviceToken;
 
 	private User(){
 
