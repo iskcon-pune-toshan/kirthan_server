@@ -76,7 +76,8 @@ public class NotificationService {
 					Boolean flag = false;
 					String response="";
 					for(String s : token) {
-						response = fcm.sendToUser(ntfData, s);
+						if( s!=null)
+							response = fcm.sendToUser(ntfData, s);
 						if(response != null) flag = true; 
 						else {
 							userTokenDb.deleteDeviceTokenById(userId,s);
@@ -98,6 +99,8 @@ public class NotificationService {
 
 	private Boolean handleNotificationApproval(NotificationApproval ntf,List<Integer> userIds ) {
 		NotificationApproval savedNtf = ntfApprovalDb.save(ntf);
+		System.out.println(savedNtf.getUuid());
+		System.out.println(userIds);
 		for(int userId : userIds) {
 			List<String> token = userTokenDb.findDeviceTokenByUserId(userId);
 			NotificationTracker ntfTracker = new NotificationTracker(userId, ntf.getTargetId() , savedNtf.getUuid().toString());
@@ -113,6 +116,7 @@ public class NotificationService {
 				Boolean flag = false;
 				String response="";
 				for(String s : token) {
+					if( s != null )
 					response = fcm.sendToUser(ntfData, s);
 					if(response != null) flag = true; 
 				}
