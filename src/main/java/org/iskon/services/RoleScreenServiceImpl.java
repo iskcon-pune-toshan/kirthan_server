@@ -24,6 +24,7 @@ public class RoleScreenServiceImpl implements RoleScreenService {
 	@Override
 	public List<RoleScreen> addRoleScreen(List<RoleScreen> listRoleScreen)
 	{
+		System.out.println(listRoleScreen.toString());
 		return rolescreenJpaRepository.saveAll(listRoleScreen);
 	}
 

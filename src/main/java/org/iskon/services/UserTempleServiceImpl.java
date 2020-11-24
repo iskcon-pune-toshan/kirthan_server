@@ -62,6 +62,7 @@ public class UserTempleServiceImpl implements UserTempleService {
 	
 	@Override
 	public List<UserTemple> getUserTempleWithDescription() {
+		System.out.println(usertempleJpaRepository.findAllWithDescription());
 		return usertempleJpaRepository.findAllWithDescription();
 	}
 

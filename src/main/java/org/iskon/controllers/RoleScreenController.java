@@ -23,8 +23,9 @@ public class RoleScreenController {
 
 	@RequestMapping(value = "/addrolescreen", method = RequestMethod.PUT)
 	public List<RoleScreen> addRoleScreen(@RequestBody List<RoleScreen> listRoleScreen) {
+		System.out.println(listRoleScreen+"   fromaddRoleScreen");
 		List<RoleScreen> res = roleScreenService.addRoleScreen(listRoleScreen);
-
+		System.out.println(res);
 		return res;
 	}
 
@@ -44,6 +45,7 @@ public class RoleScreenController {
 	@RequestMapping(value = "/getrolescreenwithdescription", method = RequestMethod.PUT)
 	public List<RoleScreen> getRoleScreenWithDescription() {
 		List<RoleScreen> req = roleScreenService.getRoleScreenWithDescription();
+		//System.out.println("RoleScreen Called");
 		return req;
 	}
 

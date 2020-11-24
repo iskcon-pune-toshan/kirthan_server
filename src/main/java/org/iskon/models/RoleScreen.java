@@ -13,6 +13,13 @@ import javax.persistence.Transient;
 @Entity
 @Table(name="role_screen")
 public class RoleScreen implements Serializable {
+	@Override
+	public String toString() {
+		return "RoleScreen [id=" + id + ", roleId=" + roleId + ", screenId=" + screenId + ", create=" + createFlag
+				+ ", update=" + updateFlag + ", delete=" + deleteFlag + ", view=" + viewFlag + ", process=" + processFlag
+				+ ", roleName=" + roleName + ", screenName=" + screenName + "]";
+	}
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
@@ -23,20 +30,20 @@ public class RoleScreen implements Serializable {
 	@Column(name="screen_id")
 	private Integer screenId;
 	
-	@Column(name="create")
-	private Boolean create;
+	@Column(name="create_flag")
+	private Boolean createFlag;
 
-	@Column(name="update")
-	private Boolean update;
+	@Column(name="update_flag")
+	private Boolean updateFlag;
 	
-	@Column(name="delete")
-	private Boolean delete;
+	@Column(name="delete_flag")
+	private Boolean deleteFlag;
 
-	@Column(name="view")
-	private Boolean view;
+	@Column(name="view_flag")
+	private Boolean viewFlag;
 
-	@Column(name="process")
-	private Boolean process;
+	@Column(name="process_flag")
+	private Boolean processFlag;
 	
 	@Transient
 	private String roleName;
@@ -49,76 +56,123 @@ public class RoleScreen implements Serializable {
 		
 	}
 
-	private RoleScreen(Integer id, Integer roleId, Integer screenId, Boolean create, Boolean update, Boolean delete,
-			Boolean view, Boolean process) {
+	private RoleScreen(Integer id, Integer roleId, Integer screenId, Boolean createFlag, Boolean updateFlag, Boolean deleteFlag,
+			Boolean viewFlag, Boolean processFlag) {
 		this.id = id;
 		this.roleId = roleId;
 		this.screenId = screenId;
-		this.create = create;
-		this.update = update;
-		this.delete = delete;
-		this.view = view;
-		this.process = process;
+		this.createFlag = createFlag;
+		this.updateFlag = updateFlag;
+		this.deleteFlag = deleteFlag;
+		this.viewFlag = viewFlag;
+		this.processFlag = processFlag;
 	}
 
-	public RoleScreen(Integer id, Integer roleId, Integer screenId, Boolean create, Boolean update
-			, Boolean delete, Boolean view, Boolean process,String roleName,String screenName) {
+	public RoleScreen(Integer id, Integer roleId, Integer screenId, Boolean createFlag, Boolean updateFlag
+			, Boolean deleteFlag, Boolean viewFlag, Boolean processFlag,String roleName,String screenName) {
 		this.id = id;
 		this.roleId = roleId;
 		this.screenId = screenId;
-		this.create = create;
-		this.update = update;
-		this.delete = delete;
-		this.view = view;
-		this.process = process;
+		this.createFlag = createFlag;
+		this.updateFlag = updateFlag;
+		this.deleteFlag = deleteFlag;
+		this.viewFlag = viewFlag;
+		this.processFlag = processFlag;
 		this.roleName = roleName;
 		this.screenName = screenName;
 	}
 
-	public static RoleScreen buildRoleScreen(Integer id, Integer roleId, Integer screenId, Boolean create, Boolean update
-			, Boolean delete, Boolean view, Boolean process) {
-		return new RoleScreen(id, roleId, screenId, create, update, delete, view, process);
+	public static RoleScreen buildRoleScreen(Integer id, Integer roleId, Integer screenId, Boolean createFlag, Boolean updateFlag
+			, Boolean deleteFlag, Boolean viewFlag, Boolean processFlag) {
+		return new RoleScreen(id, roleId, screenId, createFlag, updateFlag, deleteFlag, viewFlag, processFlag);
 	}
 
 	public Integer getId() {
 		return id;
 	}
 
+	/*
+	 * public void setId(Integer id) { this.id = id; }
+	 */
+
 	public Integer getRoleId() {
 		return roleId;
 	}
-	
+
+	/*
+	 * public void setRoleId(Integer roleId) { this.roleId = roleId; }
+	 */
+
 	public Integer getScreenId() {
 		return screenId;
 	}
-	
-	public Boolean getIsCreated() {
-		return create;
+
+	/*
+	 * public void setScreenId(Integer screenId) { this.screenId = screenId; }
+	 */
+
+
+	public Boolean getCreateFlag() {
+		return createFlag;
 	}
-	
-	public Boolean getIsUpdated() {
-		return update;
+
+	/*
+	 * public void setCreateFlag(Boolean createFlag) { this.createFlag = createFlag;
+	 * }
+	 */
+	public Boolean getUpdateFlag() {
+		return updateFlag;
 	}
-	
-	public Boolean getIsDeleted() {
-		return delete;
+
+	/*
+	 * public void setUpdateFlag(Boolean updateFlag) { this.updateFlag = updateFlag;
+	 * }
+	 */
+
+	public Boolean getDeleteFlag() {
+		return deleteFlag;
 	}
-	
-	public Boolean getIsViewd() {
-		return view;
+
+	/*
+	 * public void setDeleteFlag(Boolean deleteFlag) { this.deleteFlag = deleteFlag;
+	 * }
+	 */
+
+	public Boolean getViewFlag() {
+		return viewFlag;
 	}
-	
-	public Boolean getIsProcessed() {
-		return process;
+
+	/*
+	 * public void setViewFlag(Boolean viewFlag) { this.viewFlag = viewFlag; }
+	 */
+
+	public Boolean getProcessFlag() {
+		return processFlag;
 	}
-	
+
+	/*
+	 * public void setProcessFlag(Boolean processFlag) { this.processFlag =
+	 * processFlag; }
+	 */
 	public String getRoleName() {
 		return roleName;
 	}
-	
+
+	/*
+	 * public void setRoleName(String roleName) { this.roleName = roleName; }
+	 */
+
 	public String getScreenName() {
 		return screenName;
 	}
 
+	/*
+	 * public void setScreenName(String screenName) { this.screenName = screenName;
+	 * }
+	 */
+	
+	
+
+	
 }
 

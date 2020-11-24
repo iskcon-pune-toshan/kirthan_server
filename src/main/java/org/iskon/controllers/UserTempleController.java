@@ -42,8 +42,9 @@ public class UserTempleController {
 
 	@RequestMapping(value = "/getusertemplewithdescription", method = RequestMethod.PUT)
 	public List<UserTemple> getUserTempleWithDescription() {
-		// System.out.println("queryParams: "+queryParams);
+		 System.out.println("UserTemple Controller");
 		List<UserTemple> req = userTempleService.getUserTempleWithDescription();
+		System.out.println(req);
 		return req;
 	}
 
