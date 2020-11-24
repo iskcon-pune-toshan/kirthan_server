@@ -6,6 +6,7 @@ import org.iskon.repositories.UserJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.iskon.exceptions.UsernameNotFoundException;
 
 import java.util.ArrayList;
@@ -52,7 +53,6 @@ public class UserServiceImpl implements UserService {
 	public List<User> getUsers(UserSearch usersearch)
 	{
 		return userJpaRepository.findAll(new Specification<User>(){
-
 			@Override
 			public Predicate toPredicate(Root<User> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
 				List<Predicate> predicates = new ArrayList<>();
@@ -88,7 +88,6 @@ public class UserServiceImpl implements UserService {
 		
 		return userJpaRepository.findByEmail(username);
 	}
-
 
 
 }

@@ -19,7 +19,7 @@ public interface UserService {
 	void deleteUser(User user);
 	
 	Optional<User> getUserByEmailId(String username);
-	
+		
 	List<User> getUsers(UserSearch query);
 
 	Boolean processUser(User params);

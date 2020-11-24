@@ -1,16 +1,17 @@
 package org.iskon.controllers;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Map;
+import java.util.ArrayList;
 
+import org.iskon.authentication.JwtUtil;
 import org.iskon.models.User;
 import org.iskon.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -64,11 +65,9 @@ public class UserController {
 //		nw.populateUserNotification(req);
 		
 	}
-
-
+	
 	@RequestMapping(value = "/getuser", method = RequestMethod.PUT)
 	public List<User> getUser(@RequestBody UserSearch queryParams) {
-		//System.out.println("queryParams: "+queryParams);
 		List<User> req = userService.getUsers(queryParams);
 		return req;
 	}

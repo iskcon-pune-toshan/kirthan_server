@@ -1,6 +1,9 @@
 package org.iskon.models;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -19,9 +22,6 @@ public class UserToken implements Serializable {
 	@Column(name = "device_token")
 	private String deviceToken;
 
-	@Column(name = "firebase_uid")
-	private String firebaseUid;
-
 	@Column(name = "created_by")
 	private String createdBy;
 
@@ -34,26 +34,36 @@ public class UserToken implements Serializable {
 	@Column(name = "updated_time")
 	private Date updatedTime;
 
-	private UserToken() {
 
-	}
-
-	private UserToken(Integer id, Integer userId, String deviceToken, String firebaseUid, String createdBy,
-					  String updatedBy, Date createdTime, Date updatedTime) {
-		this.id = id;
+	public void setUserId(Integer userId) {
 		this.userId = userId;
-		this.deviceToken = deviceToken;
-		this.firebaseUid = firebaseUid;
-		this.createdBy = createdBy;
-		this.updatedBy = updatedBy;
-		this.createdTime = createdTime;
-		this.updatedTime = updatedTime;
 	}
 
-	public static UserToken buildUserToken(Integer id, Integer userId, String deviceToken, String firebaseUid,
-										   String createdBy, String updatedBy, Date Date1,
-										   Date localDate2) {
-		return new UserToken(id, userId, deviceToken, firebaseUid, createdBy, updatedBy, Date1, localDate2);
+	public void setDeviceToken(String deviceToken) {
+		this.deviceToken = deviceToken;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+
+
+	public UserToken(@JsonProperty("deviceToken") String deviceToken) {
+		super();
+		this.deviceToken = deviceToken;
+		this.createdTime = new Date();
+	}
+
+	public void setCreatedTime(Date createdTime) {
+		this.createdTime = createdTime;
+	}
+
+	public void setUpdatedTime(Date updatedTime) {
+		this.updatedTime = updatedTime;
 	}
 
 	public Integer getId() {
@@ -66,10 +76,6 @@ public class UserToken implements Serializable {
 
 	public String getDeviceToken() {
 		return deviceToken;
-	}
-
-	public String getFirebaseUid() {
-		return firebaseUid;
 	}
 
 	public String getCreatedBy() {
