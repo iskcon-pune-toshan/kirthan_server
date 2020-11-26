@@ -1,5 +1,6 @@
 package org.iskon.controllers;
 
+import java.util.Date;
 import java.util.UUID;
 
 import org.iskon.models.Event;
@@ -13,31 +14,36 @@ import org.springframework.stereotype.Component;
 @Component
 public class NotificationWrapper{
 	
+	
 	@Autowired
 	NotificationService ntfService;
 	
-	
-	public boolean generateNotification(Event event) {
+	public boolean generateNotification(Event event,String broadCastType) {
 		NotificationApproval ntf = new NotificationApproval();
-		ntf.setBroadcastType("multiple");
-		ntf.setCreatedBy("SYSTEM");
-		ntf.setMessage("New Event Created!Need Approval");
-		ntf.setCreatedTime(event.getCreatedTime());
-		ntf.setMappingTableData("event");
+		ntf.setCreatedBy(event.getCreatedBy());
 		ntf.setTargetType("event");
+		if(broadCastType.equalsIgnoreCase("multiple"))
+			ntf.setMessage("Updated event "+event.getEventTitle()+"! Need approval");
+		else
+			ntf.setMessage("New event "+event.getEventTitle()+" created! Need approval");
+		ntf.setCreatedTime(new Date());
+		ntf.setMappingTableData("event");
 		ntf.setTargetId(event.getId());
 		ntf.setUuid(UUID.randomUUID());
 		return ntfService.saveNotificationAppr(ntf);
 	}
 	
-	public boolean generateNotification(Team team) {
+	public boolean generateNotification(Team team,String broadCastType) {
 		NotificationApproval ntf = new NotificationApproval();
-		ntf.setBroadcastType("multiple");
-		ntf.setCreatedBy("SYSTEM");
-		ntf.setMessage("New Team Created! Needed Approval");
+		ntf.setCreatedBy(team.getCreatedBy());
+		if(broadCastType.equalsIgnoreCase("multiple"))
+			ntf.setMessage("Updated team "+team.getTeamTitle()+"! Need approval");
+		else
+			ntf.setMessage("New team "+team.getTeamTitle()+" created! Need approval");
+		ntf.setMessage("New Team "+team.getTeamTitle()+" created! Need Approval");
 		ntf.setCreatedTime(team.getCreatedTime());
-		ntf.setMappingTableData("team_user");
-		ntf.setTargetType("team_user");
+		ntf.setMappingTableData("team");
+		ntf.setTargetType("team");
 		ntf.setTargetId(team.getId());
 		ntf.setUuid(UUID.randomUUID());
 		return ntfService.saveNotificationAppr(ntf);
@@ -45,7 +51,6 @@ public class NotificationWrapper{
 	
 	public boolean generateNotification(User user) {
 		NotificationApproval ntf = new NotificationApproval();
-		ntf.setBroadcastType("single");
 		ntf.setCreatedBy("SYSTEM");
 		ntf.setCreatedTime(user.getCreatedTime());
 		ntf.setMappingTableData("user");

@@ -30,6 +30,7 @@ public class UserController {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
+	
 	@RequestMapping(value = "/getdummyuser", method = RequestMethod.GET)
 	public List<User> getDummyUser() {
 		List<User> userreqs = new ArrayList<User>();
@@ -44,7 +45,7 @@ public class UserController {
 		newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
 		System.out.println("User after encrypted password :" + newUser.getPassword());
 		User req = userService.addUser(newUser);
-//		NotificationWrapper nw = new NotificationWrapper();
+		nw.generateNotification(req);
 		return req;
 	}
 

@@ -134,17 +134,18 @@ public class NotificationService {
 				return handleNotification(ntf,ids);
 			}
 			else if (ntf.getBroadcastType().equals("multiple")) {
-			String tableToQuery = ntf.getMappingTableData();
+			String tableToQuery = ntf.getTargetType();
 				if(tableToQuery == "") {
 					System.out.println("Required Mapping data");
 					return false;
 				}
-				if (tableToQuery.equalsIgnoreCase("event_user")) {
+				if (tableToQuery.equalsIgnoreCase("event")) {
+					System.out.println("Method called");
 					ntf.setTitle("Kirtan Event Updates");
 					List<Integer> userId = ntfDb.getParticipants(ntf.getTargetId());
 					System.out.println(userId);
 					return handleNotification(ntf, userId);
-				} else if (tableToQuery.equalsIgnoreCase("team_user")) {
+				} else if (tableToQuery.equalsIgnoreCase("team")) {
 						ntf.setTitle("Kirtan Team Updates");
 						ArrayList<Integer> teamId = new ArrayList<>();
 						teamId.add(ntf.getTargetId());
@@ -167,19 +168,19 @@ public class NotificationService {
 
 	
 	public Boolean saveNotificationAppr(NotificationApproval ntf) {
-		if (ntf.getBroadcastType().toLowerCase().equalsIgnoreCase("single")) {
+		/*if (ntf.getBroadcastType().toLowerCase().equalsIgnoreCase("single")) {
 			ntf.setTitle("Kirtan Admin Updates");
 			List<Integer> userIds = new ArrayList<Integer>();
 			ntf.setAction("waiting");
 			userIds.add(ntf.getTargetId());
 			return handleNotificationApproval(ntf, userIds);
 		} else if (ntf.getBroadcastType().equalsIgnoreCase("multiple")) {
-			ntf.setTitle("Kirtan Admin Updates");
+		*/	ntf.setTitle("Kirtan Admin Updates");
 			ntf.setAction("waiting");
 			List<Integer> adminIds = ntfDb.getAdminId();
 			return handleNotificationApproval(ntf, adminIds);			
-		} else
-			return false;
+		/*} else
+			return false;*/
 	}
 
 	public NotificationApproval updateApproval(String status,String ntfId,String username) {
@@ -193,10 +194,10 @@ public class NotificationService {
 		ntfToBeUpdated.setUpdatedTime(new Date());
 		NotificationApproval updatedNotification = ntfApprovalDb.save(ntfToBeUpdated);
 		Notification newNtf = new Notification();
-		newNtf.setMessage("Your previous request has been "+ updatedNotification.getAction()+" by admin :"+ updatedNotification.getTargetId());
-		newNtf.setTargetId(updatedNotification.getTargetId());
-		newNtf.setTargetType(updatedNotification.getTargetType());
-		newNtf.setBroadcastType(updatedNotification.getBroadcastType());		
+		newNtf.setMessage("Your previous request has been "+ updatedNotification.getAction()+"("+updatedNotification.getMessage()+")");
+		newNtf.setBroadcastType("single");		
+		newNtf.setTargetType("user");
+		newNtf.setTargetId(userService.getUserByEmailId(updatedNotification.getCreatedBy()).get().getId());
 		newNtf.setMappingTableData(updatedNotification.getMappingTableData());
 		newNtf.setUpdatedBy(updatedNotification.getUpdatedBy());
 		newNtf.setUpdatedTime(new Date());

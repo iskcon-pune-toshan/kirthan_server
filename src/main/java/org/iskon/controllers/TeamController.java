@@ -27,7 +27,7 @@ public class TeamController {
 		Team req = teamService.addTeam(newTeam);
 
 		//NotificationWrapper nw = new NotificationWrapper();
-		nw.generateNotification(req);
+		nw.generateNotification(req,"single");
 		return req;
 	}
 
@@ -37,7 +37,7 @@ public class TeamController {
 		Team req = teamService.updateTeam(newTeam);
 
 //		NotificationWrapper nw = new NotificationWrapper();
-		nw.generateNotification(req);
+		nw.generateNotification(req,"multiple");
 		return req;
 	}
 

@@ -32,7 +32,7 @@ public class EventController {
 	public Event addEvent(@RequestBody Event newEvent) {
 		Event req = eventService.addEvent(newEvent);
 		//NotificationWrapper ntfWrapper = new NotificationWrapper();
-		ntfWrapper.generateNotification(req);
+		ntfWrapper.generateNotification(req,"single");
 		return req;
 	}
 	
@@ -41,7 +41,7 @@ public class EventController {
 		System.out.println(newEvent);	
 		Event req = eventService.updateEvent(newEvent);
 		//NotificationWrapper ntfWrapper = new NotificationWrapper();
-		ntfWrapper.generateNotification(newEvent);
+		ntfWrapper.generateNotification(newEvent,"multiple");
 		return req;
 	}
 	

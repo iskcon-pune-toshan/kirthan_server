@@ -137,29 +137,59 @@ public class NotificationController {
 		if(updatedNtf == null) resp = false; 
 		if (updatedNtf.getTargetType().equalsIgnoreCase("event")) // this is for event
 		{
-			System.out.println("Called");
-			
 			  Event event = eventService.getEventById(updatedNtf.getTargetId());
 			  event.setApprovalComments(updatedNtf.getAction());
 			  event.setApprovalStatus(updatedNtf.getAction()); 
 			  event.setUpdatedTime(new Date()); 
-			  event.setUpdatedBy( "System"); 
-			  event.setIsProcessed(true);
+			  event.setUpdatedBy(updatedNtf.getUpdatedBy());
+			  if(!event.getIsProcessed()) {
+				  //if event has been processed before
+				  //that means this request is for update 
+				  //in which case notificaion should be sent to those who have joined the event
+				  Notification newNtf = new Notification();
+				  newNtf.setBroadcastType("multiple");
+				  newNtf.setCreatedBy("SYSTEM");
+				  newNtf.setCreatedTime(new Date());
+				  newNtf.setMappingTableData("event_user");
+				  newNtf.setMessage(updatedNtf.getMessage());
+				  newNtf.setTargetId(updatedNtf.getTargetId());
+				  newNtf.setTargetType("event");
+				  newNtf.setTitle(event.getEventTitle()+" Updates");
+				  newNtf.setUuid( UUID.randomUUID());
+				  ntfs.saveNotification(newNtf);
+			  }
+			  else event.setIsProcessed(true);
 			  eventService.processEvent(event);
 			}
-		else if (updatedNtf.getTargetType().equalsIgnoreCase("team")) // this is for user
-		{
-			
+		else if(updatedNtf.getTargetType().equalsIgnoreCase("team")) // this is for user // this needs to be changed and adjusted for event and user as well
+		{		
 			  Team team = teamService.getTeamById(updatedNtf.getTargetId());
 			  team.setApprovalComments(updatedNtf.getAction());
 			  team.setApprovalStatus(updatedNtf.getAction()); team.setIsProcessed(true);
 			  team.setUpdatedBy("System");
 			  team.setUpdatedTime(updatedNtf.getUpdatedTime());
+			  if(!team.getIsProcessed()) {
+				  //if team has been processed before
+				  //that means this request is for update 
+				  //in which case notificaion should be sent to those who have joined the event
+				  Notification newNtf = new Notification();
+				  newNtf.setBroadcastType("multiple");
+				  newNtf.setCreatedBy("SYSTEM");
+				  newNtf.setCreatedTime(new Date());
+				  newNtf.setMappingTableData("team_user");
+				  newNtf.setMessage(updatedNtf.getMessage());
+				  newNtf.setTargetId(updatedNtf.getTargetId());
+				  newNtf.setTargetType("team");
+				  newNtf.setTitle(team.getTeamTitle()+" Updates");
+				  newNtf.setUuid( UUID.randomUUID());
+				  ntfs.saveNotification(newNtf);
+			  }
+			  else
+				  team.setIsProcessed(true);
 			  teamService.processTeam(team);
-			 		}
-		else if (updatedNtf.getTargetType().equalsIgnoreCase("user")) // this is for team
+			}
+		else if (updatedNtf.getTargetType().equalsIgnoreCase("user")) 
 		{
-			
 			  User userTarget = userService.getUserById(updatedNtf.getTargetId());
 			  userTarget.setApprovalComments(updatedNtf.getAction());
 			  userTarget.setApprovalStatus(updatedNtf.getAction()); 
@@ -167,7 +197,7 @@ public class NotificationController {
 			  userTarget.setUpdatedBy("System");
 			  userTarget.setUpdatedTime(new Date());
 			  userService.processUser(userTarget);
-				}
+		}
 
 		return resp;
 	}
