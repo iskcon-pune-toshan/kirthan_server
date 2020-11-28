@@ -12,7 +12,6 @@ import org.iskon.models.Notification;
 import org.iskon.models.NotificationApproval;
 import org.iskon.models.NotificationTracker;
 import org.iskon.models.NotificationUi;
-import org.iskon.models.User;
 import org.iskon.repositories.NotificationApprovalJpaRepository;
 import org.iskon.repositories.NotificationJpaRepository;
 import org.iskon.repositories.NotificationTrackerJpaRepository;

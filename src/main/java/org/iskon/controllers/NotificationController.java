@@ -138,6 +138,7 @@ public class NotificationController {
 		if (updatedNtf.getTargetType().equalsIgnoreCase("event")) // this is for event
 		{
 			  Event event = eventService.getEventById(updatedNtf.getTargetId());
+			 // System.out.println("Before " +event.toString());
 			  event.setApprovalComments(updatedNtf.getAction());
 			  event.setApprovalStatus(updatedNtf.getAction()); 
 			  event.setUpdatedTime(new Date()); 
@@ -158,8 +159,9 @@ public class NotificationController {
 				  newNtf.setUuid( UUID.randomUUID());
 				  ntfs.saveNotification(newNtf);
 			  }
-			  else event.setIsProcessed(true);
-			  eventService.processEvent(event);
+			  //event.setIsProcessed(true);
+			  //System.out.println("After " +event.toString());
+			  eventService.updateEvent(event);
 			}
 		else if(updatedNtf.getTargetType().equalsIgnoreCase("team")) // this is for user // this needs to be changed and adjusted for event and user as well
 		{		
@@ -184,9 +186,8 @@ public class NotificationController {
 				  newNtf.setUuid( UUID.randomUUID());
 				  ntfs.saveNotification(newNtf);
 			  }
-			  else
 				  team.setIsProcessed(true);
-			  teamService.processTeam(team);
+			  teamService.updateTeam(team);
 			}
 		else if (updatedNtf.getTargetType().equalsIgnoreCase("user")) 
 		{
@@ -196,7 +197,7 @@ public class NotificationController {
 			  userTarget.setIsProcessed(true);
 			  userTarget.setUpdatedBy("System");
 			  userTarget.setUpdatedTime(new Date());
-			  userService.processUser(userTarget);
+			  userService.updateUser(userTarget);
 		}
 
 		return resp;

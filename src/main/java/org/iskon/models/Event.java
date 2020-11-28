@@ -20,6 +20,20 @@ public class Event implements Serializable {
 		this.approvalComments = approvalComments;
 	}
 
+	@Override
+	public String toString() {
+		return "Event [id=" + id + ", eventTitle=" + eventTitle + ", eventDescription=" + eventDescription
+				+ ", eventDate=" + eventDate + ", eventDuration=" + eventDuration + ", eventLocation=" + eventLocation
+				+ ", eventType=" + eventType + ", phoneNumber=" + phoneNumber + ", addLineOne=" + addLineOne
+				+ ", addLineTwo=" + addLineTwo + ", addLineThree=" + addLineThree + ", locality=" + locality + ", city="
+				+ city + ", pincode=" + pincode + ", state=" + state + ", country=" + country + ", isProcessed="
+				+ isProcessed + ", approvalStatus=" + approvalStatus + ", approvalComments=" + approvalComments
+				+ ", createdBy=" + createdBy + ", updatedBy=" + updatedBy + ", createdTime=" + createdTime
+				+ ", updatedTime=" + updatedTime + ", sourceLongitude=" + sourceLongitude + ", sourceLatitude="
+				+ sourceLatitude + ", destinationLongitude=" + destinationLongitude + ", destinationLatitude="
+				+ destinationLatitude + ", eventMobility=" + eventMobility + "]";
+	}
+
 	public void setUpdatedBy(String updatedBy) {
 		this.updatedBy = updatedBy;
 	}
