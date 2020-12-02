@@ -19,9 +19,9 @@ public class NotificationWrapper{
 	NotificationService ntfService;
 	
 	public boolean generateNotification(Event event,String broadCastType) {
-		NotificationApproval ntf = new NotificationApproval();
+		NotificationApproval ntf = new NotificationApproval(); // set broadCast type to multiple in case of an update and single in case of create
 		ntf.setCreatedBy(event.getCreatedBy());
-		ntf.setTargetType("event");
+		ntf.setTargetType("event");	
 		if(broadCastType.equalsIgnoreCase("multiple"))
 			ntf.setMessage("Updated event "+event.getEventTitle()+"! Need approval");
 		else
@@ -34,7 +34,7 @@ public class NotificationWrapper{
 	}
 	
 	public boolean generateNotification(Team team,String broadCastType) {
-		NotificationApproval ntf = new NotificationApproval();
+		NotificationApproval ntf = new NotificationApproval();// set broadCast type to multiple in case of an update and single in case of create
 		ntf.setCreatedBy(team.getCreatedBy());
 		if(broadCastType.equalsIgnoreCase("multiple"))
 			ntf.setMessage("Updated team "+team.getTeamTitle()+"! Need approval");
@@ -50,8 +50,8 @@ public class NotificationWrapper{
 	}
 	
 	public boolean generateNotification(User user) {
-		NotificationApproval ntf = new NotificationApproval();
-		ntf.setCreatedBy("SYSTEM");
+		NotificationApproval ntf = new NotificationApproval(); 
+		ntf.setCreatedBy(user.getEmail());
 		ntf.setCreatedTime(user.getCreatedTime());
 		ntf.setMappingTableData("user");
 		ntf.setTargetType("user");
