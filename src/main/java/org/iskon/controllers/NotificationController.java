@@ -42,21 +42,20 @@ public class NotificationController {
 	@Autowired
 	private UserService userService;
 
-	/**
-	 * Fetches all the notifications associated with a given userId.
-	 * Requires user to be an authenticated user.
-	 * Implementation : User authentication needs to be added.
-	 * @param User Json like object containing details that are required to process the request.In the current implementation that would be the userId.Example:{"userId" : "4"}
-	 * @return response Json like object consisting of a message body that stores all the notifications in an array.
-	 * @throws HttpException User-Built exception that generates an errorCode corresponding to the httpStatusCode.
-	 *
-	 */
 	private String getJwt(String authorizationHeader) {
 		JwtUtil jwtUtil = new JwtUtil();
 		String jwt = authorizationHeader.replace("Bearer ", "");
 		return jwtUtil.extractUsername(jwt);
 		
 	}
+	
+	/**
+	 * Fetches all the notifications associated with a given userId.
+	 * Requires user to be an authenticated user.
+	 * @param authHeader Authorization parameter should be added in the request header with values Bearer followed by the jwt token
+	 * @return List(NotificationUI)  A list of notification objects modified to be UI compatible will be returned.
+	 */
+	
 	@GetMapping()
 	public List<NotificationUi> fetchNotificaion(@RequestHeader("Authorization") String authHead) throws HttpException {
 		return ntfs.getAll(getJwt(authHead));
@@ -65,16 +64,9 @@ public class NotificationController {
 
 	/**
 	 * Stores a notification before sending it to the specified recipient<br>
-	 * <p>Incoming Body requirements: {
-		    "userId": "4",
-		    "message":"Testing notification",
-		    "type" : "info",
-		    "targetId": 4,
-		    "targetType": "single"
-				}</p>
-	 * @param body json formatted data that should contain all the details required for the notification to be send.
-	 * @return response json formatted body containing the status of the operation.
-	 * @throws HttpException thows an exception with errCode and errMessage corresponding to the httpStatus code
+	 * @param data Values in Json format corresponding to the notification model class.
+	 * @param authHeader Authorization parameter should be added in the request header with values Bearer followed by the jwt token
+	 * @return Boolean true or false returned corresponding to the operation's success or failure
 	 */
 	@PostMapping
 	public Boolean saveNotification(
@@ -86,6 +78,13 @@ public class NotificationController {
 		return ntfs.saveNotification(data);
 	}
 
+	/**
+	 * Stores a notification that requires an approval/reject action, before sending it to the user
+	 * Stores a notification before sending it to the specified recipient<br>
+	 * @param data Values in Json format corresponding to the notification model class.
+	 * @param authHeader Authorization parameter should be added in the request header with values Bearer followed by the jwt token
+	 * @return Boolean true or false returned corresponding to the operation's success or failure
+	 */
 	@PostMapping(path="/getApproval")
 	public Boolean saveNotificationAppr(
 			@RequestBody NotificationApproval ntfa,
@@ -97,31 +96,13 @@ public class NotificationController {
 			return ntfs.saveNotificationAppr(ntfa);			
 	}
 
-//	/**
-//	 * Fetches the detailed information stored in a database about a notification given the notificationId.
-//	 * @param body Stores all the inforamtion received from the request body. The request Body should be a json object.It should contain all
-//	 * the information required for a user to be authenticated
-//	 * @param ntfId PathVariable thats equal to the notificationId.
-//	 * @return response Map consisting of the notification details if a match is found and null other wise.
-//	 * @throws HttpException throws exception with corresponding Http Status code and error message
-//	 */
-//
-	@GetMapping(path="/getSingleNotification")
-	public NotificationUi fetchNtfById(
-			@RequestBody Map<String,Object> body,
-			@RequestHeader("Authorization") String authHeader) throws HttpException {
-		String ntfId = (String) body.get("ntfId");
-		String username = getJwt(authHeader);
-		return ntfs.getOne(ntfId,username);	
-	}
 	
 
 	/** Update the response to a approval seeking notification in the notification_approval table.
 	 * 	Current statuses used : Approved,Rejected,Wait(Waiting for response)
 	 * 	body : {"userId": integer, "response",Boolean} (response: 1 = Approved, 0=Rejected).
-	 *
-	 * @param body Stores all the information from the Http request body. Should consist of the notificationId and the response for the same.
-	 * @return response returns a map with status information about the operation
+	 * @param body Stores all the information from the HTTP request body. Should consist of the notificationId and the response for the same.
+	 * @return boolean returns a true or false value corresponding to the operations success or failure.
 	 */
 	@PutMapping(path="/update")
 	public Boolean updateNotificationById(
@@ -138,7 +119,6 @@ public class NotificationController {
 		if (updatedNtf.getTargetType().equalsIgnoreCase("event")) // this is for event
 		{
 			  Event event = eventService.getEventById(updatedNtf.getTargetId());
-			 // System.out.println("Before " +event.toString());
 			  event.setApprovalComments(updatedNtf.getAction());
 			  event.setApprovalStatus(updatedNtf.getAction()); 
 			  event.setUpdatedTime(new Date()); 
@@ -147,6 +127,7 @@ public class NotificationController {
 				  //if event has been processed before
 				  //that means this request is for update 
 				  //in which case notificaion should be sent to those who have joined the event
+				  //Change this according to the logic in update for events
 				  Notification newNtf = new Notification();
 				  newNtf.setBroadcastType("multiple");
 				  newNtf.setCreatedBy("SYSTEM");
@@ -159,10 +140,10 @@ public class NotificationController {
 				  newNtf.setUuid( UUID.randomUUID());
 				  ntfs.saveNotification(newNtf);
 			  }
-			  //event.setIsProcessed(true);
+			  event.setIsProcessed(true);
 			  //System.out.println("After " +event.toString());
-			  eventService.updateEvent(event);
-			}
+			  eventService.processEvent(event);
+		}
 		else if(updatedNtf.getTargetType().equalsIgnoreCase("team")) // this is for user // this needs to be changed and adjusted for event and user as well
 		{		
 			  Team team = teamService.getTeamById(updatedNtf.getTargetId());
@@ -174,6 +155,7 @@ public class NotificationController {
 				  //if team has been processed before
 				  //that means this request is for update 
 				  //in which case notificaion should be sent to those who have joined the event
+				  //Chnage the logic according to change in the update logic for teams
 				  Notification newNtf = new Notification();
 				  newNtf.setBroadcastType("multiple");
 				  newNtf.setCreatedBy("SYSTEM");
