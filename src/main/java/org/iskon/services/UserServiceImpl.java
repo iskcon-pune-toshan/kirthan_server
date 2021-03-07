@@ -1,16 +1,6 @@
 package org.iskon.services;
 
-import org.iskon.models.Team;
-import org.iskon.models.User;
-import org.iskon.repositories.UserJpaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-import org.iskon.exceptions.UsernameNotFoundException;
-
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +9,12 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.iskon.models.User;
 import org.iskon.models.UserSearch;
+import org.iskon.repositories.UserJpaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Component;
 @Component
 public class UserServiceImpl implements UserService {
 
@@ -53,6 +48,7 @@ public class UserServiceImpl implements UserService {
 	public List<User> getUsers(UserSearch usersearch)
 	{
 		return userJpaRepository.findAll(new Specification<User>(){
+
 			@Override
 			public Predicate toPredicate(Root<User> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
 				List<Predicate> predicates = new ArrayList<>();
@@ -68,7 +64,10 @@ public class UserServiceImpl implements UserService {
 
 				if(usersearch.getLastName() != null)
 					predicates.add(root.get("lastName").in(usersearch.getLastName()));
-
+				
+				if(usersearch.getRoleId() != null)
+					predicates.add(root.get("roleId").in(usersearch.getRoleId()));
+				
 				
 
 				return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
@@ -88,6 +87,7 @@ public class UserServiceImpl implements UserService {
 		
 		return userJpaRepository.findByEmail(username);
 	}
+
 
 
 }

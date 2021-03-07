@@ -10,7 +10,7 @@ public class UserSearch implements Serializable {
     private Integer id;
     private List<String> firstName;
     private List<String> lastName;
-    
+    private Integer roleId;
 
     public List<String> getFirstName(){
     	return firstName;
@@ -23,6 +23,10 @@ public class UserSearch implements Serializable {
     }
     public Boolean getIsProcessed() {
         return isProcessed;
+    }
+    
+    public Integer getRoleId() {
+    	return roleId;
     }
 
   

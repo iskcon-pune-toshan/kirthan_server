@@ -1,12 +1,15 @@
 package org.iskon.models;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
 public class EventSearch implements Serializable {
 
     private Date eventStartDate;
+    
+    private Date eventDate;
 
     private Date eventEndDate;
 
@@ -25,7 +28,9 @@ public class EventSearch implements Serializable {
     private List<String> state;
 
     private Boolean isProcessed;
-
+    
+    private String dateInterval;
+    
     private List<String> createdBy;
 
     public Date getEventStartDate() {
@@ -34,6 +39,10 @@ public class EventSearch implements Serializable {
 
     public Date getEventEndDate() {
         return eventEndDate;
+    }
+    
+    public Date getEventDate() {
+        return eventDate;
     }
 
     public Integer getEventDuration() {
@@ -70,5 +79,13 @@ public class EventSearch implements Serializable {
 
     public List<String> getCreatedBy() {
         return createdBy;
+    }
+    
+    public String getDateInterval(){
+    	return dateInterval;
+    }
+    
+    public void setEventEndDate(Date eventEndDate) {
+    	this.eventEndDate = eventEndDate;
     }
 }

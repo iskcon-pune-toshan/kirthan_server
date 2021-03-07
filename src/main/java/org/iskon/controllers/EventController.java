@@ -5,10 +5,12 @@ import org.iskon.models.EventSearch;
 import org.iskon.services.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.threeten.bp.LocalDate;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/event")
@@ -61,6 +63,18 @@ public class EventController {
 	public Boolean processevent(@RequestBody Event newEvent) {
 		Boolean req = eventService.processEvent(newEvent);
 		return req;
+	}
+	
+	@PutMapping("/geteventtitle")
+	public List<String> getEventTitle(@RequestBody EventSearch eventSearch) {
+		List<Event> req = eventService.getEventTitle(eventSearch);
+		System.out.println(req);
+		List<String> title = req.stream().map((event) -> event.getEventTitle()).collect(Collectors.toList());
+		
+		//String title=req.subList(0, 1).toString();
+		System.out.println(req.size());
+		System.out.println(title);
+		return title;
 	}
 	
 	private Event getDummyEventObj()

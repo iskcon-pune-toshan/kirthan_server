@@ -20,5 +20,7 @@ public interface EventService {
 
 	void deleteEvent(Event event);
 	
+	List<Event> getEventTitle(EventSearch event);
+	
 }
 
