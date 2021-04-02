@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.ArrayList;
 
 import org.iskon.authentication.JwtUtil;
+import org.iskon.models.Preferences;
 import org.iskon.models.User;
 import org.iskon.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,9 @@ public class UserController {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private PreferencesController pref;
 
 	
 	@RequestMapping(value = "/getdummyuser", method = RequestMethod.GET)
@@ -46,6 +50,7 @@ public class UserController {
 		System.out.println("User after encrypted password :" + newUser.getPassword());
 		User req = userService.addUser(newUser);
 		nw.generateNotification(req);
+		//pref.getUserId(req);
 		return req;
 	}
 
@@ -55,6 +60,7 @@ public class UserController {
 		User req = userService.updateUser(newUser);
 		//NotificationWrapper nw = new NotificationWrapper();
 		nw.generateNotification(req);
+		//pref.getUserId(req);
 		return req;
 	}
 

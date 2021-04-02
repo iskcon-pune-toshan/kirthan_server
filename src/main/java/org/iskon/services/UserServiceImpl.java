@@ -68,6 +68,13 @@ public class UserServiceImpl implements UserService {
 				if(usersearch.getRoleId() != null)
 					predicates.add(root.get("roleId").in(usersearch.getRoleId()));
 				
+				if(usersearch.getEmail() != null)
+					predicates.add(criteriaBuilder.equal(root.get("email"),usersearch.getEmail()));
+				
+				if (usersearch.getApprovalStatus() != null)
+					predicates.add(criteriaBuilder.equal(root.get("approvalStatus"),usersearch.getApprovalStatus()));
+
+				
 				
 
 				return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));

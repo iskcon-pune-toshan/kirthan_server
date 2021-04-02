@@ -151,6 +151,10 @@ public class EventServiceImpl implements EventService {
 
 				if (eventSearch.getCreatedBy() != null)
 					predicates.add(root.get("createdBy").in(eventSearch.getCreatedBy()));
+				
+				if(eventSearch.getApprovalStatus() != null)
+					predicates.add(criteriaBuilder.equal(root.get("approvalStatus") ,eventSearch.getApprovalStatus()));
+
 
 				return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
 			}
@@ -212,6 +216,10 @@ public class EventServiceImpl implements EventService {
 
 				if (eventSearch.getCreatedBy() != null)
 					predicates.add(root.get("createdBy").in(eventSearch.getCreatedBy()));
+				
+				if(eventSearch.getApprovalStatus() != null)
+					predicates.add(criteriaBuilder.equal(root.get("approvalStatus") ,eventSearch.getApprovalStatus()));
+
 
 
 				return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));

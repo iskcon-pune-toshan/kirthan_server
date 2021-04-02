@@ -9,6 +9,7 @@ public class TeamSearch implements Serializable {
     private Boolean isProcessed;
     private Integer id;
     private List<String> createdBy;
+    private String approvalStatus;
     
     private Date createTime;
 
@@ -25,4 +26,7 @@ public class TeamSearch implements Serializable {
     public List<String> getCreatedBy() {
         return createdBy;
     }
+	public String getApprovalStatus() {
+		return approvalStatus;
+	}
 }

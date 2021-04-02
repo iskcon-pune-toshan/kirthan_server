@@ -32,6 +32,8 @@ public class EventSearch implements Serializable {
     private String dateInterval;
     
     private List<String> createdBy;
+    
+    private String approvalStatus;
 
     public Date getEventStartDate() {
         return eventStartDate;
@@ -88,4 +90,8 @@ public class EventSearch implements Serializable {
     public void setEventEndDate(Date eventEndDate) {
     	this.eventEndDate = eventEndDate;
     }
+
+	public String getApprovalStatus() {
+		return approvalStatus;
+	}
 }

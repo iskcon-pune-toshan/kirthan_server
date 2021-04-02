@@ -17,15 +17,15 @@ public class NotificationWrapper{
 	
 	@Autowired
 	NotificationService ntfService;
-	
+	//generate ntfs
 	public boolean generateNotification(Event event,String broadCastType) {
 		NotificationApproval ntf = new NotificationApproval(); // set broadCast type to multiple in case of an update and single in case of create
 		ntf.setCreatedBy(event.getCreatedBy());
 		ntf.setTargetType("event");	
 		if(broadCastType.equalsIgnoreCase("multiple"))
-			ntf.setMessage("Updated event "+event.getEventTitle()+"! Need approval");
+			ntf.setMessage("Request to update an event \""+event.getEventTitle()+"\"");
 		else
-			ntf.setMessage("New event "+event.getEventTitle()+" created! Need approval");
+			ntf.setMessage("Request to create an event \""+event.getEventTitle()+"\"");
 		ntf.setCreatedTime(new Date());
 		ntf.setMappingTableData("event");
 		ntf.setTargetId(event.getId());
@@ -37,10 +37,9 @@ public class NotificationWrapper{
 		NotificationApproval ntf = new NotificationApproval();// set broadCast type to multiple in case of an update and single in case of create
 		ntf.setCreatedBy(team.getCreatedBy());
 		if(broadCastType.equalsIgnoreCase("multiple"))
-			ntf.setMessage("Updated team "+team.getTeamTitle()+"! Need approval");
+			ntf.setMessage("Request to update a team \""+team.getTeamTitle()+"\"");
 		else
-			ntf.setMessage("New team "+team.getTeamTitle()+" created! Need approval");
-		ntf.setMessage("New Team "+team.getTeamTitle()+" created! Need Approval");
+			ntf.setMessage("Request to create a team \""+team.getTeamTitle()+"\"");
 		ntf.setCreatedTime(team.getCreatedTime());
 		ntf.setMappingTableData("team");
 		ntf.setTargetType("team");
@@ -55,7 +54,7 @@ public class NotificationWrapper{
 		ntf.setCreatedTime(user.getCreatedTime());
 		ntf.setMappingTableData("user");
 		ntf.setTargetType("user");
-		ntf.setMessage("New User Created! Need Approval");
+		ntf.setMessage("New User created");
 		ntf.setTargetId(user.getId());
 		ntf.setUuid(UUID.randomUUID());
 		return ntfService.saveNotificationAppr(ntf);

@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.criteria.Expression;
+
 public class UserSearch implements Serializable {
 
     private Boolean isProcessed;
@@ -11,6 +13,8 @@ public class UserSearch implements Serializable {
     private List<String> firstName;
     private List<String> lastName;
     private Integer roleId;
+    private String approvalStatus;
+    private String email;
 
     public List<String> getFirstName(){
     	return firstName;
@@ -28,6 +32,12 @@ public class UserSearch implements Serializable {
     public Integer getRoleId() {
     	return roleId;
     }
+	public String getApprovalStatus() {
+		return approvalStatus;
+	}
+	public String getEmail() {
+		return email;
+	}
 
   
 }

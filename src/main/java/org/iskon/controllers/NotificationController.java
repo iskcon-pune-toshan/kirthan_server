@@ -18,16 +18,11 @@ import org.iskon.services.TeamService;
 import org.iskon.services.UserService;
 import org.iskon.utils.HttpException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/notifications")
+@RequestMapping("/api/notifications")
 public class NotificationController {
 
 	@Autowired
@@ -183,6 +178,12 @@ public class NotificationController {
 		}
 
 		return resp;
+	}
+	
+	@PutMapping(path = "/deletenotification")
+	public void deleteNotification(@RequestBody NotificationApproval newNtf) {
+		System.out.println(newNtf);
+		ntfs.deleteNotification(newNtf);
 	}
 
 }

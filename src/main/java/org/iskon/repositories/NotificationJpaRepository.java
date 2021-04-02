@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface NotificationJpaRepository extends JpaRepository<Notification,Integer>{
 	
-	@Query(	  " SELECT new org.iskon.models.NotificationUi(n.uuid,n.message,n.targetType,n.targetId,n.createdBy,n.createdTime,n.updatedBy,n.updatedTime) FROM " 
+	@Query(	  " SELECT new org.iskon.models.NotificationUi(n.uuid,n.message,n.targetType,n.targetId,n.createdBy,n.createdTime,n.updatedBy,n.updatedTime, n.id) FROM " 
 			+ " Notification n, NotificationTracker as ntf_trk, User u"
 			+ " where (n.uuid = ntf_trk.notificationId  and ntf_trk.userId = u.id and u.email = :username)"
 			+ " ORDER BY n.createdTime DESC" )	
@@ -23,6 +23,6 @@ public interface NotificationJpaRepository extends JpaRepository<Notification,In
 	@Query("select DISTINCT userId from UserTemple where roleId = 2 ")
 	List<Integer> getAdminId();
 
-	@Query("SELECT new org.iskon.models.NotificationUi(n.uuid,n.message,n.targetType,n.targetId,n.createdBy,n.createdTime,n.updatedBy,n.updatedTime) FROM Notification n WHERE n.uuid = :ntfId and n.createdBy = :username")
+	@Query("SELECT new org.iskon.models.NotificationUi(n.uuid,n.message,n.targetType,n.targetId,n.createdBy,n.createdTime,n.updatedBy,n.updatedTime, n.id) FROM Notification n WHERE n.uuid = :ntfId and n.createdBy = :username")
 	NotificationUi findByUuid(String ntfId,String username);
 }

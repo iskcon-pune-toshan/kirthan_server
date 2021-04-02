@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.threeten.bp.LocalDate;
 
+import com.google.api.client.util.DateTime;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -83,7 +85,7 @@ public class EventController {
 				"Pune",
 				"Sandhya", (long) 123456788, "Add Line One", "Add Line Two", "Add Line Three", "Camp", "Pune",
 				411014, "Maharashtra", "India", false, "Draft", null, "Chinmay",
-				"Manjunath", new Date(), new Date(), null, null, null, null, null);
+				"Manjunath", new Date(), new Date(), null, null, null, null, null, new Date());
 		return er;
 	}
 

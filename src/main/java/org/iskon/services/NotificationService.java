@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Component;
+import org.iskon.models.Event;
 import org.iskon.models.Notification;
 import org.iskon.models.NotificationApproval;
 import org.iskon.models.NotificationTracker;
@@ -34,6 +36,16 @@ public class NotificationService {
 
 	@Autowired
 	UserService userService;
+	
+	
+	public NotificationApproval getNotificationById(int id){
+		return ntfApprovalDb.findById(id);
+	}
+	
+	public void deleteNotification(NotificationApproval newNtf)
+	{
+		ntfApprovalDb.delete(newNtf);
+	}
 	
 	/** Service call to fetch all the notifications.
 	 * @param username The unique email id of the user as stored and defined in the user table.
@@ -219,4 +231,5 @@ public class NotificationService {
 			System.out.println("Couldnt send message");
 		return updatedNotification;
 	}
+
 }

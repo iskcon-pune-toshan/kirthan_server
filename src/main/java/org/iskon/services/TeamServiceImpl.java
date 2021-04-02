@@ -66,6 +66,10 @@ public class TeamServiceImpl implements TeamService {
 
 				if(teamsearch.getCreatedTime() != null)
 					predicates.add(root.get("createdTime").in(teamsearch.getCreatedTime()));
+				
+				if (teamsearch.getApprovalStatus() != null)
+					predicates.add(criteriaBuilder.equal(root.get("approvalStatus"),teamsearch.getApprovalStatus()));
+
 
 				
 

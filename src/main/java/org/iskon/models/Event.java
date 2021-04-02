@@ -1,6 +1,9 @@
 package org.iskon.models;
 
 import javax.persistence.*;
+
+import com.google.api.client.util.DateTime;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -126,6 +129,9 @@ public class Event implements Serializable {
 	
 	@Column(name = "event_mobility")
 	private String eventMobility;
+	
+	@Column(name = "event_time")
+	private Date eventTime;
 
 	private Event(){
 
@@ -136,7 +142,7 @@ public class Event implements Serializable {
 				  String addLineThree, String locality, String city, Integer pincode, String state, String country,
 				  Boolean isProcessed, String approvalStatus, String approvalComments,
 				  String createdBy, String updatedBy, Date createdTime, Date updatedTime, Double sourceLongitude,
-				  Double sourceLatitude, Double destinationLongitude, Double destinationLatitude, String eventMobility ) {
+				  Double sourceLatitude, Double destinationLongitude, Double destinationLatitude, String eventMobility, Date eventTime ) {
 		this.id = id;
 		this.eventTitle = eventTitle;
 		this.eventDescription = eventDescription;
@@ -165,6 +171,7 @@ public class Event implements Serializable {
 		this.destinationLongitude = destinationLongitude;
 		this.destinationLatitude = destinationLatitude;
 		this.eventMobility = eventMobility;
+		this.eventTime = eventTime;
 	}
 
 	public static Event buildEvent(Integer id, String eventTitle, String eventDescription, Date eventDate,
@@ -174,11 +181,11 @@ public class Event implements Serializable {
 								   String approvalStatus, String approvalComments,
 								   String createdBy, String updatedBy, Date createdTime, Date updatedTime, 
 								   Double sourceLongitude, Double sourceLatitude, Double destinationLongitude,
-								   Double destinationLatitude, String eventMobility) {
+								   Double destinationLatitude, String eventMobility, Date eventTime) {
 		return new Event(id, eventTitle, eventDescription, eventDate,eventDuration, eventLocation, eventType,
 				phoneNumber, addLineOne, addLineTwo, addLineThree, locality,city, pincode, state, country,
 				isProcessed, approvalStatus, approvalComments, createdBy, updatedBy, createdTime, updatedTime, 
-				sourceLongitude, sourceLatitude, destinationLongitude, destinationLatitude, eventMobility);
+				sourceLongitude, sourceLatitude, destinationLongitude, destinationLatitude, eventMobility, eventTime);
 	}
 
 	public Integer getId() {
@@ -291,6 +298,10 @@ public class Event implements Serializable {
 
 	public String getEventMobility() {
 		return eventMobility;
+	}
+	
+	public Date getEventTime() {
+		return eventTime;
 	}
 
 	

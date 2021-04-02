@@ -23,6 +23,8 @@ public class NotificationUi {
 	
 	private Date updatedTime;
 	
+	private int id;
+	
 	public String getUuid() {
 		return uuid;
 	}
@@ -94,11 +96,15 @@ public class NotificationUi {
 	public void setAction(String action) {
 		this.action = action;
 	}
+	
+	public int getId() {
+		return id;
+	}
 
 	private String action;
 
 	public NotificationUi(String uuid, String message, String targetType, int targetId, String createdBy,
-			Date createdTime, String updatedBy, Date updatedTime, String action) {
+			Date createdTime, String updatedBy, Date updatedTime, String action, int id) {
 		super();
 		this.uuid = uuid;
 		this.message = message;
@@ -109,10 +115,11 @@ public class NotificationUi {
 		this.updatedBy = updatedBy;
 		this.updatedTime = updatedTime;
 		this.action = action;
+		this.id = id;
 	}
 
 	public NotificationUi(String uuid, String message, String targetType, int targetId, String createdBy,
-			Date createdTime, String updatedBy, Date updatedTime) {
+			Date createdTime, String updatedBy, Date updatedTime, int id) {
 		super();
 		this.uuid = uuid;
 		this.message = message;
@@ -123,6 +130,7 @@ public class NotificationUi {
 		this.updatedBy = updatedBy;
 		this.updatedTime = updatedTime;
 		this.action = null;
+		this.id = id;
 	}
 	
 }
