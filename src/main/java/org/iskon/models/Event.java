@@ -10,11 +10,17 @@ import java.util.Date;
 @Entity
 @Table(name="event")
 public class Event implements Serializable {
+	
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
 
 	public void setIsProcessed(Boolean isProcessed) {
 		this.isProcessed = isProcessed;
 	}
-
+	public void setIsPublicEvent(Boolean isPublicEvent) {
+		this.isPublicEvent = isPublicEvent;
+	}
 	public void setApprovalStatus(String approvalStatus) {
 		this.approvalStatus = approvalStatus;
 	}
@@ -34,7 +40,7 @@ public class Event implements Serializable {
 				+ ", createdBy=" + createdBy + ", updatedBy=" + updatedBy + ", createdTime=" + createdTime
 				+ ", updatedTime=" + updatedTime + ", sourceLongitude=" + sourceLongitude + ", sourceLatitude="
 				+ sourceLatitude + ", destinationLongitude=" + destinationLongitude + ", destinationLatitude="
-				+ destinationLatitude + ", eventMobility=" + eventMobility + "]";
+				+ destinationLatitude + ", eventMobility=" + eventMobility + ", isPubicEvent=" + isPublicEvent + ", status=" + status + ", cancelReason=" + cancelReason + "]";
 	}
 
 	public void setUpdatedBy(String updatedBy) {
@@ -132,6 +138,15 @@ public class Event implements Serializable {
 	
 	@Column(name = "event_time")
 	private Date eventTime;
+	
+	@Column(name = "public_event")
+	private Boolean isPublicEvent;
+	
+	@Column(name = "status")
+	private Integer status;
+	
+	@Column(name = "cancel_reason")
+	private String cancelReason;
 
 	private Event(){
 
@@ -142,7 +157,8 @@ public class Event implements Serializable {
 				  String addLineThree, String locality, String city, Integer pincode, String state, String country,
 				  Boolean isProcessed, String approvalStatus, String approvalComments,
 				  String createdBy, String updatedBy, Date createdTime, Date updatedTime, Double sourceLongitude,
-				  Double sourceLatitude, Double destinationLongitude, Double destinationLatitude, String eventMobility, Date eventTime ) {
+				  Double sourceLatitude, Double destinationLongitude, Double destinationLatitude, String eventMobility,
+				  Date eventTime, Boolean isPublicEvent, Integer status, String cancelReason ) {
 		this.id = id;
 		this.eventTitle = eventTitle;
 		this.eventDescription = eventDescription;
@@ -172,6 +188,9 @@ public class Event implements Serializable {
 		this.destinationLatitude = destinationLatitude;
 		this.eventMobility = eventMobility;
 		this.eventTime = eventTime;
+		this.isPublicEvent = isPublicEvent;
+		this.status = status;
+		this.cancelReason = cancelReason;
 	}
 
 	public static Event buildEvent(Integer id, String eventTitle, String eventDescription, Date eventDate,
@@ -181,11 +200,13 @@ public class Event implements Serializable {
 								   String approvalStatus, String approvalComments,
 								   String createdBy, String updatedBy, Date createdTime, Date updatedTime, 
 								   Double sourceLongitude, Double sourceLatitude, Double destinationLongitude,
-								   Double destinationLatitude, String eventMobility, Date eventTime) {
+								   Double destinationLatitude, String eventMobility, Date eventTime, Boolean isPublicEvent,
+								   Integer status, String cancelReason) {
 		return new Event(id, eventTitle, eventDescription, eventDate,eventDuration, eventLocation, eventType,
 				phoneNumber, addLineOne, addLineTwo, addLineThree, locality,city, pincode, state, country,
 				isProcessed, approvalStatus, approvalComments, createdBy, updatedBy, createdTime, updatedTime, 
-				sourceLongitude, sourceLatitude, destinationLongitude, destinationLatitude, eventMobility, eventTime);
+				sourceLongitude, sourceLatitude, destinationLongitude, destinationLatitude, eventMobility, eventTime, isPublicEvent,
+				status, cancelReason);
 	}
 
 	public Integer getId() {
@@ -304,6 +325,17 @@ public class Event implements Serializable {
 		return eventTime;
 	}
 
+	public Boolean getIsPublicEvent() {
+		return isPublicEvent;
+	}
+	
+	public Integer getStatus() {
+		return status;
+	}
+	
+	public String getCancelReason() {
+		return cancelReason;
+	}
 	
 	
 }

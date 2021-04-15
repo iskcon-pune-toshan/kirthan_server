@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.iskon.models.NotificationApproval;
 import org.iskon.models.NotificationUi;
+import org.iskon.models.Permissions;
 
 
 public interface NotificationApprovalJpaRepository extends JpaRepository<NotificationApproval,Integer>{
@@ -30,6 +31,9 @@ public interface NotificationApprovalJpaRepository extends JpaRepository<Notific
 
 	@Query("Select n from NotificationApproval n where n.uuid = :uuid")
 	NotificationApproval findNotificationApprovalByUuid(String uuid);
+	
+	//To find & return notification by a particular spec like createdTime, similar to findAll functions in other Repository files.
+	List<NotificationApproval> findAll(Specification<NotificationApproval> eventSpecification);
 	
 	NotificationApproval findById(int id);
 

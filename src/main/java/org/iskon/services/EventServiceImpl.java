@@ -142,6 +142,8 @@ public class EventServiceImpl implements EventService {
 
 				if (eventSearch.getPincode() != null)
 					predicates.add(criteriaBuilder.equal(root.get("pincode"), eventSearch.getPincode()));
+				if (eventSearch.getId() != null)
+					predicates.add(criteriaBuilder.equal(root.get("id"), eventSearch.getId()));
 
 				if(eventSearch.getState() != null)
 					predicates.add(root.get("state").in(eventSearch.getState()));
@@ -155,6 +157,11 @@ public class EventServiceImpl implements EventService {
 				if(eventSearch.getApprovalStatus() != null)
 					predicates.add(criteriaBuilder.equal(root.get("approvalStatus") ,eventSearch.getApprovalStatus()));
 
+				if(eventSearch.getIsPublicEvent() != null)
+					predicates.add(criteriaBuilder.equal(root.get("isPublicEvent") ,eventSearch.getIsPublicEvent()));
+
+				if (eventSearch.getStatus() != null)
+					predicates.add(criteriaBuilder.equal(root.get("status"), eventSearch.getStatus()));
 
 				return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
 			}
@@ -220,6 +227,8 @@ public class EventServiceImpl implements EventService {
 				if(eventSearch.getApprovalStatus() != null)
 					predicates.add(criteriaBuilder.equal(root.get("approvalStatus") ,eventSearch.getApprovalStatus()));
 
+				if(eventSearch.getIsPublicEvent() != null)
+					predicates.add(criteriaBuilder.equal(root.get("isPublicEvent") ,eventSearch.getIsPublicEvent()));
 
 
 				return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));

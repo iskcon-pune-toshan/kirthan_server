@@ -7,8 +7,10 @@ import java.util.UUID;
 
 import org.iskon.authentication.JwtUtil;
 import org.iskon.models.Event;
+import org.iskon.models.EventSearch;
 import org.iskon.models.Notification;
 import org.iskon.models.NotificationApproval;
+import org.iskon.models.NotificationSearch;
 import org.iskon.models.NotificationUi;
 import org.iskon.models.Team;
 import org.iskon.models.User;
@@ -80,6 +82,7 @@ public class NotificationController {
 	 * @param authHeader Authorization parameter should be added in the request header with values Bearer followed by the jwt token
 	 * @return Boolean true or false returned corresponding to the operation's success or failure
 	 */
+	//Where is this used?
 	@PostMapping(path="/getApproval")
 	public Boolean saveNotificationAppr(
 			@RequestBody NotificationApproval ntfa,
@@ -90,7 +93,6 @@ public class NotificationController {
 			ntfa.setCreatedTime(new Date());
 			return ntfs.saveNotificationAppr(ntfa);			
 	}
-
 	
 
 	/** Update the response to a approval seeking notification in the notification_approval table.
@@ -118,7 +120,7 @@ public class NotificationController {
 			  event.setApprovalStatus(updatedNtf.getAction()); 
 			  event.setUpdatedTime(new Date()); 
 			  event.setUpdatedBy(updatedNtf.getUpdatedBy());
-			  if(!event.getIsProcessed()) {
+			  if(event.getUpdatedBy()!=null) {
 				  //if event has been processed before
 				  //that means this request is for update 
 				  //in which case notificaion should be sent to those who have joined the event
@@ -135,6 +137,7 @@ public class NotificationController {
 				  newNtf.setUuid( UUID.randomUUID());
 				  ntfs.saveNotification(newNtf);
 			  }
+			  event.setStatus(2);
 			  event.setIsProcessed(true);
 			  //System.out.println("After " +event.toString());
 			  eventService.processEvent(event);
@@ -143,8 +146,9 @@ public class NotificationController {
 		{		
 			  Team team = teamService.getTeamById(updatedNtf.getTargetId());
 			  team.setApprovalComments(updatedNtf.getAction());
-			  team.setApprovalStatus(updatedNtf.getAction()); team.setIsProcessed(true);
-			  team.setUpdatedBy("System");
+			  team.setApprovalStatus(updatedNtf.getAction()); 
+			  team.setIsProcessed(true);
+			  team.setUpdatedBy(updatedNtf.getUpdatedBy()); //changed to get the email?
 			  team.setUpdatedTime(updatedNtf.getUpdatedTime());
 			  if(!team.getIsProcessed()) {
 				  //if team has been processed before
@@ -179,6 +183,18 @@ public class NotificationController {
 
 		return resp;
 	}
+	
+	/**
+	 * To get the notifications based on the specs
+	 * 
+	  */
+	
+	@PutMapping("/getntf")
+	public List<NotificationApproval> getEvents(@RequestBody NotificationSearch ntfSearch){
+		List<NotificationApproval> req = ntfs.getntf(ntfSearch);
+		return req;
+	}
+	
 	
 	@PutMapping(path = "/deletenotification")
 	public void deleteNotification(@RequestBody NotificationApproval newNtf) {

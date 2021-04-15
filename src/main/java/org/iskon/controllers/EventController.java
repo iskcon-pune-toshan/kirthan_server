@@ -24,6 +24,12 @@ public class EventController {
 	@Autowired
 	private NotificationWrapper ntfWrapper;
 	
+
+	@Autowired
+	private NotificationController ntfc;
+	//1. make a cancelInvite function which will have an Event as a param
+	//2. call ntfWrapper.cancelInvite(event) in the function.
+	
 	@GetMapping("/getdummyevent")
 	public List<Event> getDummyEvent() { 		
 		List<Event> eventreqs = new ArrayList<Event>();
@@ -52,9 +58,10 @@ public class EventController {
 	@PutMapping("/deleteevent")
 	public void deleteEvent(@RequestBody Event newEvent) {
 		System.out.println(newEvent);
-		eventService.deleteEvent(newEvent);
+		ntfWrapper.cancelInvite(newEvent);
+		//eventService.deleteEvent(newEvent);
 	}
-	
+
 	@PutMapping("/getevents")
 	public List<Event> getEvents(@RequestBody EventSearch eventSearch) {
 		List<Event> req = eventService.getEvents(eventSearch);
@@ -85,7 +92,7 @@ public class EventController {
 				"Pune",
 				"Sandhya", (long) 123456788, "Add Line One", "Add Line Two", "Add Line Three", "Camp", "Pune",
 				411014, "Maharashtra", "India", false, "Draft", null, "Chinmay",
-				"Manjunath", new Date(), new Date(), null, null, null, null, null, new Date());
+				"Manjunath", new Date(), new Date(), null, null, null, null, null, new Date(),true, 1, "Emergency");
 		return er;
 	}
 

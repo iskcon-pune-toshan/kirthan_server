@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 public class EventSearch implements Serializable {
+	private Integer id;
 
     private Date eventStartDate;
     
@@ -34,6 +35,12 @@ public class EventSearch implements Serializable {
     private List<String> createdBy;
     
     private String approvalStatus;
+    
+    private Boolean isPublicEvent;
+    
+    private Integer status;
+    
+    private List<String> cancelReason;
 
     public Date getEventStartDate() {
         return eventStartDate;
@@ -70,6 +77,9 @@ public class EventSearch implements Serializable {
     public Integer getPincode() {
         return pincode;
     }
+    public Integer getId() {
+    	return id;
+    }
 
     public List<String> getState() {
         return state;
@@ -93,5 +103,17 @@ public class EventSearch implements Serializable {
 
 	public String getApprovalStatus() {
 		return approvalStatus;
+	}
+	
+	public Boolean getIsPublicEvent() {
+        return isPublicEvent;
+    }
+	
+	public List<String> getCancelReason(){
+		return cancelReason;
+	}
+	
+	public Integer getStatus() {
+		return status;
 	}
 }

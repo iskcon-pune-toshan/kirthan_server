@@ -1,5 +1,10 @@
 package org.iskon.services;
 
+import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -7,13 +12,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.iskon.models.Event;
+import org.iskon.models.EventSearch;
 import org.iskon.models.Notification;
 import org.iskon.models.NotificationApproval;
+import org.iskon.models.NotificationSearch;
 import org.iskon.models.NotificationTracker;
 import org.iskon.models.NotificationUi;
+import org.iskon.models.Team;
 import org.iskon.repositories.NotificationApprovalJpaRepository;
 import org.iskon.repositories.NotificationJpaRepository;
 import org.iskon.repositories.NotificationTrackerJpaRepository;
@@ -37,6 +51,11 @@ public class NotificationService {
 	@Autowired
 	UserService userService;
 	
+	@Autowired
+	TeamService teamService;
+	
+	@Autowired
+	EventService eventService;
 	
 	public NotificationApproval getNotificationById(int id){
 		return ntfApprovalDb.findById(id);
@@ -150,7 +169,7 @@ public class NotificationService {
 			if (ntf.getBroadcastType().equalsIgnoreCase("single")) { // use single whenever	the intended recipient is a single entity
 				List<Integer> ids = new ArrayList<>();
 				ids.add(ntf.getTargetId());
-				return handleNotification(ntf,ids); 
+				return handleNotification(ntf,ids);
 			}
 			else if (ntf.getBroadcastType().equals("multiple")) {
 			String tableToQuery = ntf.getTargetType();
@@ -169,11 +188,20 @@ public class NotificationService {
 						ArrayList<Integer> teamId = new ArrayList<>();
 						teamId.add(ntf.getTargetId());
 						List<Integer> userId = ntfDb.getTeamMemberId(teamId);
+						//List<Integer> userId = ntfDb.getTeamLeadId(teamService.getTeamById(teamId).getTeamLeadId());
 						return handleNotification(ntf, userId);
 					} else if(tableToQuery.equalsIgnoreCase("user_temple")){
 						ntf.setTitle("Kirtan Admin Updates");					
 						List<Integer> adminIds = new ArrayList<>();
-						adminIds.addAll(ntfDb.getAdminId());
+						Event event = eventService.getEventById(ntf.getTargetId());
+						//trial function
+						adminIds.addAll(ntfDb.getTeamLead(event.getEventType()));
+						
+						//complete function
+						//Getting week day
+						// if(!event.getPublicEvent()) {
+//				        String dayWeekText = new SimpleDateFormat("EEEE").format(event.getEventDate());
+						//adminIds.addAll(ntfDb.getTeamLead(event.getEventType(),event.getEventLocation(),event.getEventTime(),dayWeekText); }
 						return handleNotification(ntf,adminIds);
 					} else{
 						System.out.println("Incorrect mapping");
@@ -192,9 +220,19 @@ public class NotificationService {
 	public Boolean saveNotificationAppr(NotificationApproval ntf) {
 			ntf.setTitle("Kirtan Admin Updates");
 			ntf.setAction("waiting");
-			List<Integer> adminIds = ntfDb.getAdminId();
+			Event event = eventService.getEventById(ntf.getTargetId());
+			
+			System.out.println(event.getEventType());
+			List<Integer> adminIds = ntfDb.getTeamLead(eventService.getEventById(ntf.getTargetId()).getEventType());
+			//complete function
+			//Getting week day
+			// if(!event.getPublicEvent()) {
+//	        String dayWeekText = new SimpleDateFormat("EEEE").format(event.getEventDate());
+			//adminIds.addAll(ntfDb.getTeamLead(event.getEventType(),event.getEventLocation(),event.getEventTime(),dayWeekText); }
 			return handleNotificationApproval(ntf, adminIds);			
 	}
+	
+
 	
 	/**
 	 * 
@@ -209,7 +247,7 @@ public class NotificationService {
 			System.out.println("Notification to be updated does not exist");
 			return null;
 		}
-		ntfToBeUpdated.setAction(status);
+		ntfToBeUpdated.setAction(status); //action status not fetched?
 		ntfToBeUpdated.setUpdatedBy(username);
 		ntfToBeUpdated.setUpdatedTime(new Date());
 		NotificationApproval updatedNotification = ntfApprovalDb.save(ntfToBeUpdated);
@@ -217,9 +255,9 @@ public class NotificationService {
 		newNtf.setMessage("Your previous request has been "+ updatedNotification.getAction()+"("+updatedNotification.getMessage()+")");
 		newNtf.setBroadcastType("single");		
 		newNtf.setTargetType("user");
-		newNtf.setTargetId(userService.getUserByEmailId(updatedNotification.getCreatedBy()).get().getId());
+		newNtf.setTargetId(userService.getUserByEmailId(updatedNotification.getUpdatedBy()).get().getId()); //No value fetched for update/edit ntfs
 		newNtf.setMappingTableData(updatedNotification.getMappingTableData());
-		newNtf.setUpdatedBy(updatedNotification.getUpdatedBy());
+		newNtf.setUpdatedBy(updatedNotification.getUpdatedBy()); 
 		newNtf.setUpdatedTime(new Date());
 		newNtf.setCreatedBy(updatedNotification.getUpdatedBy());
 		newNtf.setCreatedTime(new Date());
@@ -232,4 +270,56 @@ public class NotificationService {
 		return updatedNotification;
 	}
 
+	
+	public List<NotificationApproval> getntf(NotificationSearch eventSearch)
+	{
+		return ntfApprovalDb.findAll(new Specification<NotificationApproval>(){
+
+			@Override
+			public Predicate toPredicate(Root<NotificationApproval> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+				List<Predicate> predicates = new ArrayList<>();
+				
+				ZoneId defaultZoneId = ZoneId.systemDefault();
+				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+				DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+				
+				if (eventSearch.getDateInterval() != null) {
+					LocalDate todaydate=LocalDate.now();
+					String eventDate= dateTimeFormatter.format(todaydate);  
+					LocalDate startDate = LocalDate.parse(eventDate);
+					int dayOffSet = 0;
+					if (eventSearch.getDateInterval().equals("TODAY")) {
+						dayOffSet = 1;
+						LocalDate endDate = startDate.plusDays(dayOffSet);
+						String end = endDate.toString();
+						Date s=java.sql.Date.valueOf(startDate);
+						Date e=java.sql.Date.valueOf(end);
+						System.out.println(e);
+						System.out.println(s);
+						predicates.add(criteriaBuilder.between(root.get("createdTime"), s,e));}
+					else if(eventSearch.getDateInterval().equals("NOT TODAY")) {
+						dayOffSet = 1;
+						LocalDate endDate = startDate.minusDays(dayOffSet);
+						String end = endDate.toString();
+						Date s=java.sql.Date.valueOf(startDate);
+						Date e=java.sql.Date.valueOf(end);
+						System.out.println(e);
+						System.out.println(s);
+						predicates.add(criteriaBuilder.between(root.get("createdTime"), e,s));
+					}
+				}
+
+				return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+			}
+		});
+	}
+
+	//cancel invite
+	public boolean saveNotificationCancel(Notification ntf) {
+		ntf.setTitle("Kirtan Cancel Invite");
+		Team team = teamService.getTeamById(ntfDb.getTeamLeadId(ntf.getTargetId()));
+		List<Integer> adminIds = new ArrayList<>();
+		adminIds.add(team.getTeamLead());
+		return handleNotification(ntf, adminIds);
+	}
 }

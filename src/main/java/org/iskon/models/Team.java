@@ -37,6 +37,9 @@ public class Team implements Serializable {
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private Integer id;
 
+	@Column(name = "team_lead")
+	private Integer teamLead;
+	
 	@Column(name = "team_title")
 	private String teamTitle;
 
@@ -67,11 +70,28 @@ public class Team implements Serializable {
 	private Team(){
 
 	}
+	
+//	private Team(Integer id, String teamLead, String teamTitle, String teamDescription, Boolean isProcessed, String approvalStatus,
+//			String approvalComments, String createdBy, String updatedBy, Date createdTime,
+//			 Date updatedTime) {
+//	this.id = id;
+//	this.teamLead = null;
+//	this.teamTitle = teamTitle;
+//	this.teamDescription = teamDescription;
+//	this.isProcessed = isProcessed;
+//	this.approvalStatus = approvalStatus;
+//	this.approvalComments = approvalComments;
+//	this.createdBy = createdBy;
+//	this.updatedBy = updatedBy;
+//	this.createdTime = createdTime;
+//	this.updatedTime = updatedTime;
+//}
 
-	private Team(Integer id, String teamTitle, String teamDescription, Boolean isProcessed, String approvalStatus,
+	public Team(Integer id, Integer teamLead, String teamTitle, String teamDescription, Boolean isProcessed, String approvalStatus,
 				String approvalComments, String createdBy, String updatedBy, Date createdTime,
 				 Date updatedTime) {
 		this.id = id;
+		this.teamLead = teamLead;
 		this.teamTitle = teamTitle;
 		this.teamDescription = teamDescription;
 		this.isProcessed = isProcessed;
@@ -83,15 +103,19 @@ public class Team implements Serializable {
 		this.updatedTime = updatedTime;
 	}
 
-	public static Team buildTeam(Integer id, String teamTitle, String teamDescription, Boolean isProcessed,
+	public static Team buildTeam(Integer id, Integer teamLead, String teamTitle, String teamDescription, Boolean isProcessed,
 								 String approvalStatus, String approvalComments, String createdBy, String updatedBy,
 								 Date createdTime, Date updatedTime) {
-		return new Team(id, teamTitle, teamDescription, isProcessed, approvalStatus, approvalComments, createdBy,
+		return new Team(id, teamLead, teamTitle, teamDescription, isProcessed, approvalStatus, approvalComments, createdBy,
 				updatedBy, createdTime, updatedTime);
 	}
 
 	public Integer getId() {
 		return id;
+	}
+	
+	public Integer getTeamLead() {
+		return teamLead;
 	}
 
 	public String getTeamTitle() {
