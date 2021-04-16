@@ -38,6 +38,7 @@ public class EventServiceImpl implements EventService {
 	@Override
 	public Event addEvent(Event event)
 	{
+		event.setStatus(0);
 		return eventJpaRepository.save(event);
 	}
 

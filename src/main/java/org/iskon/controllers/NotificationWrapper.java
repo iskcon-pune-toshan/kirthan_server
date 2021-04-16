@@ -33,6 +33,7 @@ public class NotificationWrapper{
 			ntf.setCreatedBy(event.getUpdatedBy());
 			ntf.setMessage("Request to update an event \""+event.getEventTitle()+"\""); }
 		else {
+			event.setStatus(1);
 			ntf.setCreatedBy(event.getCreatedBy());
 			ntf.setMessage("Request to create an event \""+event.getEventTitle()+"\""); } 
 		ntf.setCreatedTime(new Date());
