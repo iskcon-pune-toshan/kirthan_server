@@ -137,7 +137,7 @@ public class Event implements Serializable {
 	private String eventMobility;
 	
 	@Column(name = "event_time")
-	private Date eventTime;
+	private String eventTime;
 	
 	@Column(name = "public_event")
 	private Boolean isPublicEvent;
@@ -158,7 +158,7 @@ public class Event implements Serializable {
 				  Boolean isProcessed, String approvalStatus, String approvalComments,
 				  String createdBy, String updatedBy, Date createdTime, Date updatedTime, Double sourceLongitude,
 				  Double sourceLatitude, Double destinationLongitude, Double destinationLatitude, String eventMobility,
-				  Date eventTime, Boolean isPublicEvent, Integer status, String cancelReason ) {
+				  String eventTime, Boolean isPublicEvent, Integer status, String cancelReason ) {
 		this.id = id;
 		this.eventTitle = eventTitle;
 		this.eventDescription = eventDescription;
@@ -200,7 +200,7 @@ public class Event implements Serializable {
 								   String approvalStatus, String approvalComments,
 								   String createdBy, String updatedBy, Date createdTime, Date updatedTime, 
 								   Double sourceLongitude, Double sourceLatitude, Double destinationLongitude,
-								   Double destinationLatitude, String eventMobility, Date eventTime, Boolean isPublicEvent,
+								   Double destinationLatitude, String eventMobility, String eventTime, Boolean isPublicEvent,
 								   Integer status, String cancelReason) {
 		return new Event(id, eventTitle, eventDescription, eventDate,eventDuration, eventLocation, eventType,
 				phoneNumber, addLineOne, addLineTwo, addLineThree, locality,city, pincode, state, country,
@@ -321,7 +321,7 @@ public class Event implements Serializable {
 		return eventMobility;
 	}
 	
-	public Date getEventTime() {
+	public String getEventTime() {
 		return eventTime;
 	}
 

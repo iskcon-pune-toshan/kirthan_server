@@ -1,8 +1,11 @@
 package org.iskon.services;
 
 import org.iskon.models.Team;
+import org.iskon.models.Event;
 import org.iskon.models.EventTeam;
 import org.iskon.repositories.EventTeamJpaRepository;
+import org.iskon.repositories.NotificationApprovalJpaRepository;
+import org.iskon.repositories.NotificationJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
@@ -17,18 +20,51 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.iskon.models.EventTeamSearch;
+import org.iskon.models.NotificationApproval;
 
+//removed unnecessary query (ntfApprovalDb.getTeamId) in addEventTeam 
 @Component
 public class EventTeamServiceImpl implements EventTeamService {
 
 	@Autowired
 	private EventTeamJpaRepository EventTeamJpaRepository;
+	
+	@Autowired
+	private NotificationJpaRepository ntfDb;
+	
+	@Autowired
+	TeamService teamService;
+	
+	@Autowired
+	private NotificationApprovalJpaRepository ntfApprovalDb;
 
 	@Override
-	public List<EventTeam> addEventTeam(List<EventTeam> listEventTeam) {
+	public EventTeam addEventTeam(Event event) {
 		//return teamuserJpaRepository.save(teamUser);
-		return EventTeamJpaRepository.saveAll(listEventTeam);
+		EventTeam listEventTeam = new EventTeam();
+		listEventTeam.setEventId(event.getId());
+		listEventTeam.setTeamId(ntfApprovalDb.getTeamId(event.getId(),"Approved"));
+		return EventTeamJpaRepository.save(listEventTeam);
 	}
+	
+	@Override
+	public Integer getTeamId(int id) {
+		return EventTeamJpaRepository.getTeamId(id);
+	}
+	
+	@Override
+	public void addEventTeam(NotificationApproval updatedNtf) {
+		//NotificationApproval ntf = ntfApprovalDb.findById(updatedNtf.getId());
+		System.out.println(updatedNtf);
+		EventTeam listEventTeam = new EventTeam();
+		listEventTeam.setEventId(updatedNtf.getTargetId());
+		listEventTeam.setTeamId(updatedNtf.getTargetTeamId());
+		System.out.println(teamService.getTeamById(updatedNtf.getTargetTeamId()).getTeamTitle());
+		listEventTeam.setTeamName(teamService.getTeamById(updatedNtf.getTargetTeamId()).getTeamTitle());
+		System.out.println(listEventTeam);
+		EventTeamJpaRepository.save(listEventTeam);
+	}
+	
 
 	@Override
 	public void deleteEventTeam(EventTeam listEventTeam) {

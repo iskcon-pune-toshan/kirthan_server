@@ -23,7 +23,7 @@ public interface NotificationApprovalJpaRepository extends JpaRepository<Notific
 	  " SELECT new org.iskon.models.NotificationUi(n.uuid,n.message,n.targetType,n.targetId,n.createdBy,n.createdTime,n.updatedBy,n.updatedTime,n.action, n.id) FROM " 
 	+ " NotificationApproval n, NotificationTracker as ntf_trk, User u"
 	+ " where n.uuid = ntf_trk.notificationId  and ntf_trk.userId = u.id and u.email = :username"
-	+ " ORDER BY n.createdTime DESC")
+	+ " ORDER BY n.updatedTime DESC")
 	List<NotificationUi> findByUserName(String username);
 		
 	@Query("Select new org.iskon.models.NotificationUi(n.uuid,n.message,n.targetType,n.targetId,n.createdBy,n.createdTime,n.updatedBy,n.updatedTime,n.action, n.id) from NotificationApproval n where n.uuid = :uuid and n.createdBy = :username")
@@ -31,6 +31,10 @@ public interface NotificationApprovalJpaRepository extends JpaRepository<Notific
 
 	@Query("Select n from NotificationApproval n where n.uuid = :uuid")
 	NotificationApproval findNotificationApprovalByUuid(String uuid);
+	
+
+	@Query("Select n.targetTeamId from NotificationApproval n where n.targetId = :eventId and n.action = :action")
+	Integer getTeamId(Integer eventId, String action);
 	
 	//To find & return notification by a particular spec like createdTime, similar to findAll functions in other Repository files.
 	List<NotificationApproval> findAll(Specification<NotificationApproval> eventSpecification);

@@ -15,6 +15,8 @@ public interface EventTeamUserService {
 
 	List<EventTeamUser> getEventTeamUsers(EventTeamUserSearch query);
 	
+	List<EventTeamUser> getEventTeamUsersByUserName(String username);
+	
 	List<EventTeamUser> getEventTeamUsersWithDescription();
 
 }

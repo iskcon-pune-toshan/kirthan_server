@@ -18,17 +18,16 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/event")
 public class EventController {
 
+	//1. make a cancelInvite function which will have an Event as a param
+	//2. call ntfWrapper.cancelInvite(event) in the function.
 	@Autowired
 	private EventService eventService;
 	
 	@Autowired
 	private NotificationWrapper ntfWrapper;
 	
-
 	@Autowired
 	private NotificationController ntfc;
-	//1. make a cancelInvite function which will have an Event as a param
-	//2. call ntfWrapper.cancelInvite(event) in the function.
 	
 	@GetMapping("/getdummyevent")
 	public List<Event> getDummyEvent() { 		
@@ -41,8 +40,9 @@ public class EventController {
 	@PutMapping("/addevent")
 	public Event addEvent(@RequestBody Event newEvent) {
 		Event req = eventService.addEvent(newEvent);
-		//NotificationWrapper ntfWrapper = new NotificationWrapper();
-		ntfWrapper.generateNotification(req,"single");
+				//NotificationWrapper ntfWrapper = new NotificationWrapper();
+		if(!newEvent.getIsPublicEvent())
+			ntfWrapper.generateNotification(req,"single");
 		return req;
 	}
 	
@@ -52,7 +52,18 @@ public class EventController {
 		Event req = eventService.updateEvent(newEvent);
 		//NotificationWrapper ntfWrapper = new NotificationWrapper();
 		ntfWrapper.generateNotification(newEvent,"multiple");
+		/*if(req.getEventStatus() == 1)
+		 * ntfWrapper.cancelInvite(req)
+		 * else
+		 * ntfWrapper.generateNotification(newEvent,"multiple");*/
+		
 		return req;
+	}
+	
+	@PutMapping("/registerevent")
+	public Event registerEvent(@RequestBody Event newEvent) {
+		ntfWrapper.generateNotification(newEvent);
+		return newEvent;
 	}
 	
 	@PutMapping("/deleteevent")
@@ -60,8 +71,9 @@ public class EventController {
 		System.out.println(newEvent);
 		ntfWrapper.cancelInvite(newEvent);
 		//eventService.deleteEvent(newEvent);
+		
 	}
-
+	
 	@PutMapping("/getevents")
 	public List<Event> getEvents(@RequestBody EventSearch eventSearch) {
 		List<Event> req = eventService.getEvents(eventSearch);
@@ -92,7 +104,7 @@ public class EventController {
 				"Pune",
 				"Sandhya", (long) 123456788, "Add Line One", "Add Line Two", "Add Line Three", "Camp", "Pune",
 				411014, "Maharashtra", "India", false, "Draft", null, "Chinmay",
-				"Manjunath", new Date(), new Date(), null, null, null, null, null, new Date(),true, 1, "Emergency");
+				"Manjunath", new Date(), new Date(), null, null, null, null, null, null,true, 1, "Emergency");
 		return er;
 	}
 

@@ -20,6 +20,10 @@ public class EventTeamSearch implements Serializable {
         return id;
     }
     
+    public void setEventId(Integer id) {
+    	this.eventId = id;
+    }
+    
     public Integer getEventId() {
         return eventId;
     }

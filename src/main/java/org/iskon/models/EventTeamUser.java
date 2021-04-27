@@ -32,6 +32,7 @@ public class EventTeamUser implements Serializable {
 
 	@Column(name = "updated_time")
 	private Date updatedTime;
+	
 
 	@Transient
 	private String eventName;
@@ -39,27 +40,28 @@ public class EventTeamUser implements Serializable {
 	@Transient
 	private String teamName;
 
-	@Transient
+	@Column(name = "user_name")
 	private String userName;
 
 	private EventTeamUser() {
 
 	}
 
-	private EventTeamUser(Integer id, Integer eventId, Integer teamId, Integer userId, String createdBy,
-			String updatedBy, Date createdTime, Date updatedTime) {
-		this.id = id;
-		this.eventId = eventId;
-		this.teamId = teamId;
-		this.userId = userId;
-		this.createdBy = createdBy;
-		this.updatedBy = updatedBy;
-		this.createdTime = createdTime;
-		this.updatedTime = updatedTime;
-	}
+//	private EventTeamUser(Integer id, Integer eventId, Integer teamId, Integer userId, String createdBy,
+//			String updatedBy, Date createdTime, Date updatedTime, String userName) {
+//		this.id = id;
+//		this.eventId = eventId;
+//		this.teamId = null;
+//		this.userId = userId;
+//		this.createdBy = createdBy;
+//		this.updatedBy = updatedBy;
+//		this.createdTime = createdTime;
+//		this.updatedTime = updatedTime;
+//		this.userName = userName;
+//	}
 
 	public EventTeamUser(Integer id, Integer eventId, Integer teamId, Integer userId, String createdBy,
-			String updatedBy, Date createdTime, Date updatedTime, String teamName, String userName, String eventName) {
+			String updatedBy, Date createdTime, Date updatedTime, String userName) {
 		this.id = id;
 		this.eventId = eventId;
 		this.teamId = teamId;
@@ -68,14 +70,12 @@ public class EventTeamUser implements Serializable {
 		this.updatedBy = updatedBy;
 		this.createdTime = createdTime;
 		this.updatedTime = updatedTime;
-		this.eventName = eventName;
-		this.teamName = teamName;
 		this.userName = userName;
 	}
 
 	public static EventTeamUser buildEventTeamUser(Integer id, Integer eventId, Integer teamId, Integer userId,
-			String createdBy, String updatedBy, Date createdTime, Date updatedTime) {
-		return new EventTeamUser(id, eventId, teamId, userId, createdBy, updatedBy, createdTime, updatedTime);
+			String createdBy, String updatedBy, Date createdTime, Date updatedTime, String userName) {
+		return new EventTeamUser(id, eventId, teamId, userId, createdBy, updatedBy, createdTime, updatedTime, userName);
 	}
 
 	public Integer getId() {

@@ -4,11 +4,15 @@ import java.util.Date;
 import java.util.UUID;
 
 import org.iskon.models.Event;
+import org.iskon.models.EventTeamSearch;
 import org.iskon.models.Notification;
 import org.iskon.models.NotificationApproval;
 import org.iskon.models.Team;
 import org.iskon.services.EventService;
+import org.iskon.services.EventTeamService;
 import org.iskon.services.NotificationService;
+import org.iskon.services.TeamService;
+import org.iskon.services.UserService;
 import org.iskon.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,29 +22,56 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Component
 public class NotificationWrapper{
 	//update ntf bug resolved.
-	
 	@Autowired
 	private EventService eventService;
+	
+	@Autowired
+	EventTeamService eventTeamService;
+	
+	@Autowired
+	TeamService teamService;
+	
+	@Autowired
+	UserService userService;
 	
 	@Autowired
 	NotificationService ntfService;
 	//generate ntfs
 	public boolean generateNotification(Event event,String broadCastType) {
-		NotificationApproval ntf = new NotificationApproval(); // set broadCast type to multiple in case of an update and single in case of create
-		ntf.setCreatedBy(event.getCreatedBy());
-		ntf.setTargetType("event");	
+//		NotificationApproval ntf = new NotificationApproval(); // set broadCast type to multiple in case of an update and single in case of create
+//		ntf.setCreatedBy(event.getCreatedBy());
+//		ntf.setTargetType("event");	
 		if(broadCastType.equalsIgnoreCase("multiple")) {
-			ntf.setCreatedBy(event.getUpdatedBy());
-			ntf.setMessage("Request to update an event \""+event.getEventTitle()+"\""); }
-		else {
-			event.setStatus(1);
-			ntf.setCreatedBy(event.getCreatedBy());
-			ntf.setMessage("Request to create an event \""+event.getEventTitle()+"\""); } 
-		ntf.setCreatedTime(new Date());
-		ntf.setMappingTableData("event");
-		ntf.setTargetId(event.getId());
-		ntf.setUuid(UUID.randomUUID());
-		return ntfService.saveNotificationAppr(ntf);
+				Notification ntf = new Notification(); // set broadCast type to multiple in case of an update and single in case of create
+				ntf.setCreatedBy(event.getCreatedBy());
+				ntf.setBroadcastType("edit");
+				ntf.setTargetType("event");	
+				ntf.setCreatedBy(event.getUpdatedBy());
+				ntf.setMessage("Request to update an event \""+event.getEventTitle()+"\"");
+				System.out.println(event.getId());
+				String teamLead = teamService.getTeamById(eventTeamService.getTeamId(event.getId())).getTeamLeadId();
+				ntf.setTargetId(userService.getUserByEmailId(teamLead).get().getId());
+				ntf.setCreatedTime(new Date());
+				ntf.setUpdatedTime(new Date());
+				ntf.setMappingTableData("event");
+				ntf.setUuid(UUID.randomUUID());
+				return ntfService.saveNotification(ntf);
+			}else {
+				NotificationApproval ntf = new NotificationApproval(); // set broadCast type to multiple in case of an update and single in case of create
+				ntf.setCreatedBy(event.getCreatedBy());
+				ntf.setTargetType("event");	
+				event.setStatus(1);
+				ntf.setCreatedBy(event.getCreatedBy());
+				ntf.setUpdatedTime(new Date());
+				ntf.setMessage("Request to create an event \""+event.getEventTitle()+"\"");
+				ntf.setTargetId(event.getId());
+				
+				ntf.setCreatedTime(new Date());
+				ntf.setMappingTableData("event");
+				
+				ntf.setUuid(UUID.randomUUID());
+				return ntfService.saveNotificationAppr(ntf);
+		}
 	}
 	
 	public boolean generateNotification(Team team,String broadCastType) {
@@ -53,6 +84,7 @@ public class NotificationWrapper{
 			ntf.setCreatedBy(team.getCreatedBy());
 			ntf.setMessage("Request to create a team \""+team.getTeamTitle()+"\"");}
 		ntf.setCreatedTime(team.getCreatedTime());
+		ntf.setUpdatedTime(new Date());
 		ntf.setMappingTableData("team");
 		ntf.setTargetType("team");
 		ntf.setTargetId(team.getId());
@@ -65,10 +97,13 @@ public class NotificationWrapper{
 		NotificationApproval ntf = new NotificationApproval(); 
 		ntf.setCreatedBy(user.getEmail());
 		ntf.setCreatedTime(user.getCreatedTime());
+		ntf.setUpdatedTime(new Date());
 		ntf.setMappingTableData("user");
 		ntf.setTargetType("user");
 		ntf.setMessage("New User created");
 		ntf.setTargetId(user.getId());
+		user.setApprovalStatus("Approved");
+		user.setApprovalComments("Approved");
 		ntf.setUuid(UUID.randomUUID());
 		return ntfService.saveNotificationAppr(ntf);
 	}
@@ -79,13 +114,29 @@ public class NotificationWrapper{
 		ntf.setBroadcastType("single");
 		ntf.setCreatedBy(event.getCreatedBy());
 		ntf.setTargetType("event");	
-		ntf.setMessage("The event \""+event.getEventTitle()+"\" has been cancelled");  
+		ntf.setMessage("The event \""+event.getEventTitle()+"\" has been cancelled due to " + event.getCancelReason());  
 		ntf.setCreatedTime(new Date());
+		ntf.setUpdatedTime(new Date());
 		ntf.setMappingTableData("event");
 		ntf.setTargetId(event.getId());
 		ntf.setUuid(UUID.randomUUID());
 		event1.setStatus(3);
 		return ntfService.saveNotificationCancel(ntf);
 	}
-
+	
+	public boolean generateNotification(Event event) {
+		Notification ntf = new Notification();
+		ntf.setCreatedBy(event.getCreatedBy());
+		ntf.setBroadcastType("multiple");
+		ntf.setCreatedTime(event.getCreatedTime());
+		ntf.setUpdatedTime(new Date());
+		ntf.setMappingTableData("event");
+		ntf.setTargetType("event");
+		ntf.setMessage("Registered Succcesfully for " + event.getEventTitle() + " ");
+		ntf.setTargetId(event.getId());
+		ntf.setUuid(UUID.randomUUID());
+		
+		return ntfService.saveNotification(ntf);
+	}
+	
 }

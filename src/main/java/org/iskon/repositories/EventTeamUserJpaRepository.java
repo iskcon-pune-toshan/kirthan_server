@@ -14,11 +14,17 @@ import java.util.List;
 public interface EventTeamUserJpaRepository extends JpaRepository<EventTeamUser, Integer> {
     List<EventTeamUser> findAll(Specification<EventTeamUser> eventSpecification);
     
-	@Query(" SELECT new org.iskon.models.EventTeamUser(ETU.id, ETU.eventId, ETU.teamId, ETU.userId, ETU.createdBy, ETU.updatedBy, ETU.createdTime, ETU.updatedTime, T.teamTitle, U.userName, E.eventTitle as eventName) "
+	@Query(" SELECT new org.iskon.models.EventTeamUser(ETU.id, ETU.eventId, ETU.teamId, ETU.userId, ETU.createdBy, ETU.updatedBy, ETU.createdTime, ETU.updatedTime, ETU.userName) "
 			+ " FROM EventTeamUser ETU, Event E, Team T, User U "
-			+ " where ETU.teamId = T.id " 
-			+ " and ETU.eventId = E.id "
+			+ " where " 
+			+ " ETU.eventId = E.id "
 			+ " and ETU.userId = U.id " )	
 	List<EventTeamUser> findAllWithDescription();    
+	
+	@Query(" SELECT new org.iskon.models.EventTeamUser(ETU.id, ETU.eventId, ETU.teamId, ETU.userId, ETU.createdBy, ETU.updatedBy, ETU.createdTime, ETU.updatedTime, ETU.userName) "
+			+ " FROM EventTeamUser ETU"
+			+ " where ETU.userName = :username" 
+			)	
+	List<EventTeamUser> findByUserName(String username);    
     
 }

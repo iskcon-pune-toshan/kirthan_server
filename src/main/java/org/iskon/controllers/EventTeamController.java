@@ -33,8 +33,8 @@ public class EventTeamController {
 	}
 */
 	@RequestMapping(value = "/addeventteam", method = RequestMethod.PUT)
-	public List<EventTeam> addEventTeam(@RequestBody List<EventTeam> listTeamUser) {
-		List<EventTeam> res = EventTeamMappingService.addEventTeam(listTeamUser);
+	public EventTeam addEventTeam(@RequestBody Event listTeamUser) {
+		EventTeam res = EventTeamMappingService.addEventTeam(listTeamUser);
 		
 		return res;
 		

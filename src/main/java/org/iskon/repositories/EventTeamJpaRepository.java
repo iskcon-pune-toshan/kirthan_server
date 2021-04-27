@@ -16,8 +16,14 @@ public interface EventTeamJpaRepository extends JpaRepository<EventTeam, Integer
     
 	@Query(" SELECT new org.iskon.models.EventTeam(TU.id, TU.eventId, TU.teamId, TU.createdBy, TU.updatedBy, TU.createdTime, TU.updatedTime, T.teamTitle, U.eventTitle) "
 			+ " FROM EventTeam TU, Team T, Event U "
-			//+ " where TU.teamId= :teamId " 
 			+ " where TU.teamId = T.id " 
 			+ " and TU.eventId = U.id " )	
-	List<EventTeam> findAllWithDescription();    
+	List<EventTeam> findAllWithDescription();  
+	
+	@Query(" SELECT TU.teamId"
+			+ " FROM EventTeam TU"
+			+ " WHERE TU.eventId = :id " )	
+	Integer getTeamId(int id);  
+	
+	
 }

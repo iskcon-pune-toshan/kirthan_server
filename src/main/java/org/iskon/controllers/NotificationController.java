@@ -8,13 +8,17 @@ import java.util.UUID;
 import org.iskon.authentication.JwtUtil;
 import org.iskon.models.Event;
 import org.iskon.models.EventSearch;
+import org.iskon.models.EventTeam;
 import org.iskon.models.Notification;
 import org.iskon.models.NotificationApproval;
 import org.iskon.models.NotificationSearch;
 import org.iskon.models.NotificationUi;
 import org.iskon.models.Team;
 import org.iskon.models.User;
+import org.iskon.repositories.EventTeamJpaRepository;
+import org.iskon.repositories.NotificationApprovalJpaRepository;
 import org.iskon.services.EventService;
+import org.iskon.services.EventTeamService;
 import org.iskon.services.NotificationService;
 import org.iskon.services.TeamService;
 import org.iskon.services.UserService;
@@ -26,9 +30,14 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/notifications")
 public class NotificationController {
+	@Autowired
+	private NotificationApprovalJpaRepository ntfApprovalDb;
 
 	@Autowired
 	private NotificationService ntfs;
+	
+	@Autowired
+	private EventTeamService eventTeamService;
 
 	@Autowired
 	private EventService eventService;
@@ -113,11 +122,18 @@ public class NotificationController {
 		NotificationApproval updatedNtf = ntfs.updateApproval(status,ntfId,userName);
 		Boolean resp = true;
 		if(updatedNtf == null) resp = false; 
+		if(updatedNtf.getTargetType().equalsIgnoreCase("event") && updatedNtf.getAction().equalsIgnoreCase("Approved")) {
+			eventTeamService.addEventTeam(updatedNtf);
+		}
 		if (updatedNtf.getTargetType().equalsIgnoreCase("event")) // this is for event
 		{
 			  Event event = eventService.getEventById(updatedNtf.getTargetId());
-			  event.setApprovalComments(updatedNtf.getAction());
-			  event.setApprovalStatus(updatedNtf.getAction()); 
+			  //event.setApprovalComments(updatedNtf.getAction());
+			  //event.setApprovalStatus(updatedNtf.getAction()); 
+			  if(updatedNtf.getAction().equalsIgnoreCase("Approved"))
+				  event.setStatus(2);
+			  else if(updatedNtf.getAction().equalsIgnoreCase("Rejected"))
+				  event.setStatus(4);
 			  event.setUpdatedTime(new Date()); 
 			  event.setUpdatedBy(updatedNtf.getUpdatedBy());
 			  if(event.getUpdatedBy()!=null) {
@@ -125,19 +141,19 @@ public class NotificationController {
 				  //that means this request is for update 
 				  //in which case notificaion should be sent to those who have joined the event
 				  //Change this according to the logic in update for events
+				  //NTF rsvp(change uodated by to event_registered
 				  Notification newNtf = new Notification();
 				  newNtf.setBroadcastType("multiple");
 				  newNtf.setCreatedBy("SYSTEM");
 				  newNtf.setCreatedTime(new Date());
 				  newNtf.setMappingTableData("event_user");
 				  newNtf.setMessage(updatedNtf.getMessage());
-				  newNtf.setTargetId(updatedNtf.getTargetId());
+				  newNtf.setTargetId(updatedNtf.getTargetId()); //user id of current user, change it to event_id
 				  newNtf.setTargetType("event");
 				  newNtf.setTitle(event.getEventTitle()+" Updates");
 				  newNtf.setUuid( UUID.randomUUID());
 				  ntfs.saveNotification(newNtf);
 			  }
-			  event.setStatus(2);
 			  event.setIsProcessed(true);
 			  //System.out.println("After " +event.toString());
 			  eventService.processEvent(event);
@@ -150,6 +166,10 @@ public class NotificationController {
 			  team.setIsProcessed(true);
 			  team.setUpdatedBy(updatedNtf.getUpdatedBy()); //changed to get the email?
 			  team.setUpdatedTime(updatedNtf.getUpdatedTime());
+//			  if(updatedNtf.getAction().equalsIgnoreCase("Approved"))
+//				 {
+//				  userService.getUserByEmailId(team.getTeamLeadId()).get().setRoleId(4);
+//				  }
 			  if(!team.getIsProcessed()) {
 				  //if team has been processed before
 				  //that means this request is for update 
@@ -190,14 +210,21 @@ public class NotificationController {
 	  */
 	
 	@PutMapping("/getntf")
-	public List<NotificationApproval> getEvents(@RequestBody NotificationSearch ntfSearch){
-		List<NotificationApproval> req = ntfs.getntf(ntfSearch);
+	public List<NotificationUi> getNtf(@RequestHeader("Authorization") String authHead, @RequestBody String createdDate) throws HttpException {
+		List<NotificationUi> req = ntfs.getntf(getJwt(authHead), createdDate);
 		return req;
 	}
 	
+	//Deletes ntf from notification_approval table
+	@PutMapping(path = "/deletenotificationapproval")
+	public void deleteNotificationAppr(@RequestBody NotificationApproval newNtf) {
+		System.out.println(newNtf);
+		ntfs.deleteNotificationAppr(newNtf);
+	}
 	
+	//Deletes ntf from notification table
 	@PutMapping(path = "/deletenotification")
-	public void deleteNotification(@RequestBody NotificationApproval newNtf) {
+	public void deleteNotification(@RequestBody Notification newNtf) {
 		System.out.println(newNtf);
 		ntfs.deleteNotification(newNtf);
 	}

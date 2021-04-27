@@ -37,7 +37,7 @@ public class EventTeam implements Serializable {
 	private String eventName;
 
 
-	private EventTeam(){
+	public EventTeam(){
 
 	}
 
@@ -80,9 +80,15 @@ public class EventTeam implements Serializable {
 	public Integer getEventId() {
 		return eventId;
 	}
+	public void setEventId(int eid) {
+		this.eventId = eid;
+	}
 
 	public Integer getTeamId() {
 		return teamId;
+	}
+	public void setTeamId(int tid) {
+		this.teamId = tid;
 	}
 
 	public String getCreatedBy() {
@@ -103,6 +109,10 @@ public class EventTeam implements Serializable {
 
 	public String getTeamName() {
 		return teamName;
+	}
+	
+	public void setTeamName(String name) {
+		this.teamName = name;
 	}
 
 	public String getEventName() {

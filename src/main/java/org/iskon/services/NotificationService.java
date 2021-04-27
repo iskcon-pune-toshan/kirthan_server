@@ -1,11 +1,14 @@
 package org.iskon.services;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -22,12 +25,14 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.iskon.models.Event;
 import org.iskon.models.EventSearch;
+import org.iskon.models.EventTeam;
 import org.iskon.models.Notification;
 import org.iskon.models.NotificationApproval;
 import org.iskon.models.NotificationSearch;
 import org.iskon.models.NotificationTracker;
 import org.iskon.models.NotificationUi;
 import org.iskon.models.Team;
+import org.iskon.repositories.EventTeamJpaRepository;
 import org.iskon.repositories.NotificationApprovalJpaRepository;
 import org.iskon.repositories.NotificationJpaRepository;
 import org.iskon.repositories.NotificationTrackerJpaRepository;
@@ -47,6 +52,7 @@ public class NotificationService {
 	private UserTokenJpaRepository userTokenDb;
 	@Autowired
 	NotificationTrackerJpaRepository ntfTrackerRepo;
+	
 
 	@Autowired
 	UserService userService;
@@ -57,13 +63,21 @@ public class NotificationService {
 	@Autowired
 	EventService eventService;
 	
+	@Autowired
+	EventTeamService eventTeamService;
+	
 	public NotificationApproval getNotificationById(int id){
 		return ntfApprovalDb.findById(id);
 	}
 	
-	public void deleteNotification(NotificationApproval newNtf)
+	public void deleteNotificationAppr(NotificationApproval newNtf)
 	{
 		ntfApprovalDb.delete(newNtf);
+	}
+	
+	public void deleteNotification(Notification newNtf)
+	{
+		ntfDb.delete(newNtf);
 	}
 	
 	/** Service call to fetch all the notifications.
@@ -88,30 +102,32 @@ public class NotificationService {
 			Map<String,String> ntfData= new HashMap<>(); 
 			for(int userId : userIds) { 
 				NotificationTracker ntfTracker = new NotificationTracker(userId, ntf.getTargetId(),
-						savedNtf.getUuid().toString());
-				List<String> token = userTokenDb.findDeviceTokenByUserId(userId); //get the device token from the user_token database
-				if (token == null) {
-					System.out.println("No token found for the given userId! Thus no notification can be sent to"
-							+ "the user.");
-					ntfTracker.setStatus(false); //set sent status to false if there was no token found for the given user.
-				}
-				else{
-					FireBaseMessagingService fcm = new FireBaseMessagingService(); // used to invoke firebase cloud messaging admin function to send push notifications
-					ntfData.put("title", savedNtf.getTitle());
-					ntfData.put("message",savedNtf.getMessage());
-					Boolean flag = false;
-					String response="";
-					for(String s : token) {
-						if( s!=null)
-							response = fcm.sendToUser(ntfData, s);
-						if(response != null) flag = true;  					//for every token found if there's an invalid token then delete it otherwise send the notification to  the deviceToken
-						else {												// firebase messaging service returns null if there's an error sending to a specific deviceToken which means that either the 
-																			//token has expired or is incorrect.	
-							userTokenDb.deleteDeviceTokenById(userId,s);
-						}
-					}
-					ntfTracker.setStatus(flag);
-				}
+						savedNtf.getUuid().toString(), 0);
+				ntfTracker.setStatus(false);
+				//List<String> token = userTokenDb.findDeviceTokenByUserId(userId);
+				//System.out.println(token);//get the device token from the user_token database
+//				if (token == null) {
+//					System.out.println("No token found for the given userId! Thus no notification can be sent to"
+//							+ "the user.");
+//					ntfTracker.setStatus(false); //set sent status to false if there was no token found for the given user.
+//				}
+//				else{
+//					FireBaseMessagingService fcm = new FireBaseMessagingService(); // used to invoke firebase cloud messaging admin function to send push notifications
+//					ntfData.put("title", savedNtf.getTitle());
+//					ntfData.put("message",savedNtf.getMessage());
+//					Boolean flag = false;
+//					String response="";
+//					for(String s : token) {
+//						if( s!=null)
+//							response = fcm.sendToUser(ntfData, s);
+//						if(response != null) flag = true;  					//for every token found if there's an invalid token then delete it otherwise send the notification to  the deviceToken
+//						else {												// firebase messaging service returns null if there's an error sending to a specific deviceToken which means that either the 
+//																			//token has expired or is incorrect.	
+//							userTokenDb.deleteDeviceTokenById(userId,s);
+//						}
+//					}
+//					ntfTracker.setStatus(flag);
+//				}
 				ntfTrackerRepo.save(ntfTracker);  //save data in the notification_tracker database
 			}
 			return true;
@@ -129,32 +145,37 @@ public class NotificationService {
 	 * @param userIds List of unique userId's corresponding to valid users as defined in the user database , that needs to be sent the notification to.
 	 * @return Boolean true or false value depicting the success or failure of operation
 	 */
-	private Boolean handleNotificationApproval(NotificationApproval ntf,List<Integer> userIds ) {
-		NotificationApproval savedNtf = ntfApprovalDb.save(ntf);
+	private Boolean handleNotificationApproval(NotificationApproval ntf,List<Integer> userIds, List<Integer> teamIds ) {
+		
+		NotificationApproval savedNtf = ntfApprovalDb.save(ntf); 
+		System.out.println(teamIds);	
 		System.out.println(savedNtf.getUuid());
 		System.out.println(userIds);
-		for(int userId : userIds) {
-			List<String> token = userTokenDb.findDeviceTokenByUserId(userId);
-			NotificationTracker ntfTracker = new NotificationTracker(userId, ntf.getTargetId() , savedNtf.getUuid().toString()); 
-			if (token == null) {
-				System.out.println("No token found for the given userId! Thus no notification can be sent to the user.");
-				ntfTracker.setStatus(false);
-			}
-			else {
-				FireBaseMessagingService fcm = new FireBaseMessagingService();
-				Map<String,String> ntfData = new HashMap<>();
-				ntfData.put("title",savedNtf.getTitle());
-				ntfData.put("message",savedNtf.getMessage());
-				Boolean flag = false;
-				String response="";
-				for(String s : token) {
-					if( s != null )
-					response = fcm.sendToUser(ntfData, s);   // given notification is successfully sent to any of the tokens , the sent status for that user is set to true.
-															//valid tokens are send notifications and invalid tokens are deleted.
-					if(response != null) flag = true; 
-				}
-				ntfTracker.setStatus(flag);
-			}
+		
+		for(int i =0; i< userIds.size(); i++) {
+//			List<String> token = userTokenDb.findDeviceTokenByUserId(userIds.get(i));
+//			System.out.println(token);
+			NotificationTracker ntfTracker = new NotificationTracker(userIds.get(i), ntf.getTargetId() , savedNtf.getUuid().toString(), teamIds.get(i)); 
+//			if (token == null) {
+//				System.out.println("No token found for the given userId! Thus no notification can be sent to the user.");
+//				ntfTracker.setStatus(false);
+//			}
+//			else {
+//				FireBaseMessagingService fcm = new FireBaseMessagingService();
+//				Map<String,String> ntfData = new HashMap<>();
+//				ntfData.put("title",savedNtf.getTitle());
+//				ntfData.put("message",savedNtf.getMessage());
+//				Boolean flag = false;
+//				String response="";
+//				for(String s : token) {
+//					if( s != null )
+//					response = fcm.sendToUser(ntfData, s);   // given notification is successfully sent to any of the tokens , the sent status for that user is set to true.
+//															//valid tokens are send notifications and invalid tokens are deleted.
+//					if(response != null) flag = true; 
+//				}
+	//			ntfTracker.setStatus(flag);
+	//		}
+			ntfTracker.setStatus(false);
 			ntfTrackerRepo.save(ntfTracker);
 		}
 		 return true;
@@ -166,9 +187,10 @@ public class NotificationService {
 	 * @return Boolean true or false value depicting the success or failure of operation
 	 */
 		public Boolean saveNotification(Notification ntf) {
-			if (ntf.getBroadcastType().equalsIgnoreCase("single")) { // use single whenever	the intended recipient is a single entity
+			if (ntf.getBroadcastType().equalsIgnoreCase("single") || ntf.getBroadcastType().equalsIgnoreCase("edit")) { // use single whenever	the intended recipient is a single entity
 				List<Integer> ids = new ArrayList<>();
 				ids.add(ntf.getTargetId());
+				System.out.println(ids);
 				return handleNotification(ntf,ids);
 			}
 			else if (ntf.getBroadcastType().equals("multiple")) {
@@ -188,20 +210,29 @@ public class NotificationService {
 						ArrayList<Integer> teamId = new ArrayList<>();
 						teamId.add(ntf.getTargetId());
 						List<Integer> userId = ntfDb.getTeamMemberId(teamId);
-						//List<Integer> userId = ntfDb.getTeamLeadId(teamService.getTeamById(teamId).getTeamLeadId());
+						//List<Integer> userId = userService.getUserByEmailId(ntfDb.getTeamLeadId(teamService.getTeamById(teamId).getTeamLeadId())).get().getId();
 						return handleNotification(ntf, userId);
 					} else if(tableToQuery.equalsIgnoreCase("user_temple")){
 						ntf.setTitle("Kirtan Admin Updates");					
 						List<Integer> adminIds = new ArrayList<>();
 						Event event = eventService.getEventById(ntf.getTargetId());
-						//trial function
-						adminIds.addAll(ntfDb.getTeamLead(event.getEventType()));
+						String dayWeekText = new SimpleDateFormat("EEEE").format(event.getEventDate()); //event day
+						List<Integer> teamId = ntfDb.getTeamId(event.getEventType(),event.getCity());
+						
+						for(int i=0; i<teamId.size();i++) {
+							Team team = teamService.getTeamById(teamId.get(i));
+							if(team.getWeekDay().equalsIgnoreCase("Anyday")){
+								adminIds.add(userService.getUserByEmailId(team.getTeamLeadId()).get().getId());
+							}else if(team.getWeekDay().equalsIgnoreCase(dayWeekText)){
+								adminIds.add(userService.getUserByEmailId(team.getTeamLeadId()).get().getId());
+							}
+						}			
 						
 						//complete function
 						//Getting week day
 						// if(!event.getPublicEvent()) {
 //				        String dayWeekText = new SimpleDateFormat("EEEE").format(event.getEventDate());
-						//adminIds.addAll(ntfDb.getTeamLead(event.getEventType(),event.getEventLocation(),event.getEventTime(),dayWeekText); }
+						//adminIds.addAll(userService.getUserByEmailId(ntfDb.getTeamLeadId(teamService.getTeamById(teamId).getTeamLeadId())).get().getId()); }
 						return handleNotification(ntf,adminIds);
 					} else{
 						System.out.println("Incorrect mapping");
@@ -220,16 +251,67 @@ public class NotificationService {
 	public Boolean saveNotificationAppr(NotificationApproval ntf) {
 			ntf.setTitle("Kirtan Admin Updates");
 			ntf.setAction("waiting");
-			Event event = eventService.getEventById(ntf.getTargetId());
-			
-			System.out.println(event.getEventType());
-			List<Integer> adminIds = ntfDb.getTeamLead(eventService.getEventById(ntf.getTargetId()).getEventType());
+			List<Integer> adminIds = new ArrayList<>();
+			List<Integer> tempIds = new ArrayList<>();
+			if(ntf.getTargetType().equalsIgnoreCase("event")) {
+				Event event = eventService.getEventById(ntf.getTargetId());
+				String dayWeekText = new SimpleDateFormat("EEEE").format(event.getEventDate()); //event day
+				List<Integer> teamId = ntfDb.getTeamId(event.getEventType(),event.getCity());
+				//String eventStartTime = new SimpleDateFormat("HH:mm").parse(event.getEventTime());
+				Date teamStartTime=null, teamEndTime=null, time1 = null, time2=null;
+				try {
+					time1 = new SimpleDateFormat("HH:mm").parse(event.getEventTime());
+					Calendar cal =Calendar.getInstance();
+					cal.setTime(time1);
+					cal.add(Calendar.HOUR_OF_DAY,Integer.parseInt(event.getEventDuration())); // this will add two hours
+					time2 = cal.getTime();
+					System.out.println(time1);
+					System.out.println(time2);
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+
+				for(int i=0; i<teamId.size();i++) {
+					Team team = teamService.getTeamById(teamId.get(i));
+					try {
+						teamStartTime =  new SimpleDateFormat("HH:mm").parse(team.getAvailableFrom());
+						teamEndTime = new SimpleDateFormat("HH:mm").parse(team.getAvailableTo());
+						System.out.println(teamStartTime);
+						System.out.println(teamEndTime);
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					if(team.getWeekDay().equalsIgnoreCase("Anyday") && (time1.after(teamStartTime) || time1.equals(teamStartTime)) && (time2.before(teamEndTime)||time2.equals(teamEndTime))) {
+					//if(team.getWeekDay().equalsIgnoreCase("Anyday") ){
+						
+						adminIds.add(userService.getUserByEmailId(team.getTeamLeadId()).get().getId());
+						tempIds.add(teamId.get(i));
+						
+					}else if(team.getWeekDay().equalsIgnoreCase(dayWeekText) && (time1.after(teamStartTime) || time1.equals(teamStartTime)) && (time2.before(teamEndTime)||time2.equals(teamEndTime))) {
+					//else if(team.getWeekDay().equalsIgnoreCase(dayWeekText)){
+						adminIds.add(userService.getUserByEmailId(team.getTeamLeadId()).get().getId());
+						//ntf.setTargetTeamId(teamId.get(i));
+						tempIds.add(teamId.get(i));
+					}
+				}					
+				
+			} else if(ntf.getTargetType().equalsIgnoreCase("team")){
+				adminIds = ntfDb.getLocalAdminId(teamService.getTeamById(ntf.getTargetId()).getLocalAdminName());
+				tempIds.add(ntf.getTargetId());
+			}else {
+				adminIds = ntfDb.getAdminId();
+				ntf.setTargetTeamId(0);
+				//List<Integer> adminIds = ntfDb.getAdminId(ntf.targetId());
+			}
 			//complete function
 			//Getting week day
-			// if(!event.getPublicEvent()) {
+			// if(event.getPublicEvent()==0) {
 //	        String dayWeekText = new SimpleDateFormat("EEEE").format(event.getEventDate());
 			//adminIds.addAll(ntfDb.getTeamLead(event.getEventType(),event.getEventLocation(),event.getEventTime(),dayWeekText); }
-			return handleNotificationApproval(ntf, adminIds);			
+			return handleNotificationApproval(ntf, adminIds, tempIds);			
 	}
 	
 
@@ -247,7 +329,13 @@ public class NotificationService {
 			System.out.println("Notification to be updated does not exist");
 			return null;
 		}
-		ntfToBeUpdated.setAction(status); //action status not fetched?
+		if(ntfToBeUpdated.getTargetType().equalsIgnoreCase("event")) {
+			ntfToBeUpdated.setUpdatedBy(username);
+			
+			ntfToBeUpdated.setTargetTeamId(ntfDb.getTargetTeamId(ntfToBeUpdated.getUuid(),userService.getUserByEmailId(username).get().getId()));
+			
+		}
+		ntfToBeUpdated.setAction(status);
 		ntfToBeUpdated.setUpdatedBy(username);
 		ntfToBeUpdated.setUpdatedTime(new Date());
 		NotificationApproval updatedNotification = ntfApprovalDb.save(ntfToBeUpdated);
@@ -255,11 +343,11 @@ public class NotificationService {
 		newNtf.setMessage("Your previous request has been "+ updatedNotification.getAction()+"("+updatedNotification.getMessage()+")");
 		newNtf.setBroadcastType("single");		
 		newNtf.setTargetType("user");
-		newNtf.setTargetId(userService.getUserByEmailId(updatedNotification.getUpdatedBy()).get().getId()); //No value fetched for update/edit ntfs
+		newNtf.setTargetId(userService.getUserByEmailId(updatedNotification.getCreatedBy()).get().getId()); //No value fetched for update/edit ntfs
 		newNtf.setMappingTableData(updatedNotification.getMappingTableData());
 		newNtf.setUpdatedBy(updatedNotification.getUpdatedBy()); 
 		newNtf.setUpdatedTime(new Date());
-		newNtf.setCreatedBy(updatedNotification.getUpdatedBy());
+		newNtf.setCreatedBy(updatedNotification.getCreatedBy());
 		newNtf.setCreatedTime(new Date());
 		newNtf.setUuid(UUID.randomUUID());
 		newNtf.setTitle("Status Update");
@@ -271,47 +359,26 @@ public class NotificationService {
 	}
 
 	
-	public List<NotificationApproval> getntf(NotificationSearch eventSearch)
+	public List<NotificationUi> getntf(String username, String createdDate)
 	{
-		return ntfApprovalDb.findAll(new Specification<NotificationApproval>(){
+		List<NotificationUi> result = ntfApprovalDb.findByUserName( username );
+		List<NotificationUi> finalRes = new ArrayList<>();
+		for(NotificationUi res : result) {
+			Date todayDate = new Date();
+			String currentDate = new SimpleDateFormat("yyyy/MM/dd").format(todayDate);  
+			String createdTime =new SimpleDateFormat("yyyy/MM/dd").format(res.getCreatedTime());
+			if(createdDate.equalsIgnoreCase("Today") && res.getAction().equalsIgnoreCase("waiting")) {
+				System.out.println(currentDate);
+				System.out.println(createdTime);
 
-			@Override
-			public Predicate toPredicate(Root<NotificationApproval> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
-				List<Predicate> predicates = new ArrayList<>();
-				
-				ZoneId defaultZoneId = ZoneId.systemDefault();
-				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-				DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-				
-				if (eventSearch.getDateInterval() != null) {
-					LocalDate todaydate=LocalDate.now();
-					String eventDate= dateTimeFormatter.format(todaydate);  
-					LocalDate startDate = LocalDate.parse(eventDate);
-					int dayOffSet = 0;
-					if (eventSearch.getDateInterval().equals("TODAY")) {
-						dayOffSet = 1;
-						LocalDate endDate = startDate.plusDays(dayOffSet);
-						String end = endDate.toString();
-						Date s=java.sql.Date.valueOf(startDate);
-						Date e=java.sql.Date.valueOf(end);
-						System.out.println(e);
-						System.out.println(s);
-						predicates.add(criteriaBuilder.between(root.get("createdTime"), s,e));}
-					else if(eventSearch.getDateInterval().equals("NOT TODAY")) {
-						dayOffSet = 1;
-						LocalDate endDate = startDate.minusDays(dayOffSet);
-						String end = endDate.toString();
-						Date s=java.sql.Date.valueOf(startDate);
-						Date e=java.sql.Date.valueOf(end);
-						System.out.println(e);
-						System.out.println(s);
-						predicates.add(criteriaBuilder.between(root.get("createdTime"), e,s));
-					}
-				}
-
-				return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+				if(currentDate.equalsIgnoreCase(createdTime))
+				finalRes.add(res);
 			}
-		});
+			//	else {
+//				finalRes.add(res);
+//			}
+		}
+		return finalRes;
 	}
 
 	//cancel invite
@@ -319,7 +386,7 @@ public class NotificationService {
 		ntf.setTitle("Kirtan Cancel Invite");
 		Team team = teamService.getTeamById(ntfDb.getTeamLeadId(ntf.getTargetId()));
 		List<Integer> adminIds = new ArrayList<>();
-		adminIds.add(team.getTeamLead());
+		adminIds.add(userService.getUserByEmailId(team.getTeamLeadId()).get().getId());
 		return handleNotification(ntf, adminIds);
 	}
 }

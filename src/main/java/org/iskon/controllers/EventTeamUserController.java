@@ -2,11 +2,14 @@ package org.iskon.controllers;
 
 import java.util.List;
 
+import org.iskon.authentication.JwtUtil;
 import org.iskon.models.EventTeamUser;
 import org.iskon.models.EventTeamUserSearch;
 import org.iskon.services.EventTeamUserService;
+import org.iskon.utils.HttpException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,12 +32,20 @@ public class EventTeamUserController {
 //		}
 		List<EventTeamUser> req = eventTeamUserMappingService.addEventTeamUser(listEventTeamUser);
 		return req;
+		
+	}
+	
+	private String getJwt(String authorizationHeader) {
+		JwtUtil jwtUtil = new JwtUtil();
+		String jwt = authorizationHeader.replace("Bearer ", "");
+		return jwtUtil.extractUsername(jwt);
+		
 	}
 
-	@RequestMapping(value = "/geteventteamusers", method = RequestMethod.PUT)
-	public List<EventTeamUser> getEventTeamUsers(@RequestBody EventTeamUserSearch queryParams) {
+	@RequestMapping(value = "/geteventteamusers", method = RequestMethod.GET)
+	public List<EventTeamUser> getEventTeamUsers(@RequestHeader("Authorization") String authHead) throws HttpException {
 		//System.out.println("queryParams: "+queryParams);
-		List<EventTeamUser> req = eventTeamUserMappingService.getEventTeamUsers(queryParams);
+		List<EventTeamUser> req = eventTeamUserMappingService.getEventTeamUsersByUserName(getJwt(authHead));
 		return req;
 	}
 

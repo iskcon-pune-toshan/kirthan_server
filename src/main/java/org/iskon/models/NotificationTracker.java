@@ -21,11 +21,16 @@ public class NotificationTracker {
 
 	@Column(name = "status")
 	private String status;
+	
+	@Column(name = "target_team_id")
+	private Integer targetTeamId;
+	
 
-	public NotificationTracker(int userId, int targetId, String notificationId) {
+	public NotificationTracker(int userId, int targetId, String notificationId, Integer targetTeamId) {
 		this.userId = userId;
 		this.targetId = targetId;
 		this.notificationId = notificationId;
+		this.targetTeamId = targetTeamId;
 	}
 
 	public int getId() {
@@ -38,6 +43,14 @@ public class NotificationTracker {
 
 	public int getTargetId() {
 		return targetId;
+	}
+	
+	public Integer getTargetTeamId() {
+		return targetTeamId;
+	}
+	
+	public void setTargetId(Integer tid) {
+		this.targetTeamId = tid;
 	}
 
 	public String getNotificationId() {

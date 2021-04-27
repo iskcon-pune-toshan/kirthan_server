@@ -17,7 +17,7 @@ public class AppConfig {
 		dmds.setDriverClassName("com.mysql.jdbc.Driver");
 		dmds.setUrl("jdbc:mysql://localhost:3306/kirtan");
 		dmds.setUsername("root");
-		dmds.setPassword("my$qlr00t");
+		dmds.setPassword("root");
 		return dmds;
 	}
 	

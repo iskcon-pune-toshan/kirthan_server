@@ -10,6 +10,7 @@ public class EventTeamUserSearch implements Serializable {
    private Integer teamId;
    private Integer eventId;
    private Integer userId;
+   private String userName;
    	
    public Integer getId() {
 	   return id;
@@ -23,5 +24,12 @@ public class EventTeamUserSearch implements Serializable {
    public Integer getUserId() {
 	   return userId;
    }
+public String getUserName() {
+	return userName;
+}
+
+public void setUserName(String username) {
+	this.userName = userName;
+}
     
 }
