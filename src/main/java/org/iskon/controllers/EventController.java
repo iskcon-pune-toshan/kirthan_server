@@ -43,8 +43,12 @@ public class EventController {
 				//NotificationWrapper ntfWrapper = new NotificationWrapper();
 		if(!newEvent.getIsPublicEvent())
 			ntfWrapper.generateNotification(req,"single");
+		else
+			ntfWrapper.generateNotification(req,"public event");
 		return req;
 	}
+	
+
 	
 	@PutMapping("/updateevent")
 	public Event updateEvent(@RequestBody Event newEvent) {
@@ -102,8 +106,8 @@ public class EventController {
 	{
 		Event er = Event.buildEvent(null, "Dummy Event Title", "Dummy Event Desc", new Date(), "1 hour",
 				"Pune",
-				"Sandhya", (long) 123456788, "Add Line One", "Add Line Two", "Add Line Three", "Camp", "Pune",
-				411014, "Maharashtra", "India", false, "Draft", null, "Chinmay",
+				"Sandhya", (long) 123456788, "Add Line One", "Add Line Two","Add Line One", "Add Line Two",
+				"Add Line Three" ,"Camp", "Pune",411014, "Maharashtra", "India", false, "Draft", null, "Chinmay",
 				"Manjunath", new Date(), new Date(), null, null, null, null, null, null,true, 1, "Emergency");
 		return er;
 	}

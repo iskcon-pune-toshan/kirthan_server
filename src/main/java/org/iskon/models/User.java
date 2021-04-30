@@ -33,9 +33,9 @@ public class User implements Serializable {
 		this.updatedTime = updatedTime;
 	}
 
-//	public void setRoleId(Integer roleId) {
-//		this.roleId = roleId;
-//	}
+	public void setRoleId(Integer roleId) {
+		this.roleId = roleId;
+	}
 	
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)

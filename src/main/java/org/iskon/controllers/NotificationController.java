@@ -166,10 +166,12 @@ public class NotificationController {
 			  team.setIsProcessed(true);
 			  team.setUpdatedBy(updatedNtf.getUpdatedBy()); //changed to get the email?
 			  team.setUpdatedTime(updatedNtf.getUpdatedTime());
-//			  if(updatedNtf.getAction().equalsIgnoreCase("Approved"))
-//				 {
-//				  userService.getUserByEmailId(team.getTeamLeadId()).get().setRoleId(4);
-//				  }
+			  if(updatedNtf.getAction().equalsIgnoreCase("Approved"))
+				 {
+					 User user = userService.getUserByEmailId(team.getTeamLeadId()).get();
+					 if(user.getRoleId().equals(3))
+						 user.setRoleId(4);
+				  }
 			  if(!team.getIsProcessed()) {
 				  //if team has been processed before
 				  //that means this request is for update 

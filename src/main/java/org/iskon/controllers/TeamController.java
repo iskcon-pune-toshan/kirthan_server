@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Map;
 import org.iskon.models.TeamSearch;
 import org.iskon.models.TeamUser;
+import org.iskon.models.User;
 import org.iskon.models.EventTeamUser;
 import org.iskon.models.Team;
 import org.iskon.services.TeamService;
 import org.iskon.services.TeamUserService;
+import org.iskon.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,9 +28,12 @@ public class TeamController {
 	@Autowired
 	private TeamUserService teamUserMappingService;
 
+	@Autowired
+	UserService userService;
 
 	@Autowired
 	private NotificationWrapper nw ;
+	
 
 //	@RequestMapping(value = "/addteam", method = RequestMethod.PUT)
 //	public Team addTeam(@RequestParam(name = "teamData") Team newTeam,@RequestParam(name = "teamUserData") List<TeamUser> listTeamUser) {
@@ -75,6 +80,9 @@ public class TeamController {
 	@RequestMapping(value = "/deleteteam", method = RequestMethod.PUT)
 	public void deleteTeam(@RequestBody Team newTeam) {
 		System.out.println(newTeam);
+		User user = userService.getUserByEmailId(newTeam.getTeamLeadId()).get();
+		 if(user.getRoleId().equals(4))
+			 user.setRoleId(3);
 	    teamService.deleteTeam(newTeam);
 //		NotificationWrapper nw = new NotificationWrapper();
 //		nw.populateTeamNotification(req);

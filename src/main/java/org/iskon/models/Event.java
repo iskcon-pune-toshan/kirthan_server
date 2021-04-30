@@ -33,9 +33,9 @@ public class Event implements Serializable {
 	public String toString() {
 		return "Event [id=" + id + ", eventTitle=" + eventTitle + ", eventDescription=" + eventDescription
 				+ ", eventDate=" + eventDate + ", eventDuration=" + eventDuration + ", eventLocation=" + eventLocation
-				+ ", eventType=" + eventType + ", phoneNumber=" + phoneNumber + ", addLineOne=" + addLineOne
-				+ ", addLineTwo=" + addLineTwo + ", addLineThree=" + addLineThree + ", locality=" + locality + ", city="
-				+ city + ", pincode=" + pincode + ", state=" + state + ", country=" + country + ", isProcessed="
+				+ ", eventType=" + eventType + ", phoneNumber=" + phoneNumber + ", addLineOneS=" + addLineOneS
+				+ ", addLineTwoS=" + addLineTwoS + ", localityS=" + localityS + ", addLineOneD=" + addLineOneD
+				+ ", addLineTwoD=" + addLineTwoD + ", localityD=" + localityD + ", city="+ city + ", pincode=" + pincode + ", state=" + state + ", country=" + country + ", isProcessed="
 				+ isProcessed + ", approvalStatus=" + approvalStatus + ", approvalComments=" + approvalComments
 				+ ", createdBy=" + createdBy + ", updatedBy=" + updatedBy + ", createdTime=" + createdTime
 				+ ", updatedTime=" + updatedTime + ", sourceLongitude=" + sourceLongitude + ", sourceLatitude="
@@ -76,17 +76,23 @@ public class Event implements Serializable {
 	@Column(name = "phone_number")
 	private Long phoneNumber;
 
-	@Column(name = "add_line_one")
-	private String addLineOne;
+	@Column(name = "add_line_one_s")
+	private String addLineOneS;
 
-	@Column(name = "add_line_two")
-	private String addLineTwo;
+	@Column(name = "add_line_two_s")
+	private String addLineTwoS;
 
-	@Column(name = "add_line_three")
-	private String addLineThree;
+	@Column(name = "locality_s")
+	private String localityS;
 
-	@Column(name = "locality")
-	private String locality;
+	@Column(name = "add_line_one_d")
+	private String addLineOneD;
+
+	@Column(name = "add_line_two_d")
+	private String addLineTwoD;
+
+	@Column(name = "locality_d")
+	private String localityD;
 
 	@Column(name = "city")
 	private String city;
@@ -153,8 +159,9 @@ public class Event implements Serializable {
 	}
 
 	private Event(Integer id, String eventTitle, String eventDescription, Date eventDate, String eventDuration,
-				  String eventLocation, String eventType, Long phoneNumber, String addLineOne, String addLineTwo,
-				  String addLineThree, String locality, String city, Integer pincode, String state, String country,
+				  String eventLocation, String eventType, Long phoneNumber, String addLineOneS, String addLineTwoS,
+				  String localityS, String addLineOneD, String addLineTwoD,
+				  String localityD,String city, Integer pincode, String state, String country,
 				  Boolean isProcessed, String approvalStatus, String approvalComments,
 				  String createdBy, String updatedBy, Date createdTime, Date updatedTime, Double sourceLongitude,
 				  Double sourceLatitude, Double destinationLongitude, Double destinationLatitude, String eventMobility,
@@ -167,10 +174,12 @@ public class Event implements Serializable {
 		this.eventLocation = eventLocation;
 		this.eventType = eventType;
 		this.phoneNumber = phoneNumber;
-		this.addLineOne = addLineOne;
-		this.addLineTwo = addLineTwo;
-		this.addLineThree = addLineThree;
-		this.locality = locality;
+		this.addLineOneS = addLineOneS;
+		this.addLineTwoS = addLineTwoS;
+		this.localityS = localityS;
+		this.addLineOneD = addLineOneD;
+		this.addLineTwoD = addLineTwoD;
+		this.localityD = localityD;
 		this.city = city;
 		this.pincode = pincode;
 		this.state = state;
@@ -195,7 +204,8 @@ public class Event implements Serializable {
 
 	public static Event buildEvent(Integer id, String eventTitle, String eventDescription, Date eventDate,
 								   String eventDuration, String eventLocation, String eventType, Long phoneNumber,
-								   String addLineOne, String addLineTwo, String addLineThree, String locality,
+								   String addLineOneS, String addLineTwoS, String localityS,
+								   String addLineOneD, String addLineTwoD, String localityD,
 								   String city, Integer pincode, String state, String country, Boolean isProcessed,
 								   String approvalStatus, String approvalComments,
 								   String createdBy, String updatedBy, Date createdTime, Date updatedTime, 
@@ -203,7 +213,7 @@ public class Event implements Serializable {
 								   Double destinationLatitude, String eventMobility, String eventTime, Boolean isPublicEvent,
 								   Integer status, String cancelReason) {
 		return new Event(id, eventTitle, eventDescription, eventDate,eventDuration, eventLocation, eventType,
-				phoneNumber, addLineOne, addLineTwo, addLineThree, locality,city, pincode, state, country,
+				phoneNumber, addLineOneS, addLineTwoS, localityS, addLineOneD, addLineTwoD, localityD,city, pincode, state, country,
 				isProcessed, approvalStatus, approvalComments, createdBy, updatedBy, createdTime, updatedTime, 
 				sourceLongitude, sourceLatitude, destinationLongitude, destinationLatitude, eventMobility, eventTime, isPublicEvent,
 				status, cancelReason);
@@ -241,20 +251,28 @@ public class Event implements Serializable {
 		return phoneNumber;
 	}
 
-	public String getAddLineOne() {
-		return addLineOne;
+	public String getAddLineOneS() {
+		return addLineOneS;
 	}
 
-	public String getAddLineTwo() {
-		return addLineTwo;
+	public String getAddLineTwoS() {
+		return addLineTwoS;
 	}
 
-	public String getAddLineThree() {
-		return addLineThree;
+	public String getLocalityS() {
+		return localityS;
+	}
+	
+	public String getAddLineOneD() {
+		return addLineOneD;
 	}
 
-	public String getLocality() {
-		return locality;
+	public String getAddLineTwoD() {
+		return addLineTwoD;
+	}
+
+	public String getLocalityD() {
+		return localityD;
 	}
 
 	public String getCity() {

@@ -9,6 +9,8 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -87,6 +89,8 @@ public class NotificationService {
 	public	List<NotificationUi> getAll(String username) {
 		List<NotificationUi> result = ntfApprovalDb.findByUserName( username );
 		result.addAll(ntfDb.findByUserName(username));
+		result.sort(Comparator.comparing(NotificationUi::getUpdatedTime));
+		Collections.reverse(result);
 		return result; 
 	}
 
