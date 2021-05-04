@@ -37,6 +37,10 @@ public class User implements Serializable {
 		this.roleId = roleId;
 	}
 	
+	public void setInvitedBy(Integer invitedBy) {
+		this.invitedBy = invitedBy;
+	}
+	
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private Integer id;
@@ -113,6 +117,10 @@ public class User implements Serializable {
 	@Column(name = "updated_time")
 	private Date updatedTime;
 	
+	@Column(name = "invited_by")
+	private Integer invitedBy;
+
+	
 
 	private User(){
 
@@ -122,7 +130,7 @@ public class User implements Serializable {
 				 Long phoneNumber, String addLineOne, String addLineTwo, String addLineThree, String locality,
 				 String city, Integer pinCode, String state, String country, String govtIdType, String govtId,
 				 Boolean isProcessed, String approvalStatus, String approvalComments, Integer roleId,
-				 String createdBy, String updatedBy, Date createdTime, Date updatedTime) {
+				 String createdBy, String updatedBy, Date createdTime, Date updatedTime, Integer invitedBy) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -148,6 +156,7 @@ public class User implements Serializable {
 		this.updatedBy = updatedBy;
 		this.createdTime = createdTime;
 		this.updatedTime = updatedTime;
+		this.invitedBy = invitedBy;
 	}
 
 	public static User buildUser(Integer id, String firstName, String lastName, String email, String userName,
@@ -155,10 +164,10 @@ public class User implements Serializable {
 								 String addLineThree, String locality, String city, Integer pinCode, String state,
 								 String country, String govtIdType, String govtId, Boolean isProcessed,
 								 String approvalStatus, String approvalComments, Integer roleId,
-								 String createdBy, String updatedBy, Date createdTime, Date updatedTime) {
+								 String createdBy, String updatedBy, Date createdTime, Date updatedTime, Integer invitedBy) {
 		return new User(id, firstName, lastName, email, userName, password, phoneNumber, addLineOne, addLineTwo,
 				addLineThree, locality, city, pinCode, state, country, govtIdType, govtId, isProcessed,
-				approvalStatus, approvalComments, roleId, createdBy, updatedBy, createdTime, updatedTime);
+				approvalStatus, approvalComments, roleId, createdBy, updatedBy, createdTime, updatedTime, invitedBy);
 	}
 
 	public Integer getId() {
@@ -263,5 +272,8 @@ public class User implements Serializable {
 
 	public Date getUpdatedTime() {
 		return updatedTime;
+	}
+	public Integer getInvitedBy() {
+		return invitedBy;
 	}
 }
