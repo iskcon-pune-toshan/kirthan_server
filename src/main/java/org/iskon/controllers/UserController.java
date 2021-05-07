@@ -59,7 +59,10 @@ public class UserController {
 		System.out.println(newUser);
 		User req = userService.updateUser(newUser);
 		//NotificationWrapper nw = new NotificationWrapper();
-		nw.generateNotification(req, "single");
+		if(newUser.getRoleId() == 2 )
+			nw.generateNotification(req, "make local admin");
+		else if(newUser.getRoleId() == 3)
+			nw.generateNotification(req, "make user");
 		//pref.getUserId(req);
 		return req;
 	}

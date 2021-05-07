@@ -131,6 +131,7 @@ public class NotificationWrapper{
 			ntf.setBroadcastType("edit");
 			ntf.setCreatedTime(user.getCreatedTime());
 			ntf.setUpdatedTime(new Date());
+			//User user = userServ
 			ntf.setUpdatedBy(userService.getUserById(user.getInvitedBy()).getEmail());
 			ntf.setMappingTableData("user");
 			ntf.setTargetType("user");
