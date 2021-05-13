@@ -3,7 +3,7 @@ package org.iskon.models;
 public class ProspectiveUserSearch {
 	private Integer id;
 	private String userEmail;
-	private String localAdminEmail;
+	private String invitedBy;
 	private String inviteType;
 	private String inviteCode;
 	 private Boolean isProcessed;
@@ -20,12 +20,12 @@ public class ProspectiveUserSearch {
 		this.userEmail = userEmail;
 	}
 
-	public String getLocalAdminEmail() {
-		return localAdminEmail;
+	public String getInvitedBy() {
+		return invitedBy;
 	}
 
-	public void setLocalAdminEmail(String localAdminEmail) {
-		this.localAdminEmail = localAdminEmail;
+	public void setInvitedBy(String invitedBy) {
+		this.invitedBy = invitedBy;
 	}
 
 	public String getInviteType() {

@@ -14,7 +14,7 @@ public class ProspectiveUser implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ProspectiveUser [id=" + id + ", userEmail=" + userEmail + ", localAdminEmail=" + localAdminEmail
+		return "ProspectiveUser [id=" + id + ", userEmail=" + userEmail + ", invitedBy=" + invitedBy
 				+ ", inviteCode=" + inviteCode + ", inviteType=" + inviteType + ", isProcessed="
 						+ isProcessed + "]";
 	}
@@ -27,8 +27,8 @@ public class ProspectiveUser implements Serializable {
 	@Column(name = "user_email")
 	private String userEmail;
 
-	@Column(name = "local_admin_email")
-	private String localAdminEmail;
+	@Column(name = "invited_by")
+	private String invitedBy;
 	
 	@Column(name = "invite_code")
 	private String inviteCode;
@@ -44,19 +44,19 @@ public class ProspectiveUser implements Serializable {
 
 	}
 
-	private ProspectiveUser(Integer id, String userEmail, String localAdminEmail, String inviteType,
+	private ProspectiveUser(Integer id, String userEmail, String invitedBy, String inviteType,
 				  String inviteCode, Boolean isProcessed ) {
 		this.id = id;
 		this.userEmail = userEmail;
-		this.localAdminEmail = localAdminEmail;
+		this.invitedBy = invitedBy;
 		this.inviteCode = inviteCode;
 		this.inviteType = inviteType;
 		this.isProcessed = isProcessed;
 	}
 
-	public static ProspectiveUser buildProspectiveUser(Integer id, String userEmail, String localAdminEmail, String inviteType,
+	public static ProspectiveUser buildProspectiveUser(Integer id, String userEmail, String invitedBy, String inviteType,
 			  String inviteCode, Boolean isProcessed) {
-		return new ProspectiveUser(id, userEmail, localAdminEmail, inviteType, inviteCode, isProcessed);
+		return new ProspectiveUser(id, userEmail, invitedBy, inviteType, inviteCode, isProcessed);
 	}
 
 	public Integer getId() {
@@ -67,8 +67,8 @@ public class ProspectiveUser implements Serializable {
 		return userEmail;
 	}
 
-	public String getLocalAdminEmail() {
-		return localAdminEmail;
+	public String getInvitedBy() {
+		return invitedBy;
 	}
 
 	public String getInviteType() {
