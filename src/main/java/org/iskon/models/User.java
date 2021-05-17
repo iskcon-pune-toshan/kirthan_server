@@ -102,8 +102,12 @@ public class User implements Serializable {
 	@Column(name = "approval_comments")
 	private String approvalComments;
 
+	@Column(name = "prev_role_id")
+	private Integer prevRoleId;
+	
 	@Column(name = "role_id")
 	private Integer roleId;
+	
 
 	@Column(name = "created_by")
 	private String createdBy;
@@ -129,7 +133,7 @@ public class User implements Serializable {
 	private User(Integer id, String firstName, String lastName, String email, String userName, String password,
 				 Long phoneNumber, String addLineOne, String addLineTwo, String addLineThree, String locality,
 				 String city, Integer pinCode, String state, String country, String govtIdType, String govtId,
-				 Boolean isProcessed, String approvalStatus, String approvalComments, Integer roleId,
+				 Boolean isProcessed, String approvalStatus, String approvalComments, Integer prevRoleId,Integer roleId,
 				 String createdBy, String updatedBy, Date createdTime, Date updatedTime, Integer invitedBy) {
 		this.id = id;
 		this.firstName = firstName;
@@ -151,6 +155,7 @@ public class User implements Serializable {
 		this.isProcessed = isProcessed;
 		this.approvalStatus = approvalStatus;
 		this.approvalComments = approvalComments;
+		this.prevRoleId = prevRoleId;
 		this.roleId = roleId;
 		this.createdBy = createdBy;
 		this.updatedBy = updatedBy;
@@ -163,11 +168,11 @@ public class User implements Serializable {
 								 String password, Long phoneNumber, String addLineOne, String addLineTwo,
 								 String addLineThree, String locality, String city, Integer pinCode, String state,
 								 String country, String govtIdType, String govtId, Boolean isProcessed,
-								 String approvalStatus, String approvalComments, Integer roleId,
+								 String approvalStatus, String approvalComments, Integer prevRoleId, Integer roleId,
 								 String createdBy, String updatedBy, Date createdTime, Date updatedTime, Integer invitedBy) {
 		return new User(id, firstName, lastName, email, userName, password, phoneNumber, addLineOne, addLineTwo,
 				addLineThree, locality, city, pinCode, state, country, govtIdType, govtId, isProcessed,
-				approvalStatus, approvalComments, roleId, createdBy, updatedBy, createdTime, updatedTime, invitedBy);
+				approvalStatus, approvalComments, prevRoleId, roleId, createdBy, updatedBy, createdTime, updatedTime, invitedBy);
 	}
 
 	public Integer getId() {
@@ -252,6 +257,10 @@ public class User implements Serializable {
 
 	public String getApprovalComments() {
 		return approvalComments;
+	}
+	
+	public Integer getPrevRoleId() {
+		return prevRoleId;
 	}
 
 	public Integer getRoleId() {

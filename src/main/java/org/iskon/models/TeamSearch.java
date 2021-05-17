@@ -10,6 +10,8 @@ public class TeamSearch implements Serializable {
     private Integer id;
     private List<String> createdBy;
     private String approvalStatus;
+    private String teamLeadId;
+    private String localAdminName;
     
     private Date createTime;
 
@@ -28,5 +30,17 @@ public class TeamSearch implements Serializable {
     }
 	public String getApprovalStatus() {
 		return approvalStatus;
+	}
+	public String getTeamLeadId() {
+		return teamLeadId;
+	}
+	public void setTeamLeadId(String teamLeadId) {
+		this.teamLeadId = teamLeadId;
+	}
+	public String getLocalAdminName() {
+		return localAdminName;
+	}
+	public void setLocalAdminName(String localAdminName) {
+		this.localAdminName = localAdminName;
 	}
 }

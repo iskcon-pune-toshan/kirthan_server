@@ -40,7 +40,7 @@ public class Event implements Serializable {
 				+ ", createdBy=" + createdBy + ", updatedBy=" + updatedBy + ", createdTime=" + createdTime
 				+ ", updatedTime=" + updatedTime + ", sourceLongitude=" + sourceLongitude + ", sourceLatitude="
 				+ sourceLatitude + ", destinationLongitude=" + destinationLongitude + ", destinationLatitude="
-				+ destinationLatitude + ", eventMobility=" + eventMobility + ", isPubicEvent=" + isPublicEvent + ", status=" + status + ", cancelReason=" + cancelReason + "]";
+				+ destinationLatitude + ", eventMobility=" + eventMobility + ", isPubicEvent=" + isPublicEvent + ", status=" + status + ", cancelReason=" + cancelReason + ", serviceType=" + serviceType + "]";
 	}
 
 	public void setUpdatedBy(String updatedBy) {
@@ -153,6 +153,9 @@ public class Event implements Serializable {
 	
 	@Column(name = "cancel_reason")
 	private String cancelReason;
+	
+	@Column(name = "service_type")
+	private String serviceType;
 
 	private Event(){
 
@@ -165,7 +168,7 @@ public class Event implements Serializable {
 				  Boolean isProcessed, String approvalStatus, String approvalComments,
 				  String createdBy, String updatedBy, Date createdTime, Date updatedTime, Double sourceLongitude,
 				  Double sourceLatitude, Double destinationLongitude, Double destinationLatitude, String eventMobility,
-				  String eventTime, Boolean isPublicEvent, Integer status, String cancelReason ) {
+				  String eventTime, Boolean isPublicEvent, Integer status, String cancelReason, String serviceType ) {
 		this.id = id;
 		this.eventTitle = eventTitle;
 		this.eventDescription = eventDescription;
@@ -200,6 +203,7 @@ public class Event implements Serializable {
 		this.isPublicEvent = isPublicEvent;
 		this.status = status;
 		this.cancelReason = cancelReason;
+		this.serviceType = serviceType;
 	}
 
 	public static Event buildEvent(Integer id, String eventTitle, String eventDescription, Date eventDate,
@@ -211,12 +215,12 @@ public class Event implements Serializable {
 								   String createdBy, String updatedBy, Date createdTime, Date updatedTime, 
 								   Double sourceLongitude, Double sourceLatitude, Double destinationLongitude,
 								   Double destinationLatitude, String eventMobility, String eventTime, Boolean isPublicEvent,
-								   Integer status, String cancelReason) {
+								   Integer status, String cancelReason, String serviceType) {
 		return new Event(id, eventTitle, eventDescription, eventDate,eventDuration, eventLocation, eventType,
 				phoneNumber, addLineOneS, addLineTwoS, localityS, addLineOneD, addLineTwoD, localityD,city, pincode, state, country,
 				isProcessed, approvalStatus, approvalComments, createdBy, updatedBy, createdTime, updatedTime, 
 				sourceLongitude, sourceLatitude, destinationLongitude, destinationLatitude, eventMobility, eventTime, isPublicEvent,
-				status, cancelReason);
+				status, cancelReason, serviceType);
 	}
 
 	public Integer getId() {
@@ -355,5 +359,8 @@ public class Event implements Serializable {
 		return cancelReason;
 	}
 	
+	public String getServiceType() {
+		return serviceType;
+	}
 	
 }

@@ -35,6 +35,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User updateUser(User event)
 	{
+		System.out.println("Update user called");
 		return userJpaRepository.save(event);
 	}
 

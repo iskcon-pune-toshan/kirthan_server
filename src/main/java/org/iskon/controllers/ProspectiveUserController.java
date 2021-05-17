@@ -2,9 +2,11 @@ package org.iskon.controllers;
 
 import org.iskon.models.ProspectiveUser;
 import org.iskon.models.ProspectiveUserSearch;
+import org.iskon.models.User;
 import org.iskon.models.EventSearch;
 import org.iskon.services.EventService;
 import org.iskon.services.ProspectiveUserService;
+import org.iskon.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.threeten.bp.LocalDate;
@@ -29,6 +31,10 @@ public class ProspectiveUserController {
 	@Autowired
 	private ProspectiveUserService prospectiveUserService;
 	
+	@Autowired
+	private UserService userService;
+	
+	
 	@GetMapping("/getdummyprospectiveuser")
 	public List<ProspectiveUser> getDummyEvent() { 		
 		List<ProspectiveUser> eventreqs = new ArrayList<ProspectiveUser>();
@@ -49,6 +55,24 @@ public class ProspectiveUserController {
 	public ProspectiveUser updateProspectiveUser(@RequestBody ProspectiveUser newEvent) {
 		System.out.println(newEvent);	
 		ProspectiveUser req = prospectiveUserService.updateProspectiveUser(newEvent);
+		if(newEvent.getIsProcessed()) {
+		if(newEvent.getInviteType().equalsIgnoreCase("team")) {
+			System.out.println("inside pu if invite type" + newEvent);
+			User user = userService.getUserByEmailId(newEvent.getUserEmail()).get();
+			user.setInvitedBy(userService.getUserByEmailId(newEvent.getInvitedBy()).get().getId());
+			if(user.getRoleId().equals(3))
+				 user.setRoleId(4);
+			System.out.println(user);
+			//userService.updateUser(user);
+			ntfWrapper.generateNotification(user,"team initiated");
+		}else if(newEvent.getInviteType().equalsIgnoreCase("local_admin")) {
+			System.out.println(newEvent);
+			User user = userService.getUserByEmailId(newEvent.getUserEmail()).get();
+			user.setInvitedBy(userService.getUserByEmailId(newEvent.getInvitedBy()).get().getId());
+			//userService.updateUser(user);
+			ntfWrapper.generateNotification(user, "make local admin");
+		}
+		}
 		return req;
 	}
 	

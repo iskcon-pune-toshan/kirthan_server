@@ -38,16 +38,17 @@ public class UserTempleServiceImpl implements UserTempleService {
 
 				if (eventSearch.getId() != null)
 					predicates.add(root.get("id").in(eventSearch.getId()));
+				if (eventSearch.getTempleId() != null)
+					 predicates.add(root.get("templeId").in(eventSearch.getTempleId()));
+					 
+				if (eventSearch.getUserId() != null)
+					 predicates.add(root.get("userId").in(eventSearch.getUserId()));
 
 				/*
 				 * if (eventSearch.getRoleId() != null)
 				 * predicates.add(root.get("roleId").in(eventSearch.getRoleId()));
 				 * 
-				 * if (eventSearch.getTempleId() != null)
-				 * predicates.add(root.get("templeId").in(eventSearch.getTempleId()));
 				 * 
-				 * if (eventSearch.getUserId() != null)
-				 * predicates.add(root.get("userId").in(eventSearch.getUserId()));
 				 */
 
 				return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));

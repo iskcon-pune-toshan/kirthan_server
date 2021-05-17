@@ -66,6 +66,14 @@ public class UserController {
 		//pref.getUserId(req);
 		return req;
 	}
+	
+	@RequestMapping(value = "/initiateteam", method = RequestMethod.PUT)
+	public User initiateTeam(@RequestBody User newUser) {
+		System.out.println(newUser);
+		User req = userService.updateUser(newUser); //saves user
+		nw.generateNotification(req, "initiate team");
+		return req;
+	}
 
 	@RequestMapping(value = "/deleteuser", method = RequestMethod.PUT)
 	public void deleteUser(@RequestBody User newUser) {
@@ -94,7 +102,7 @@ public class UserController {
 		User ur = User.buildUser(1, "Srinivas","Naik", "srinivasvn8@gmail.com", "srinivasvnaik",
 				"password1234", 8007774787L, "Flat No 20, Kalyani A", "Aditya GArden City",
 				"","Warje", "Pune", 411058,"Mashrashtra", "India", "PAN",
-				"AEZPN699F", false, "Draft", "", 1, "Srinivas",
+				"AEZPN699F", false, "Draft", "", 1, 1, "Srinivas",
 				null, new Date(), new Date(), null);
 //		ur.setFirstName("Srinivas");
 //		ur.setLastName("Naik");

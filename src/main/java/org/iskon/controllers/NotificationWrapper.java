@@ -156,6 +156,21 @@ public class NotificationWrapper{
 			user.setApprovalComments("Approved");
 			ntf.setUuid(UUID.randomUUID());
 			return ntfService.saveNotification(ntf); 
+		}else if(broadCastType.equalsIgnoreCase("team initiated")) {
+			Notification ntf = new Notification(); 
+			ntf.setCreatedBy(user.getEmail());
+			ntf.setBroadcastType("edit");
+			ntf.setCreatedTime(user.getCreatedTime());
+			ntf.setUpdatedTime(new Date());
+			ntf.setUpdatedBy(userService.getUserById(user.getInvitedBy()).getEmail());
+			ntf.setMappingTableData("user");
+			ntf.setTargetType("user");
+			ntf.setMessage("Invited user " + user.getEmail()+" has created a team");
+			ntf.setTargetId(user.getInvitedBy());
+			user.setApprovalStatus("Approved");
+			user.setApprovalComments("Approved");
+			ntf.setUuid(UUID.randomUUID());
+			return ntfService.saveNotification(ntf); 
 		}else {
 			NotificationApproval ntf = new NotificationApproval(); 
 			ntf.setCreatedBy(user.getEmail());
