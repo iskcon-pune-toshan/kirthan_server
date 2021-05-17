@@ -63,7 +63,12 @@ public class TeamController {
 		}
 		teamUserMappingService.addTeamUser(res);
 		//NotificationWrapper nw = new NotificationWrapper();
-		nw.generateNotification(req,"single");
+		if(!newTeam.getApprovalStatus().equalsIgnoreCase("Approved")) {
+		nw.generateNotification(req,"single");}
+		else if(newTeam.getApprovalStatus().equalsIgnoreCase("Approved")) {
+			User user = userService.getUserByEmailId(newTeam.getTeamLeadId()).get();
+			nw.generateNotification(user, "team initiated");
+		}
 		return req;
     }
 

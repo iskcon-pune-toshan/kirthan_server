@@ -49,7 +49,7 @@ public class UserController {
 		newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
 		System.out.println("User after encrypted password :" + newUser.getPassword());
 		User req = userService.addUser(newUser);
-		nw.generateNotification(req);
+		nw.generateNotification(req, "single");
 		//pref.getUserId(req);
 		return req;
 	}
@@ -59,8 +59,19 @@ public class UserController {
 		System.out.println(newUser);
 		User req = userService.updateUser(newUser);
 		//NotificationWrapper nw = new NotificationWrapper();
-		nw.generateNotification(req);
+		if(newUser.getRoleId() == 2 )
+			nw.generateNotification(req, "make local admin");
+		else if(newUser.getRoleId() == 3)
+			nw.generateNotification(req, "make user");
 		//pref.getUserId(req);
+		return req;
+	}
+	
+	@RequestMapping(value = "/initiateteam", method = RequestMethod.PUT)
+	public User initiateTeam(@RequestBody User newUser) {
+		System.out.println(newUser);
+		User req = userService.updateUser(newUser); //saves user
+		nw.generateNotification(req, "initiate team");
 		return req;
 	}
 
@@ -91,8 +102,8 @@ public class UserController {
 		User ur = User.buildUser(1, "Srinivas","Naik", "srinivasvn8@gmail.com", "srinivasvnaik",
 				"password1234", 8007774787L, "Flat No 20, Kalyani A", "Aditya GArden City",
 				"","Warje", "Pune", 411058,"Mashrashtra", "India", "PAN",
-				"AEZPN699F", false, "Draft", "", 1, "Srinivas",
-				null, new Date(), new Date());
+				"AEZPN699F", false, "Draft", "", 1, 1, "Srinivas",
+				null, new Date(), new Date(), null);
 //		ur.setFirstName("Srinivas");
 //		ur.setLastName("Naik");
 //		ur.setEmail("srinivasvn84@gmail.com");

@@ -108,7 +108,7 @@ public class EventController {
 				"Pune",
 				"Sandhya", (long) 123456788, "Add Line One", "Add Line Two","Add Line One", "Add Line Two",
 				"Add Line Three" ,"Camp", "Pune",411014, "Maharashtra", "India", false, "Draft", null, "Chinmay",
-				"Manjunath", new Date(), new Date(), null, null, null, null, null, null,true, 1, "Emergency");
+				"Manjunath", new Date(), new Date(), null, null, null, null, null, null,true, 1, "Emergency","Free");
 		return er;
 	}
 

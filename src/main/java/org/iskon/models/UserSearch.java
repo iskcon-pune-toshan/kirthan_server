@@ -15,6 +15,7 @@ public class UserSearch implements Serializable {
     private Integer roleId;
     private String approvalStatus;
     private String email;
+    private Integer invitedBy;
 
     public List<String> getFirstName(){
     	return firstName;
@@ -38,6 +39,8 @@ public class UserSearch implements Serializable {
 	public String getEmail() {
 		return email;
 	}
-
+	public Integer getInvitedBy() {
+		return invitedBy;
+	}
   
 }

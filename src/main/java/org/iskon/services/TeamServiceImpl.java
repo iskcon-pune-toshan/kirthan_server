@@ -70,6 +70,13 @@ public class TeamServiceImpl implements TeamService {
 				if (teamsearch.getApprovalStatus() != null)
 					predicates.add(criteriaBuilder.equal(root.get("approvalStatus"),teamsearch.getApprovalStatus()));
 
+				if (teamsearch.getTeamLeadId()!= null)
+					predicates.add(criteriaBuilder.equal(root.get("teamLeadId"),teamsearch.getTeamLeadId()));
+				
+				if (teamsearch.getLocalAdminName()!= null)
+					predicates.add(criteriaBuilder.equal(root.get("localAdminName"),teamsearch.getLocalAdminName()));
+				
+
 
 				
 

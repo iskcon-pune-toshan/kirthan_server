@@ -41,6 +41,8 @@ public class EventSearch implements Serializable {
     private Integer status;
     
     private List<String> cancelReason;
+    
+    private String serviceType;
 
     public Date getEventStartDate() {
         return eventStartDate;
@@ -115,5 +117,13 @@ public class EventSearch implements Serializable {
 	
 	public Integer getStatus() {
 		return status;
+	}
+
+	public String getServiceType() {
+		return serviceType;
+	}
+
+	public void setServiceType(String serviceType) {
+		this.serviceType = serviceType;
 	}
 }

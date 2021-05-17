@@ -50,7 +50,10 @@ public class TeamUserServiceImpl implements TeamUserService {
 				
 				if(teamusersearch.getCreatedBy() != null)
 					predicates.add(root.get("createdBy").in(teamusersearch.getCreatedBy()));
-
+				
+//				  if(teamusersearch.getTeamId()!=null)
+//				  predicates.add(root.get("teamId").in(teamusersearch.getId()));
+				 
 
 				/*
 				 * if(teamusersearch.getId()!=null)
