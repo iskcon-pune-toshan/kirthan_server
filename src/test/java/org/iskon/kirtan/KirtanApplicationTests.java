@@ -1,10 +1,6 @@
 package org.iskon.kirtan;
 
-import org.iskon.models.InviteCode;
-import org.iskon.repositories.InviteCodeJpaRepository;
-import org.iskon.services.EmailService;
-import org.iskon.services.InviteCodeService;
-import org.iskon.utils.OTPGenerator;
+
 import org.junit.internal.runners.statements.Fail;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -19,14 +15,13 @@ import static org.junit.Assert.fail;
 @SpringBootTest
 class KirtanApplicationTests {
 
-	@Autowired
-	private EmailService emailService;
-
-	@Autowired
-	private InviteCodeService inviteCodeService;
-
-	@Autowired
-	private InviteCodeJpaRepository inviteCodeJpaRepository;
+	/*
+	 * @Autowired private EmailService emailService;
+	 * 
+	 * @Autowired private InviteCodeService inviteCodeService;
+	 * 
+	 * @Autowired private InviteCodeJpaRepository inviteCodeJpaRepository;
+	 */
 
 	@Test
 	void contextLoads() {
@@ -39,12 +34,12 @@ class KirtanApplicationTests {
 
 	@Test
 	void testOTPGeneration() {
-		System.out.println("Generated OTP: " + OTPGenerator.random(6));
+		//System.out.println("Generated OTP: " + OTPGenerator.random(6));
 	}
 
 	@Test
 	void testSimpleOTPGeneration() {
-		System.out.println("Generated Simple OTP: " + OTPGenerator.simple());
+		//System.out.println("Generated Simple OTP: " + OTPGenerator.simple());
 	}
 
 	@Test

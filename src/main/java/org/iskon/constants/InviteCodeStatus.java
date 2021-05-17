@@ -1,5 +1,5 @@
-package org.iskon.constants;
-
-public enum InviteCodeStatus {
-    GENERATED, INVITED, REDEEMED
-}
+/*
+ * package org.iskon.constants;
+ * 
+ * public enum InviteCodeStatus { GENERATED, INVITED, REDEEMED }
+ */
