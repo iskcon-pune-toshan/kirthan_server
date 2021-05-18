@@ -67,6 +67,13 @@ public class UserController {
 		return req;
 	}
 	
+	@RequestMapping(value = "/updateuserdetails", method = RequestMethod.PUT)
+	public User updateUserDetails(@RequestBody User newUser) {
+		System.out.println(newUser);
+		User req = userService.updateUser(newUser);
+		return req;
+	}
+	
 	@RequestMapping(value = "/initiateteam", method = RequestMethod.PUT)
 	public User initiateTeam(@RequestBody User newUser) {
 		System.out.println(newUser);

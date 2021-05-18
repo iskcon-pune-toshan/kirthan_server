@@ -76,7 +76,13 @@ public class TeamController {
 	public Team updateTeam(@RequestBody Team newTeam) {
 		System.out.println(newTeam);
 		Team req = teamService.updateTeam(newTeam);
-
+		if(!req.getListOfTeamMembers().isEmpty()) {
+			List<TeamUser> res = req.getListOfTeamMembers();
+			for(int i=0; i<res.size(); i++) {
+				res.get(i).setTeamId(req.getId());
+			}
+			teamUserMappingService.addTeamUser(res);
+		}
 //		NotificationWrapper nw = new NotificationWrapper();
 		nw.generateNotification(req,"multiple");
 		return req;
