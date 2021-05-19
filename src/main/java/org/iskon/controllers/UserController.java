@@ -56,12 +56,13 @@ public class UserController {
 
 	@RequestMapping(value = "/updateuser", method = RequestMethod.PUT)
 	public User updateUser(@RequestBody User newUser) {
+		System.out.println("In update service");
 		System.out.println(newUser);
 		User req = userService.updateUser(newUser);
 		//NotificationWrapper nw = new NotificationWrapper();
-		if(newUser.getRoleId() == 2 )
+		if(req.getRoleId() == 2 )
 			nw.generateNotification(req, "make local admin");
-		else if(newUser.getRoleId() == 3)
+		else if(req.getRoleId() == 3)
 			nw.generateNotification(req, "make user");
 		//pref.getUserId(req);
 		return req;
@@ -70,6 +71,12 @@ public class UserController {
 	@RequestMapping(value = "/updateuserdetails", method = RequestMethod.PUT)
 	public User updateUserDetails(@RequestBody User newUser) {
 		System.out.println(newUser);
+		try {
+		newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+		System.out.println("User after encrypted password :" + newUser.getPassword());}
+		catch(NullPointerException npe) {
+			System.out.println("Password not updated");
+		}
 		User req = userService.updateUser(newUser);
 		return req;
 	}

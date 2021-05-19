@@ -76,8 +76,11 @@ public class TeamServiceImpl implements TeamService {
 				if (teamsearch.getLocalAdminName()!= null)
 					predicates.add(criteriaBuilder.equal(root.get("localAdminName"),teamsearch.getLocalAdminName()));
 				
-
-
+				if(teamsearch.getRequestAcceptance()!=null)
+					predicates.add(root.get("requestAcceptance").in(teamsearch.getRequestAcceptance()));
+				
+				if(teamsearch.getDuration()!=null)
+					predicates.add(root.get("duration").in(teamsearch.getDuration()));
 				
 
 				return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));

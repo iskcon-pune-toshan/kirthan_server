@@ -12,6 +12,8 @@ public class TeamSearch implements Serializable {
     private String approvalStatus;
     private String teamLeadId;
     private String localAdminName;
+    private Integer requestAcceptance;
+    private Integer duration;
     
     private Date createTime;
 
@@ -42,5 +44,17 @@ public class TeamSearch implements Serializable {
 	}
 	public void setLocalAdminName(String localAdminName) {
 		this.localAdminName = localAdminName;
+	}
+	public Integer getRequestAcceptance() {
+		return requestAcceptance;
+	}
+	public void setRequestAcceptance(Integer requestAcceptance) {
+		this.requestAcceptance = requestAcceptance;
+	}
+	public Integer getDuration() {
+		return duration;
+	}
+	public void setDuration(Integer duration) {
+		this.duration = duration;
 	}
 }

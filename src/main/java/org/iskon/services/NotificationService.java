@@ -3,8 +3,10 @@ package org.iskon.services;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -221,15 +223,22 @@ public class NotificationService {
 						List<Integer> adminIds = new ArrayList<>();
 						Event event = eventService.getEventById(ntf.getTargetId());
 						String dayWeekText = new SimpleDateFormat("EEEE").format(event.getEventDate()); //event day
-						List<Integer> teamId = ntfDb.getTeamId(event.getEventType(),event.getCity());
+						LocalDate todaydate=LocalDate.now();
+						LocalDate eventDate = LocalDate.parse( new SimpleDateFormat("yyyy-MM-dd").format(event.getEventDate()) );
+						System.out.println(eventDate);
+						Period period = Period.between ( todaydate , eventDate);
+						Integer daysElapsed = period.getDays ();
+						List<Integer> teamId = ntfDb.getTeamId(event.getEventType(),event.getCity(),Integer.valueOf(event.getEventDuration()),daysElapsed);
 						
 						for(int i=0; i<teamId.size();i++) {
 							Team team = teamService.getTeamById(teamId.get(i));
-							if(team.getWeekDay().equalsIgnoreCase("Anyday")){
-								adminIds.add(userService.getUserByEmailId(team.getTeamLeadId()).get().getId());
-							}else if(team.getWeekDay().equalsIgnoreCase(dayWeekText)){
-								adminIds.add(userService.getUserByEmailId(team.getTeamLeadId()).get().getId());
-							}
+							adminIds.add(userService.getUserByEmailId(team.getTeamLeadId()).get().getId());
+//							
+//							if(team.getWeekDay().equalsIgnoreCase("Anyday")){
+//								adminIds.add(userService.getUserByEmailId(team.getTeamLeadId()).get().getId());
+//							}else if(team.getWeekDay().equalsIgnoreCase(dayWeekText)){
+//								adminIds.add(userService.getUserByEmailId(team.getTeamLeadId()).get().getId());
+//							}
 						}			
 						
 						//complete function
@@ -259,47 +268,58 @@ public class NotificationService {
 			List<Integer> tempIds = new ArrayList<>();
 			if(ntf.getTargetType().equalsIgnoreCase("event")) {
 				Event event = eventService.getEventById(ntf.getTargetId());
-				String dayWeekText = new SimpleDateFormat("EEEE").format(event.getEventDate()); //event day
-				List<Integer> teamId = ntfDb.getTeamId(event.getEventType(),event.getCity());
+				String dayWeekText = new SimpleDateFormat("EEEE").format(event.getEventDate());
+				LocalDate todaydate=LocalDate.now();
+				LocalDate eventDate = LocalDate.parse( new SimpleDateFormat("yyyy-MM-dd").format(event.getEventDate()) );
+				System.out.println(eventDate);
+				Period period = Period.between ( todaydate , eventDate);
+				Integer daysElapsed = period.getDays ();
+				System.out.println(daysElapsed);
+				//event day
+				List<Integer> teamId = ntfDb.getTeamId(event.getEventType(),event.getCity(), Integer.valueOf(event.getEventDuration()), daysElapsed);
 				//String eventStartTime = new SimpleDateFormat("HH:mm").parse(event.getEventTime());
-				Date teamStartTime=null, teamEndTime=null, time1 = null, time2=null;
-				try {
-					time1 = new SimpleDateFormat("HH:mm").parse(event.getEventTime());
-					Calendar cal =Calendar.getInstance();
-					cal.setTime(time1);
-					cal.add(Calendar.HOUR_OF_DAY,Integer.parseInt(event.getEventDuration())); // this will add two hours
-					time2 = cal.getTime();
-					System.out.println(time1);
-					System.out.println(time2);
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+//				Date teamStartTime=null, teamEndTime=null, time1 = null, time2=null;
+//				try {
+//					time1 = new SimpleDateFormat("HH:mm").parse(event.getEventTime());
+//					Calendar cal =Calendar.getInstance();
+//					cal.setTime(time1);
+//					cal.add(Calendar.HOUR_OF_DAY,Integer.parseInt(event.getEventDuration())); // this will add two hours
+//					time2 = cal.getTime();
+//					System.out.println(time1);
+//					System.out.println(time2);
+//				} catch (ParseException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
 				
-
+//
 				for(int i=0; i<teamId.size();i++) {
 					Team team = teamService.getTeamById(teamId.get(i));
-					try {
-						teamStartTime =  new SimpleDateFormat("HH:mm").parse(team.getAvailableFrom());
-						teamEndTime = new SimpleDateFormat("HH:mm").parse(team.getAvailableTo());
-						System.out.println(teamStartTime);
-						System.out.println(teamEndTime);
-					} catch (ParseException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					if(team.getWeekDay().equalsIgnoreCase("Anyday") && (time1.after(teamStartTime) || time1.equals(teamStartTime)) && (time2.before(teamEndTime)||time2.equals(teamEndTime))) {
-					//if(team.getWeekDay().equalsIgnoreCase("Anyday") ){
-						
-						adminIds.add(userService.getUserByEmailId(team.getTeamLeadId()).get().getId());
-						tempIds.add(teamId.get(i));
-						
-					}else if(team.getWeekDay().equalsIgnoreCase(dayWeekText) && (time1.after(teamStartTime) || time1.equals(teamStartTime)) && (time2.before(teamEndTime)||time2.equals(teamEndTime))) {
-					//else if(team.getWeekDay().equalsIgnoreCase(dayWeekText)){
-						adminIds.add(userService.getUserByEmailId(team.getTeamLeadId()).get().getId());
-						//ntf.setTargetTeamId(teamId.get(i));
-						tempIds.add(teamId.get(i));
-					}
+					adminIds.add(userService.getUserByEmailId(team.getTeamLeadId()).get().getId());
+					ntf.setTargetTeamId(teamId.get(i));
+					tempIds.add(teamId.get(i));
+//					try {
+////						teamStartTime =  new SimpleDateFormat("HH:mm").parse(team.getAvailableFrom());
+////						teamEndTime = new SimpleDateFormat("HH:mm").parse(team.getAvailableTo());
+////						System.out.println(teamStartTime);
+////						System.out.println(teamEndTime);
+//						
+//					} catch (ParseException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//					if(team.getWeekDay().equalsIgnoreCase("Anyday") && (time1.after(teamStartTime) || time1.equals(teamStartTime)) && (time2.before(teamEndTime)||time2.equals(teamEndTime))) {
+//					//if(team.getWeekDay().equalsIgnoreCase("Anyday") ){
+//						
+//						adminIds.add(userService.getUserByEmailId(team.getTeamLeadId()).get().getId());
+//						tempIds.add(teamId.get(i));
+//						
+//					}else if(team.getWeekDay().equalsIgnoreCase(dayWeekText) && (time1.after(teamStartTime) || time1.equals(teamStartTime)) && (time2.before(teamEndTime)||time2.equals(teamEndTime))) {
+//					//else if(team.getWeekDay().equalsIgnoreCase(dayWeekText)){
+//						adminIds.add(userService.getUserByEmailId(team.getTeamLeadId()).get().getId());
+//						//ntf.setTargetTeamId(teamId.get(i));
+//						tempIds.add(teamId.get(i));
+//					}
 				}					
 				
 			} else if(ntf.getTargetType().equalsIgnoreCase("team")){

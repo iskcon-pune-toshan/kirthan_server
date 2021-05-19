@@ -44,9 +44,6 @@ public class Team implements Serializable {
 	@Column(name = "team_description")
 	private String teamDescription;
 	
-	@Column(name = "available_time")
-	private String availableTime;
-	
 	@Column(name = "available_from")
 	private String availableFrom;
 	
@@ -97,6 +94,13 @@ public class Team implements Serializable {
 
 	@Column(name = "local_admin_name")
 	private String localAdminName;
+	
+	@Column(name = "request_acceptance")
+	private Integer requestAcceptance;
+	
+	@Column(name = "duration")
+	private Integer duration;
+	
 	@Transient
 	private List<TeamUser> listOfTeamMembers;
 	
@@ -104,13 +108,12 @@ public class Team implements Serializable {
 
 	}
 
-	private Team(Integer id, String teamTitle, String teamDescription, String availableTime,String availableFrom, String availableTo, String weekDay,String location,String category,String experience,Long phoneNumber,String teamLeadId,Boolean isProcessed, String approvalStatus,
+	private Team(Integer id, String teamTitle, String teamDescription,String availableFrom, String availableTo, String weekDay,String location,String category,String experience,Long phoneNumber,String teamLeadId,Boolean isProcessed, String approvalStatus,
 				String approvalComments, String createdBy, String updatedBy, Date createdTime,
-				 Date updatedTime,String localAdminArea, String localAdminName, List<TeamUser> listOfTeamMembers) {
+				 Date updatedTime,String localAdminArea, String localAdminName, List<TeamUser> listOfTeamMembers, Integer requestAcceptance, Integer duration) {
 		this.id = id;
 		this.teamTitle = teamTitle;
 		this.teamDescription = teamDescription;
-		this.availableTime = availableTime;
 		this.availableFrom = availableFrom;
 		this.availableTo = availableTo;
 		this.weekDay = weekDay;
@@ -129,20 +132,22 @@ public class Team implements Serializable {
 		this.localAdminArea = localAdminArea;
 		this.localAdminName = localAdminName;
 		this.listOfTeamMembers = listOfTeamMembers;
+		this.requestAcceptance = requestAcceptance;
+		this.duration = duration;
 	}
 
 	public static Team buildTeam(Integer id, String teamTitle, String teamDescription, Boolean isProcessed,
 								 String approvalStatus, String approvalComments, String createdBy, String updatedBy,
-								 Date createdTime, Date updatedTime,String availableTime, String availableFrom, String availableTo,
+								 Date createdTime, Date updatedTime, String availableFrom, String availableTo,
 								 String weekDay,
 								 String location,
 								 String category,
 								 String experience,
 								 Long phoneNumber,
-								 String teamLeadId,String localAdminArea, String localAdminName, List<TeamUser> listOfTeamMembers
+								 String teamLeadId,String localAdminArea, String localAdminName, List<TeamUser> listOfTeamMembers, Integer requestAcceptance, Integer duration
 ) {
-		return new Team(id, teamTitle, teamDescription,availableTime,availableFrom, availableTo,weekDay,location,category,experience,phoneNumber,teamLeadId, isProcessed, approvalStatus, approvalComments, createdBy,
-				updatedBy, createdTime, updatedTime,localAdminArea,localAdminName, listOfTeamMembers);
+		return new Team(id, teamTitle, teamDescription,availableFrom, availableTo,weekDay,location,category,experience,phoneNumber,teamLeadId, isProcessed, approvalStatus, approvalComments, createdBy,
+				updatedBy, createdTime, updatedTime,localAdminArea,localAdminName, listOfTeamMembers, requestAcceptance, duration);
 	}
 
 	public Integer getId() {
@@ -153,9 +158,6 @@ public class Team implements Serializable {
 		return teamTitle;
 	}
 
-	public String getAvailableTime() {
-		return availableTime;
-	}
 	
 	public String getAvailableFrom() {
 		return availableFrom;
@@ -230,5 +232,13 @@ public class Team implements Serializable {
 	
 	public List<TeamUser> getListOfTeamMembers(){
 		return listOfTeamMembers;
+	}
+	
+	public Integer getRequestAcceptance() {
+		return requestAcceptance;
+	}
+	
+	public Integer getDuration() {
+		return duration;
 	}
 }
