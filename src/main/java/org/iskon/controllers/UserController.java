@@ -71,12 +71,12 @@ public class UserController {
 	@RequestMapping(value = "/updateuserdetails", method = RequestMethod.PUT)
 	public User updateUserDetails(@RequestBody User newUser) {
 		System.out.println(newUser);
-		try {
-		newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-		System.out.println("User after encrypted password :" + newUser.getPassword());}
-		catch(NullPointerException npe) {
-			System.out.println("Password not updated");
-		}
+//		try {
+//		newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+//		System.out.println("User after encrypted password :" + newUser.getPassword());}
+//		catch(NullPointerException npe) {
+//			System.out.println("Password not updated");
+//		}
 		User req = userService.updateUser(newUser);
 		return req;
 	}
