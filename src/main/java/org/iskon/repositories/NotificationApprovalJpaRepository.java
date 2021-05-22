@@ -9,7 +9,7 @@ import java.util.List;
 
 import org.iskon.models.NotificationApproval;
 import org.iskon.models.NotificationUi;
-import org.iskon.models.Permissions;
+
 
 
 public interface NotificationApprovalJpaRepository extends JpaRepository<NotificationApproval,Integer>{
