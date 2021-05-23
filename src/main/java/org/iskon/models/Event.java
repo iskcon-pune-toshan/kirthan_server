@@ -12,35 +12,27 @@ import java.util.Date;
 public class Event implements Serializable {
 	
 	public void setStatus(Integer status) {
-		this.status = status;
+		this.teamInviteStatus = status;
 	}
 
-	public void setIsProcessed(Boolean isProcessed) {
-		this.isProcessed = isProcessed;
-	}
 	public void setIsPublicEvent(Boolean isPublicEvent) {
 		this.isPublicEvent = isPublicEvent;
 	}
-	public void setApprovalStatus(String approvalStatus) {
-		this.approvalStatus = approvalStatus;
-	}
-
-	public void setApprovalComments(String approvalComments) {
-		this.approvalComments = approvalComments;
-	}
+	
 
 	@Override
 	public String toString() {
 		return "Event [id=" + id + ", eventTitle=" + eventTitle + ", eventDescription=" + eventDescription
-				+ ", eventDate=" + eventDate + ", eventDuration=" + eventDuration + ", eventLocation=" + eventLocation
+				+ ", eventDate=" + eventDate + ", eventEndTime=" + eventEndTime
 				+ ", eventType=" + eventType + ", phoneNumber=" + phoneNumber + ", addLineOneS=" + addLineOneS
 				+ ", addLineTwoS=" + addLineTwoS + ", localityS=" + localityS + ", addLineOneD=" + addLineOneD
-				+ ", addLineTwoD=" + addLineTwoD + ", localityD=" + localityD + ", city="+ city + ", pincode=" + pincode + ", state=" + state + ", country=" + country + ", isProcessed="
-				+ isProcessed + ", approvalStatus=" + approvalStatus + ", approvalComments=" + approvalComments
+				+ ", addLineTwoD=" + addLineTwoD + ", localityD=" + localityD + ", city="+ city + ", pincode=" + pincode
+				+ ", state=" + state + ", country=" + country
 				+ ", createdBy=" + createdBy + ", updatedBy=" + updatedBy + ", createdTime=" + createdTime
-				+ ", updatedTime=" + updatedTime + ", sourceLongitude=" + sourceLongitude + ", sourceLatitude="
-				+ sourceLatitude + ", destinationLongitude=" + destinationLongitude + ", destinationLatitude="
-				+ destinationLatitude + ", eventMobility=" + eventMobility + ", isPubicEvent=" + isPublicEvent + ", status=" + status + ", cancelReason=" + cancelReason + ", serviceType=" + serviceType + "]";
+				+ ", updatedTime=" + updatedTime + ", longitudeS=" + longitudeS + ", latitudeS="
+				+ latitudeS + ", longitudeD=" + longitudeD + ", latitudeD="
+				+ latitudeD + ", eventMobility=" + eventMobility + ", isPubicEvent=" + isPublicEvent 
+				+ ", teamInviteStatus=" + teamInviteStatus + ", cancelReason=" + cancelReason + ", serviceType=" + serviceType + "]";
 	}
 
 	public void setUpdatedBy(String updatedBy) {
@@ -63,12 +55,12 @@ public class Event implements Serializable {
 
 	@Column(name = "event_date")
 	private Date eventDate;
-
-	@Column(name = "event_duration")
-	private String eventDuration;
-
-	@Column(name = "event_location")
-	private String eventLocation;
+	
+	@Column(name = "event_start_time")
+	private String eventStartTime;
+	
+	@Column(name = "event_end_time")
+	private String eventEndTime;
 
 	@Column(name = "event_type")
 	private String eventType;
@@ -106,15 +98,6 @@ public class Event implements Serializable {
 	@Column(name = "country")
 	private String country;
 
-	@Column(name = "is_processed")
-	private Boolean isProcessed;
-
-	@Column(name = "approval_status")
-	private String approvalStatus;
-
-	@Column(name = "approval_comments")
-	private String approvalComments;
-
 	@Column(name = "created_by")
 	private String createdBy;
 
@@ -127,29 +110,26 @@ public class Event implements Serializable {
 	@Column(name = "updated_time")
 	private Date updatedTime;
 	
-	@Column(name = "source_longitude")
-	private Double sourceLongitude;
+	@Column(name = "longitude_s")
+	private Double longitudeS;
 	
-	@Column(name = "source_latitude")
-	private Double sourceLatitude;
+	@Column(name = "latitude_s")
+	private Double latitudeS;
 	
-	@Column(name = "destination_longitude")
-	private Double destinationLongitude;
+	@Column(name = "longitude_d")
+	private Double longitudeD;
 	
-	@Column(name = "destination_latitude")
-	private Double destinationLatitude;
+	@Column(name = "latitude_d")
+	private Double latitudeD;
 	
 	@Column(name = "event_mobility")
 	private String eventMobility;
 	
-	@Column(name = "event_time")
-	private String eventTime;
-	
 	@Column(name = "public_event")
 	private Boolean isPublicEvent;
 	
-	@Column(name = "status")
-	private Integer status;
+	@Column(name = "team_invite_status")
+	private Integer teamInviteStatus;
 	
 	@Column(name = "cancel_reason")
 	private String cancelReason;
@@ -161,20 +141,19 @@ public class Event implements Serializable {
 
 	}
 
-	private Event(Integer id, String eventTitle, String eventDescription, Date eventDate, String eventDuration,
-				  String eventLocation, String eventType, Long phoneNumber, String addLineOneS, String addLineTwoS,
+	private Event(Integer id, String eventTitle, String eventDescription, Date eventDate,String eventStartTime ,String eventEndTime ,
+				  String eventType, Long phoneNumber, String addLineOneS, String addLineTwoS,
 				  String localityS, String addLineOneD, String addLineTwoD,
 				  String localityD,String city, Integer pincode, String state, String country,
-				  Boolean isProcessed, String approvalStatus, String approvalComments,
-				  String createdBy, String updatedBy, Date createdTime, Date updatedTime, Double sourceLongitude,
-				  Double sourceLatitude, Double destinationLongitude, Double destinationLatitude, String eventMobility,
-				  String eventTime, Boolean isPublicEvent, Integer status, String cancelReason, String serviceType ) {
+				  String createdBy, String updatedBy, Date createdTime, Date updatedTime, Double longitudeS,
+				  Double latitudeS, Double longitudeD, Double latitudeD, String eventMobility,
+				  Boolean isPublicEvent, Integer teamInviteStatus, String cancelReason, String serviceType ) {
 		this.id = id;
 		this.eventTitle = eventTitle;
 		this.eventDescription = eventDescription;
 		this.eventDate = eventDate;
-		this.eventDuration = eventDuration;
-		this.eventLocation = eventLocation;
+		this.eventStartTime = eventStartTime;
+		this.eventEndTime = eventEndTime;
 		this.eventType = eventType;
 		this.phoneNumber = phoneNumber;
 		this.addLineOneS = addLineOneS;
@@ -187,40 +166,35 @@ public class Event implements Serializable {
 		this.pincode = pincode;
 		this.state = state;
 		this.country = country;
-		this.isProcessed = isProcessed;
-		this.approvalStatus = approvalStatus;
-		this.approvalComments = approvalComments;
 		this.createdBy = createdBy;
 		this.updatedBy = updatedBy;
 		this.createdTime = createdTime;
 		this.updatedTime = updatedTime;
-		this.sourceLongitude = sourceLongitude;
-		this.sourceLatitude = sourceLatitude;
-		this.destinationLongitude = destinationLongitude;
-		this.destinationLatitude = destinationLatitude;
+		this.longitudeS = longitudeS;
+		this.latitudeS = latitudeS;
+		this.longitudeS = longitudeS;
+		this.latitudeD = latitudeD;
 		this.eventMobility = eventMobility;
-		this.eventTime = eventTime;
 		this.isPublicEvent = isPublicEvent;
-		this.status = status;
+		this.teamInviteStatus = teamInviteStatus;
 		this.cancelReason = cancelReason;
 		this.serviceType = serviceType;
 	}
 
 	public static Event buildEvent(Integer id, String eventTitle, String eventDescription, Date eventDate,
-								   String eventDuration, String eventLocation, String eventType, Long phoneNumber,
+								   String eventStartTime, String eventEndTime, String eventType, Long phoneNumber,
 								   String addLineOneS, String addLineTwoS, String localityS,
 								   String addLineOneD, String addLineTwoD, String localityD,
-								   String city, Integer pincode, String state, String country, Boolean isProcessed,
-								   String approvalStatus, String approvalComments,
+								   String city, Integer pincode, String state, String country,
 								   String createdBy, String updatedBy, Date createdTime, Date updatedTime, 
-								   Double sourceLongitude, Double sourceLatitude, Double destinationLongitude,
-								   Double destinationLatitude, String eventMobility, String eventTime, Boolean isPublicEvent,
-								   Integer status, String cancelReason, String serviceType) {
-		return new Event(id, eventTitle, eventDescription, eventDate,eventDuration, eventLocation, eventType,
+								   Double longitudeS, Double latitudeS, Double longitudeD,
+								   Double latitudeD, String eventMobility, Boolean isPublicEvent,
+								   Integer teamInviteStatus, String cancelReason, String serviceType) {
+		return new Event(id, eventTitle, eventDescription, eventDate,eventStartTime, eventEndTime, eventType,
 				phoneNumber, addLineOneS, addLineTwoS, localityS, addLineOneD, addLineTwoD, localityD,city, pincode, state, country,
-				isProcessed, approvalStatus, approvalComments, createdBy, updatedBy, createdTime, updatedTime, 
-				sourceLongitude, sourceLatitude, destinationLongitude, destinationLatitude, eventMobility, eventTime, isPublicEvent,
-				status, cancelReason, serviceType);
+				 createdBy, updatedBy, createdTime, updatedTime, 
+				longitudeS, latitudeS, longitudeD, latitudeD, eventMobility, isPublicEvent,
+				teamInviteStatus, cancelReason, serviceType);
 	}
 
 	public Integer getId() {
@@ -239,12 +213,12 @@ public class Event implements Serializable {
 		return eventDate;
 	}
 
-	public String getEventDuration() {
-		return eventDuration;
+	public String getEventStartTime() {
+		return eventStartTime;
 	}
 
-	public String getEventLocation() {
-		return eventLocation;
+	public String getEventEndTime() {
+		return eventEndTime;
 	}
 
 	public String getEventType() {
@@ -295,18 +269,6 @@ public class Event implements Serializable {
 		return country;
 	}
 
-	public Boolean getIsProcessed() {
-		return isProcessed;
-	}
-
-	public String getApprovalStatus() {
-		return approvalStatus;
-	}
-
-	public String getApprovalComments() {
-		return approvalComments;
-	}
-
 	public String getCreatedBy() {
 		return createdBy;
 	}
@@ -323,36 +285,33 @@ public class Event implements Serializable {
 		return updatedTime;
 	}
 	
-	public Double getSourceLongitude() {
-		return sourceLongitude;
+	public Double getLongitudeS() {
+		return longitudeS;
 	}
 
-	public Double getSourceLatitude() {
-		return sourceLatitude;
+	public Double getLatitudeS() {
+		return latitudeS;
 	}
 
-	public Double getDestinationLongitude() {
-		return destinationLongitude;
+	public Double getLongitudeD() {
+		return longitudeD;
 	}
 
-	public Double getDestinationLatitude() {
-		return destinationLatitude;
+	public Double getLatitudeD() {
+		return latitudeD;
 	}
 
 	public String getEventMobility() {
 		return eventMobility;
 	}
 	
-	public String getEventTime() {
-		return eventTime;
-	}
 
 	public Boolean getIsPublicEvent() {
 		return isPublicEvent;
 	}
 	
-	public Integer getStatus() {
-		return status;
+	public Integer getTeamInviteStatus() {
+		return teamInviteStatus;
 	}
 	
 	public String getCancelReason() {

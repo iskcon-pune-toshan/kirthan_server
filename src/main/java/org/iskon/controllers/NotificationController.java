@@ -154,7 +154,7 @@ public class NotificationController {
 				  newNtf.setUuid( UUID.randomUUID());
 				  ntfs.saveNotification(newNtf);
 			  }
-			  event.setIsProcessed(true);
+			//  event.setIsProcessed(true);
 			  //System.out.println("After " +event.toString());
 			  eventService.processEvent(event);
 		}
