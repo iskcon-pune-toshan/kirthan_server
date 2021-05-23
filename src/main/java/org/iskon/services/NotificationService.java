@@ -226,10 +226,23 @@ public class NotificationService {
 						LocalDate todaydate=LocalDate.now();
 						LocalDate eventDate = LocalDate.parse( new SimpleDateFormat("yyyy-MM-dd").format(event.getEventDate()) );
 						System.out.println(eventDate);
+						long eventduration;
+						try {
+						SimpleDateFormat hourformat = new SimpleDateFormat("HH:mm");
+						Date starttime=hourformat.parse(event.getEventStartTime());
+						Date endtime=hourformat.parse(event.getEventEndTime());
+						long difference = Math.abs(starttime.getTime() - endtime.getTime());
+						eventduration
+			            = (difference / (60 * 60 * 1000))
+			              % 24;
+					}catch (java.text.ParseException e) {
+						eventduration=0;
+				            // TODO Auto-generated catch block
+				            e.printStackTrace();
+				        }
 						Period period = Period.between ( todaydate , eventDate);
 						Integer daysElapsed = period.getDays ();
-						List<Integer> teamId = ntfDb.getTeamId(event.getEventType(),event.getCity(),Integer.valueOf(event.getEventDuration()),daysElapsed);
-						
+						List<Integer> teamId = ntfDb.getTeamId(event.getEventType(),event.getCity(), (int)eventduration ,daysElapsed);
 						for(int i=0; i<teamId.size();i++) {
 							Team team = teamService.getTeamById(teamId.get(i));
 							adminIds.add(userService.getUserByEmailId(team.getTeamLeadId()).get().getId());
@@ -275,8 +288,24 @@ public class NotificationService {
 				Period period = Period.between ( todaydate , eventDate);
 				Integer daysElapsed = period.getDays ();
 				System.out.println(daysElapsed);
+				long eventduration;
+				try {
+					SimpleDateFormat hourformat = new SimpleDateFormat("HH:mm");
+					Date starttime=hourformat.parse(event.getEventStartTime());
+					Date endtime=hourformat.parse(event.getEventEndTime());
+					long difference = Math.abs(starttime.getTime() - endtime.getTime());
+					eventduration
+		            = (difference / (60 * 60 * 1000))
+		              % 24;
+				}catch (java.text.ParseException e) {
+					eventduration=0;
+			            // TODO Auto-generated catch block
+			            e.printStackTrace();
+			        }
+				System.out.println("Event Duration Calculated");
+				System.out.println(eventduration);
 				//event day
-				List<Integer> teamId = ntfDb.getTeamId(event.getEventType(),event.getCity(), Integer.valueOf(event.getEventDuration()), daysElapsed);
+				List<Integer> teamId = ntfDb.getTeamId(event.getEventType(),event.getCity(),(int)eventduration, daysElapsed);
 				//String eventStartTime = new SimpleDateFormat("HH:mm").parse(event.getEventTime());
 //				Date teamStartTime=null, teamEndTime=null, time1 = null, time2=null;
 //				try {

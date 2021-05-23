@@ -109,7 +109,7 @@ public class EventServiceImpl implements EventService {
 				
 					try {
 						eventSearch.setEventEndDate(formatter.parse(endDate.format(dateTimeFormatter)));
-						predicates.add(criteriaBuilder.between(root.get("eventDate"),s,e));
+						predicates.add(criteriaBuilder.between(root.get("eventStartDate"),s,e));
 						//predicates.add(criteriaBuilder.between(root.get("eventDate"), t, e));
 						
 					}
@@ -121,20 +121,15 @@ public class EventServiceImpl implements EventService {
 
 				
 				if(eventSearch.getEventStartDate() != null && eventSearch.getEventEndDate() != null)
-					predicates.add(criteriaBuilder.between(root.get("eventDate"), eventSearch.getEventStartDate(), eventSearch.getEventEndDate()));
+					predicates.add(criteriaBuilder.between(root.get("eventStartDate"), eventSearch.getEventStartDate(), eventSearch.getEventEndDate()));
 			
 				if(eventSearch.getEventStartDate() != null)
-					predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("eventDate"),eventSearch.getEventStartDate()));
+					predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("eventStartDate"),eventSearch.getEventStartDate()));
 
 				if(eventSearch.getEventEndDate() != null)
-					predicates.add(criteriaBuilder.lessThan(root.get("eventDate"), eventSearch.getEventEndDate()));
+					predicates.add(criteriaBuilder.lessThan(root.get("eventStartDate"), eventSearch.getEventEndDate()));
 
-				if(eventSearch.getEventDuration() != null)
-					predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("eventDuration"), eventSearch.getEventDuration()));
 				
-				if(eventSearch.getEventLocation() != null)
-					predicates.add(root.get("eventLocation").in(eventSearch.getEventLocation()));
-
 				if (eventSearch.getEventType() != null)
 					predicates.add(root.get("eventType").in(eventSearch.getEventType()));
 
@@ -154,20 +149,14 @@ public class EventServiceImpl implements EventService {
 				if(eventSearch.getState() != null)
 					predicates.add(root.get("state").in(eventSearch.getState()));
 
-				if(eventSearch.getIsProcessed() != null)
-					predicates.add(criteriaBuilder.equal(root.get("isProcessed") ,eventSearch.getIsProcessed()));
-
 				if (eventSearch.getCreatedBy() != null)
 					predicates.add(root.get("createdBy").in(eventSearch.getCreatedBy()));
 				
-				if(eventSearch.getApprovalStatus() != null)
-					predicates.add(criteriaBuilder.equal(root.get("approvalStatus") ,eventSearch.getApprovalStatus()));
-
 				if(eventSearch.getIsPublicEvent() != null)
 					predicates.add(criteriaBuilder.equal(root.get("isPublicEvent") ,eventSearch.getIsPublicEvent()));
 
 				if (eventSearch.getStatus() != null)
-					predicates.add(criteriaBuilder.equal(root.get("status"), eventSearch.getStatus()));
+					predicates.add(criteriaBuilder.equal(root.get("teamInviteStatus"), eventSearch.getStatus()));
 
 				return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
 			}
@@ -191,21 +180,7 @@ public class EventServiceImpl implements EventService {
 				List<Predicate> predicates = new ArrayList<>();
 
 	
-				if(eventSearch.getEventStartDate() != null && eventSearch.getEventEndDate() != null)
-					predicates.add(criteriaBuilder.between(root.get("eventDate"), eventSearch.getEventStartDate(), eventSearch.getEventEndDate()));
-
-				if(eventSearch.getEventStartDate() != null)
-					predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("eventDate"), eventSearch.getEventStartDate()));
-
-				if(eventSearch.getEventEndDate() != null)
-					predicates.add(criteriaBuilder.lessThan(root.get("eventDate"), eventSearch.getEventEndDate()));
-
-				if(eventSearch.getEventDuration() != null)
-					predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("eventDuration"), eventSearch.getEventDuration()));
-
-				if(eventSearch.getEventLocation() != null)
-					predicates.add(root.get("eventLocation").in(eventSearch.getEventLocation()));
-
+			
 				if (eventSearch.getEventType() != null)
 					predicates.add(root.get("eventType").in(eventSearch.getEventType()));
 
@@ -215,8 +190,6 @@ public class EventServiceImpl implements EventService {
 				if (eventSearch.getCity() != null)
 					predicates.add(root.get("city").in(eventSearch.getCity()));
 
-				if(eventSearch.getEventDate()!=null)
-					predicates.add(criteriaBuilder.equal(root.get("eventDate"), eventSearch.getEventDate()));
 				
 				if (eventSearch.getPincode() != null)
 					predicates.add(criteriaBuilder.equal(root.get("pincode"), eventSearch.getPincode()));
@@ -224,15 +197,11 @@ public class EventServiceImpl implements EventService {
 				if(eventSearch.getState() != null)
 					predicates.add(root.get("state").in(eventSearch.getState()));
 
-				if(eventSearch.getIsProcessed() != null)
-					predicates.add(criteriaBuilder.equal(root.get("isProcessed") ,eventSearch.getIsProcessed()));
-
+				
 				if (eventSearch.getCreatedBy() != null)
 					predicates.add(root.get("createdBy").in(eventSearch.getCreatedBy()));
 				
-				if(eventSearch.getApprovalStatus() != null)
-					predicates.add(criteriaBuilder.equal(root.get("approvalStatus") ,eventSearch.getApprovalStatus()));
-
+			
 				if(eventSearch.getIsPublicEvent() != null)
 					predicates.add(criteriaBuilder.equal(root.get("isPublicEvent") ,eventSearch.getIsPublicEvent()));
 

@@ -71,10 +71,12 @@ public class EventController {
 	}
 	
 	@PutMapping("/deleteevent")
-	public void deleteEvent(@RequestBody Event newEvent) {
+	public Event deleteEvent(@RequestBody Event newEvent) {
+		Event req = eventService.updateEvent(newEvent);
 		System.out.println(newEvent);
 		ntfWrapper.cancelInvite(newEvent);
 		//eventService.deleteEvent(newEvent);
+		return req;
 		
 	}
 	
@@ -104,11 +106,9 @@ public class EventController {
 	
 	private Event getDummyEventObj()
 	{
-		Event er = Event.buildEvent(null, "Dummy Event Title", "Dummy Event Desc", new Date(), "1 hour",
-				"Pune",
+		Event er = Event.buildEvent(null, "Dummy Event Title", "Dummy Event Desc", new Date(), "1 hour","Pune",
 				"Sandhya", (long) 123456788, "Add Line One", "Add Line Two","Add Line One", "Add Line Two",
-				"Add Line Three" ,"Camp", "Pune",411014, "Maharashtra", "India", false, "Draft", null, "Chinmay",
-				"Manjunath", new Date(), new Date(), null, null, null, null, null, null,true, 1, "Emergency","Free");
+				"Add Line Three" ,"Camp", "Pune",411014, "Maharashtra", "India", "Draft", null, new Date(), new Date(), null, null, null, null, null, null,1, "Emergency","Free");
 		return er;
 	}
 
