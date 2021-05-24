@@ -242,7 +242,7 @@ public class NotificationService {
 				        }
 						Period period = Period.between ( todaydate , eventDate);
 						Integer daysElapsed = period.getDays ();
-						List<Integer> teamId = ntfDb.getTeamId(event.getEventType(),event.getCity(), (int)eventduration ,daysElapsed);
+ 						List<Integer> teamId = ntfDb.getTeamId(event.getEventType(),event.getCity(), (int)eventduration ,daysElapsed);
 						for(int i=0; i<teamId.size();i++) {
 							Team team = teamService.getTeamById(teamId.get(i));
 							adminIds.add(userService.getUserByEmailId(team.getTeamLeadId()).get().getId());
@@ -305,23 +305,7 @@ public class NotificationService {
 				System.out.println("Event Duration Calculated");
 				System.out.println(eventduration);
 				//event day
-				List<Integer> teamId = ntfDb.getTeamId(event.getEventType(),event.getCity(),(int)eventduration, daysElapsed);
-				//String eventStartTime = new SimpleDateFormat("HH:mm").parse(event.getEventTime());
-//				Date teamStartTime=null, teamEndTime=null, time1 = null, time2=null;
-//				try {
-//					time1 = new SimpleDateFormat("HH:mm").parse(event.getEventTime());
-//					Calendar cal =Calendar.getInstance();
-//					cal.setTime(time1);
-//					cal.add(Calendar.HOUR_OF_DAY,Integer.parseInt(event.getEventDuration())); // this will add two hours
-//					time2 = cal.getTime();
-//					System.out.println(time1);
-//					System.out.println(time2);
-//				} catch (ParseException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-				
-//
+ 				List<Integer> teamId = ntfDb.getTeamId(event.getEventType(),event.getCity(),(int)eventduration, daysElapsed);
 				for(int i=0; i<teamId.size();i++) {
 					Team team = teamService.getTeamById(teamId.get(i));
 					adminIds.add(userService.getUserByEmailId(team.getTeamLeadId()).get().getId());

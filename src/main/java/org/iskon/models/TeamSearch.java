@@ -6,7 +6,7 @@ import java.util.List;
 
 public class TeamSearch implements Serializable {
 
-    private Boolean isProcessed;
+    //private Boolean isProcessed;
     private Integer id;
     private List<String> createdBy;
     private String approvalStatus;
@@ -23,9 +23,9 @@ public class TeamSearch implements Serializable {
     public Integer getId() {
     	return id;
     }
-    public Boolean getIsProcessed() {
-        return isProcessed;
-    }
+//    public Boolean getIsProcessed() {
+//        return isProcessed;
+//    }
 
     public List<String> getCreatedBy() {
         return createdBy;

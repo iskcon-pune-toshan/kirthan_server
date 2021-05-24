@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class EventTeamUserSearch implements Serializable {
+public class EventUserSearch implements Serializable {
 
    private Integer id;
    private Integer teamId;

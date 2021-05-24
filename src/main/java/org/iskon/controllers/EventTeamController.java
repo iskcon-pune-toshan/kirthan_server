@@ -65,12 +65,12 @@ public class EventTeamController {
 		 */	}
 
 	@RequestMapping(value = "/geteventteams", method = RequestMethod.PUT)
-	public List<String> getEventTeams(@RequestBody EventTeamSearch queryParams) {
+	public List<EventTeam> getEventTeams(@RequestBody EventTeamSearch queryParams) {
 		//System.out.println("queryParams: "+queryParams);
 		List<EventTeam> req =EventTeamMappingService.getEventTeams(queryParams);
-		List<String> title = req.stream().map((event) -> event.getTeamName()).collect(Collectors.toList());
+		//List<String> title = req.stream().map((event) -> event.getTeamName()).collect(Collectors.toList());
 		
-		return title;
+		return req;
 	}
 
 	@RequestMapping(value = "/geteventteamswithdescription", method = RequestMethod.PUT)

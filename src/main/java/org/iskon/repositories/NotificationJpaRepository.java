@@ -1,4 +1,3 @@
-  
 package org.iskon.repositories;
 
 import java.util.Date;
@@ -8,7 +7,7 @@ import org.iskon.models.NotificationApproval;
 import org.iskon.models.NotificationUi;
 import org.iskon.models.Team;
 import org.iskon.models.Event;
-import org.iskon.models.EventTeamUser;
+import org.iskon.models.EventUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -20,7 +19,7 @@ public interface NotificationJpaRepository extends JpaRepository<Notification,In
 			+ " ORDER BY n.createdTime DESC" )	
 	List<NotificationUi> findByUserName(String username);
 	
-	@Query("select DISTINCT userId from EventTeamUser where eventId = :eventId")
+	@Query("select DISTINCT userId from EventUser where eventId = :eventId")
 	List<Integer> getParticipants(int eventId);
 	
 	@Query("select DISTINCT userId from TeamUser where teamId = :teamId")
@@ -37,7 +36,7 @@ public interface NotificationJpaRepository extends JpaRepository<Notification,In
 	List<Integer> getTargetTeams(String uuid);
 	
 	//Ntf goes to selected localAdmin while team creation 
-		@Query("select DISTINCT id from User u where u.userName = :localAdminName ")
+		@Query("select DISTINCT id from User u where u.fullName = :localAdminName ")
 		List<Integer> getLocalAdminId(String localAdminName);
 		
 	

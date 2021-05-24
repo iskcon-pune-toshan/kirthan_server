@@ -10,21 +10,21 @@ import java.util.List;
 @Table(name="team")
 public class Team implements Serializable {
 
-	public Boolean getIsProcessed() {
-		return isProcessed;
-	}
-
-	public void setIsProcessed(Boolean isProcessed) {
-		this.isProcessed = isProcessed;
-	}
+//	public Boolean getIsProcessed() {
+//		return isProcessed;
+//	}
+//
+//	public void setIsProcessed(Boolean isProcessed) {
+//		this.isProcessed = isProcessed;
+//	}
 
 	public void setApprovalStatus(String approvalStatus) {
 		this.approvalStatus = approvalStatus;
 	}
 
-	public void setApprovalComments(String approvalComments) {
-		this.approvalComments = approvalComments;
-	}
+//	public void setApprovalComments(String approvalComments) {
+//		this.approvalComments = approvalComments;
+//	}
 
 	public void setUpdatedBy(String updatedBy) {
 		this.updatedBy = updatedBy;
@@ -44,14 +44,14 @@ public class Team implements Serializable {
 	@Column(name = "team_description")
 	private String teamDescription;
 	
-	@Column(name = "available_from")
-	private String availableFrom;
-	
-	@Column(name = "available_to")
-	private String availableTo;
-	
-	@Column(name = "weekday")
-	private String weekDay;
+//	@Column(name = "available_from")
+//	private String availableFrom;
+//	
+//	@Column(name = "available_to")
+//	private String availableTo;
+//	
+//	@Column(name = "weekday")
+//	private String weekDay;
 	
 	@Column(name = "location")
 	private String location;
@@ -68,14 +68,14 @@ public class Team implements Serializable {
 	@Column(name = "team_lead_id")
 	private String teamLeadId;
 
-	@Column(name = "is_processed")
-	private Boolean isProcessed;
+//	@Column(name = "is_processed")
+//	private Boolean isProcessed;
 
 	@Column(name = "approval_status")
 	private String approvalStatus;
 
-	@Column(name = "approval_comments")
-	private String approvalComments;
+//	@Column(name = "approval_comments")
+//	private String approvalComments;
 
 	@Column(name = "created_by")
 	private String createdBy;
@@ -108,23 +108,23 @@ public class Team implements Serializable {
 
 	}
 
-	private Team(Integer id, String teamTitle, String teamDescription,String availableFrom, String availableTo, String weekDay,String location,String category,String experience,Long phoneNumber,String teamLeadId,Boolean isProcessed, String approvalStatus,
-				String approvalComments, String createdBy, String updatedBy, Date createdTime,
+	private Team(Integer id, String teamTitle, String teamDescription,String location,String category,String experience,Long phoneNumber,String teamLeadId, String approvalStatus,
+				 String createdBy, String updatedBy, Date createdTime,
 				 Date updatedTime,String localAdminArea, String localAdminName, List<TeamUser> listOfTeamMembers, Integer requestAcceptance, Integer duration) {
 		this.id = id;
 		this.teamTitle = teamTitle;
 		this.teamDescription = teamDescription;
-		this.availableFrom = availableFrom;
-		this.availableTo = availableTo;
-		this.weekDay = weekDay;
+//		this.availableFrom = availableFrom;
+//		this.availableTo = availableTo;
+//		this.weekDay = weekDay;
 		this.location = location;
 		this.category = category;
 		this.experience = experience;
 		this.phoneNumber = phoneNumber;
 		this.teamLeadId = teamLeadId;
-		this.isProcessed = isProcessed;
+//		this.isProcessed = isProcessed;
 		this.approvalStatus = approvalStatus;
-		this.approvalComments = approvalComments;
+//		this.approvalComments = approvalComments;
 		this.createdBy = createdBy;
 		this.updatedBy = updatedBy;
 		this.createdTime = createdTime;
@@ -136,17 +136,16 @@ public class Team implements Serializable {
 		this.duration = duration;
 	}
 
-	public static Team buildTeam(Integer id, String teamTitle, String teamDescription, Boolean isProcessed,
-								 String approvalStatus, String approvalComments, String createdBy, String updatedBy,
-								 Date createdTime, Date updatedTime, String availableFrom, String availableTo,
-								 String weekDay,
+	public static Team buildTeam(Integer id, String teamTitle, String teamDescription,
+								 String approvalStatus,String createdBy, String updatedBy,
+								 Date createdTime, Date updatedTime, 
 								 String location,
 								 String category,
 								 String experience,
 								 Long phoneNumber,
 								 String teamLeadId,String localAdminArea, String localAdminName, List<TeamUser> listOfTeamMembers, Integer requestAcceptance, Integer duration
 ) {
-		return new Team(id, teamTitle, teamDescription,availableFrom, availableTo,weekDay,location,category,experience,phoneNumber,teamLeadId, isProcessed, approvalStatus, approvalComments, createdBy,
+		return new Team(id, teamTitle, teamDescription,location,category,experience,phoneNumber,teamLeadId, approvalStatus, createdBy,
 				updatedBy, createdTime, updatedTime,localAdminArea,localAdminName, listOfTeamMembers, requestAcceptance, duration);
 	}
 
@@ -159,16 +158,16 @@ public class Team implements Serializable {
 	}
 
 	
-	public String getAvailableFrom() {
-		return availableFrom;
-	}
-	
-	public String getAvailableTo() {
-		return availableTo;
-	}
-	public String getWeekDay() {
-		return weekDay;
-	}
+//	public String getAvailableFrom() {
+//		return availableFrom;
+//	}
+//	
+//	public String getAvailableTo() {
+//		return availableTo;
+//	}
+//	public String getWeekDay() {
+//		return weekDay;
+//	}
 	
 	public String getLocation() {
 		return location;
@@ -194,17 +193,17 @@ public class Team implements Serializable {
 		return teamDescription;
 	}
 
-	public Boolean getProcessed() {
-		return isProcessed;
-	}
+//	public Boolean getProcessed() {
+//		return isProcessed;
+//	}
 
 	public String getApprovalStatus() {
 		return approvalStatus;
 	}
 
-	public String getApprovalComments() {
-		return approvalComments;
-	}
+//	public String getApprovalComments() {
+//		return approvalComments;
+//	}
 
 	public String getCreatedBy() {
 		return createdBy;

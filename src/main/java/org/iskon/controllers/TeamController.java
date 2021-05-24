@@ -5,7 +5,7 @@ import java.util.Map;
 import org.iskon.models.TeamSearch;
 import org.iskon.models.TeamUser;
 import org.iskon.models.User;
-import org.iskon.models.EventTeamUser;
+import org.iskon.models.EventUser;
 import org.iskon.models.Team;
 import org.iskon.services.TeamService;
 import org.iskon.services.TeamUserService;
@@ -35,23 +35,6 @@ public class TeamController {
 	private NotificationWrapper nw ;
 	
 
-//	@RequestMapping(value = "/addteam", method = RequestMethod.PUT)
-//	public Team addTeam(@RequestParam(name = "teamData") Team newTeam,@RequestParam(name = "teamUserData") List<TeamUser> listTeamUser) {
-//	
-//		Team req = teamService.addTeam(newTeam);
-//		List<TeamUser> res = teamUserMappingService.addTeamUser(listTeamUser);
-//		//NotificationWrapper nw = new NotificationWrapper();
-//		nw.generateNotification(req,"single");
-//		return req;
-//	}
-
-//	@RequestMapping(value = "/addteam", method = RequestMethod.PUT)
-//	public Team addTeam(@RequestBody Team newTeam, ) {
-//		Team req = teamService.addTeam(newTeam);
-//		//NotificationWrapper nw = new NotificationWrapper();
-//		nw.generateNotification(req,"single");
-//		return req;
-//	}
 
 	@RequestMapping(value = "/addteam",method = RequestMethod.PUT)
     public Team addTeam( @RequestBody Team newTeam) {
@@ -67,6 +50,8 @@ public class TeamController {
 		nw.generateNotification(req,"single");}
 		else if(newTeam.getApprovalStatus().equalsIgnoreCase("Approved")) {
 			User user = userService.getUserByEmailId(newTeam.getTeamLeadId()).get();
+			if(user.getRoleId().equals(3))
+				 user.setRoleId(4);
 			nw.generateNotification(user, "team initiated");
 		}
 		return req;

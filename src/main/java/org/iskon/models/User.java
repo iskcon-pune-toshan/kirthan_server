@@ -9,20 +9,16 @@ import java.util.Date;
 @Table(name="user")
 public class User implements Serializable {
 
-	public Boolean getIsProcessed() {
-		return isProcessed;
-	}
-
-	public void setIsProcessed(Boolean isProcessed) {
-		this.isProcessed = isProcessed;
-	}
+//	public Boolean getIsProcessed() {
+//		return isProcessed;
+//	}
+//
+//	public void setIsProcessed(Boolean isProcessed) {
+//		this.isProcessed = isProcessed;
+//	}
 
 	public void setApprovalStatus(String approvalStatus) {
 		this.approvalStatus = approvalStatus;
-	}
-
-	public void setApprovalComments(String approvalComments) {
-		this.approvalComments = approvalComments;
 	}
 
 	public void setUpdatedBy(String updatedBy) {
@@ -45,17 +41,17 @@ public class User implements Serializable {
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column(name = "first_name")
-	private String firstName;
-
-	@Column(name = "last_name")
-	private String lastName;
+//	@Column(name = "first_name")
+//	private String firstName;
+//
+//	@Column(name = "last_name")
+//	private String lastName;
 
 	@Column(name = "email")
 	private String email;
 
-	@Column(name = "user_name")
-	private String userName;
+	@Column(name = "full_name")
+	private String fullName;
 
 	@Column(name = "password")
 	private String password;
@@ -93,14 +89,11 @@ public class User implements Serializable {
 	@Column(name = "govt_id")
 	String govtId;
 
-	@Column(name = "is_processed")
-	private Boolean isProcessed;
+//	@Column(name = "is_processed")
+//	private Boolean isProcessed;
 
 	@Column(name = "approval_status")
 	private String approvalStatus;
-
-	@Column(name = "approval_comments")
-	private String approvalComments;
 
 	@Column(name = "prev_role_id")
 	private Integer prevRoleId;
@@ -124,22 +117,24 @@ public class User implements Serializable {
 	@Column(name = "invited_by")
 	private Integer invitedBy;
 
+	@Column(name = "profile_url")
+	private String profileUrl;
 	
 
 	private User(){
 
 	}
 
-	private User(Integer id, String firstName, String lastName, String email, String userName, String password,
+	private User(Integer id, String email, String fullName, String password,
 				 Long phoneNumber, String addLineOne, String addLineTwo, String addLineThree, String locality,
 				 String city, Integer pinCode, String state, String country, String govtIdType, String govtId,
-				 Boolean isProcessed, String approvalStatus, String approvalComments, Integer prevRoleId,Integer roleId,
-				 String createdBy, String updatedBy, Date createdTime, Date updatedTime, Integer invitedBy) {
+				  String approvalStatus, Integer prevRoleId,Integer roleId,
+				 String createdBy, String updatedBy, Date createdTime, Date updatedTime, Integer invitedBy, String profileUrl) {
 		this.id = id;
-		this.firstName = firstName;
-		this.lastName = lastName;
+//		this.firstName = firstName;
+//		this.lastName = lastName;
 		this.email = email;
-		this.userName = userName;
+		this.fullName = fullName;
 		this.password = password;
 		this.phoneNumber = phoneNumber;
 		this.addLineOne = addLineOne;
@@ -152,9 +147,9 @@ public class User implements Serializable {
 		this.country = country;
 		this.govtIdType = govtIdType;
 		this.govtId = govtId;
-		this.isProcessed = isProcessed;
+//		this.isProcessed = isProcessed;
 		this.approvalStatus = approvalStatus;
-		this.approvalComments = approvalComments;
+//		this.approvalComments = approvalComments;
 		this.prevRoleId = prevRoleId;
 		this.roleId = roleId;
 		this.createdBy = createdBy;
@@ -162,37 +157,38 @@ public class User implements Serializable {
 		this.createdTime = createdTime;
 		this.updatedTime = updatedTime;
 		this.invitedBy = invitedBy;
+		this.profileUrl = profileUrl;
 	}
 
-	public static User buildUser(Integer id, String firstName, String lastName, String email, String userName,
+	public static User buildUser(Integer id, String email, String fullName,
 								 String password, Long phoneNumber, String addLineOne, String addLineTwo,
 								 String addLineThree, String locality, String city, Integer pinCode, String state,
-								 String country, String govtIdType, String govtId, Boolean isProcessed,
-								 String approvalStatus, String approvalComments, Integer prevRoleId, Integer roleId,
-								 String createdBy, String updatedBy, Date createdTime, Date updatedTime, Integer invitedBy) {
-		return new User(id, firstName, lastName, email, userName, password, phoneNumber, addLineOne, addLineTwo,
-				addLineThree, locality, city, pinCode, state, country, govtIdType, govtId, isProcessed,
-				approvalStatus, approvalComments, prevRoleId, roleId, createdBy, updatedBy, createdTime, updatedTime, invitedBy);
+								 String country, String govtIdType, String govtId, 
+								 String approvalStatus, Integer prevRoleId, Integer roleId,
+								 String createdBy, String updatedBy, Date createdTime, Date updatedTime, Integer invitedBy, String profileUrl) {
+		return new User(id,email, fullName, password, phoneNumber, addLineOne, addLineTwo,
+				addLineThree, locality, city, pinCode, state, country, govtIdType, govtId,
+				approvalStatus,prevRoleId, roleId, createdBy, updatedBy, createdTime, updatedTime, invitedBy, profileUrl);
 	}
 
 	public Integer getId() {
 		return id;
 	}
 
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
+//	public String getFirstName() {
+//		return firstName;
+//	}
+//
+//	public String getLastName() {
+//		return lastName;
+//	}
 
 	public String getEmail() {
 		return email;
 	}
 
-	public String getUserName() {
-		return userName;
+	public String getFullName() {
+		return fullName;
 	}
 
 	public String getPassword() {
@@ -247,17 +243,14 @@ public class User implements Serializable {
 		return govtId;
 	}
 
-	public Boolean getProcessed() {
-		return isProcessed;
-	}
+//	public Boolean getProcessed() {
+//		return isProcessed;
+//	}
 
 	public String getApprovalStatus() {
 		return approvalStatus;
 	}
 
-	public String getApprovalComments() {
-		return approvalComments;
-	}
 	
 	public Integer getPrevRoleId() {
 		return prevRoleId;
@@ -284,5 +277,8 @@ public class User implements Serializable {
 	}
 	public Integer getInvitedBy() {
 		return invitedBy;
+	}
+	public String getprofileUrl() {
+		return profileUrl;
 	}
 }

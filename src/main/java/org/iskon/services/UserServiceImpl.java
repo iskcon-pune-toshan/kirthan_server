@@ -57,14 +57,14 @@ public class UserServiceImpl implements UserService {
 				if(usersearch.getId()!=null)
 					predicates.add(root.get("id").in(usersearch.getId()));
 
-				if (usersearch.getIsProcessed() != null)
-					predicates.add(criteriaBuilder.equal(root.get("isProcessed"),usersearch.getIsProcessed()));
+//				if (usersearch.getIsProcessed() != null)
+//					predicates.add(criteriaBuilder.equal(root.get("isProcessed"),usersearch.getIsProcessed()));
 
-				if(usersearch.getFirstName() != null)
-					predicates.add(root.get("firstName").in(usersearch.getFirstName()));
-
-				if(usersearch.getLastName() != null)
-					predicates.add(root.get("lastName").in(usersearch.getLastName()));
+//				if(usersearch.getFirstName() != null)
+//					predicates.add(root.get("firstName").in(usersearch.getFirstName()));
+//
+//				if(usersearch.getLastName() != null)
+//					predicates.add(root.get("lastName").in(usersearch.getLastName()));
 				
 				if(usersearch.getRoleId() != null)
 					predicates.add(root.get("roleId").in(usersearch.getRoleId()));

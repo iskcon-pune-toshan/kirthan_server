@@ -58,9 +58,6 @@ public class TeamServiceImpl implements TeamService {
 				if(teamsearch.getId()!=null)
 					predicates.add(root.get("id").in(teamsearch.getId()));
 
-				if (teamsearch.getIsProcessed() != null)
-					predicates.add(criteriaBuilder.equal(root.get("isProcessed"),teamsearch.getIsProcessed()));
-
 				if(teamsearch.getCreatedBy() != null)
 					predicates.add(root.get("createdBy").in(teamsearch.getCreatedBy()));
 

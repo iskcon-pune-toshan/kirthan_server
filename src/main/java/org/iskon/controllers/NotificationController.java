@@ -146,7 +146,7 @@ public class NotificationController {
 				  newNtf.setBroadcastType("multiple");
 				  newNtf.setCreatedBy("SYSTEM");
 				  newNtf.setCreatedTime(new Date());
-				  newNtf.setMappingTableData("event_user");
+				  newNtf.setMappingTableData("event");
 				  newNtf.setMessage(updatedNtf.getMessage());
 				  newNtf.setTargetId(updatedNtf.getTargetId()); //user id of current user, change it to event_id
 				  newNtf.setTargetType("event");
@@ -154,16 +154,17 @@ public class NotificationController {
 				  newNtf.setUuid( UUID.randomUUID());
 				  ntfs.saveNotification(newNtf);
 			  }
-			//  event.setIsProcessed(true);
+			  
+			  //event.setIsProcessed(true);
 			  //System.out.println("After " +event.toString());
 			  eventService.processEvent(event);
 		}
 		else if(updatedNtf.getTargetType().equalsIgnoreCase("team")) // this is for user // this needs to be changed and adjusted for event and user as well
 		{		
 			  Team team = teamService.getTeamById(updatedNtf.getTargetId());
-			  team.setApprovalComments(updatedNtf.getAction());
+			  //team.setApprovalComments(updatedNtf.getAction());
 			  team.setApprovalStatus(updatedNtf.getAction()); 
-			  team.setIsProcessed(true);
+			  //team.setIsProcessed(true);
 			  team.setUpdatedBy(updatedNtf.getUpdatedBy()); //changed to get the email?
 			  team.setUpdatedTime(updatedNtf.getUpdatedTime());
 			  if(updatedNtf.getAction().equalsIgnoreCase("Approved"))
@@ -172,7 +173,7 @@ public class NotificationController {
 					 if(user.getRoleId().equals(3))
 						 user.setRoleId(4);
 				  }
-			  if(!team.getIsProcessed()) {
+			  if(team.getUpdatedBy() != null) {
 				  //if team has been processed before
 				  //that means this request is for update 
 				  //in which case notificaion should be sent to those who have joined the event
@@ -189,15 +190,14 @@ public class NotificationController {
 				  newNtf.setUuid( UUID.randomUUID());
 				  ntfs.saveNotification(newNtf);
 			  }
-				  team.setIsProcessed(true);
+				  //team.setIsProcessed(true);
 			  teamService.updateTeam(team);
 			}
 		else if (updatedNtf.getTargetType().equalsIgnoreCase("user")) 
 		{
 			  User userTarget = userService.getUserById(updatedNtf.getTargetId());
-			  userTarget.setApprovalComments(updatedNtf.getAction());
 			  userTarget.setApprovalStatus(updatedNtf.getAction()); 
-			  userTarget.setIsProcessed(true);
+//			  userTarget.setIsProcessed(true);
 			  userTarget.setUpdatedBy("System");
 			  userTarget.setUpdatedTime(new Date());
 			  userService.updateUser(userTarget);

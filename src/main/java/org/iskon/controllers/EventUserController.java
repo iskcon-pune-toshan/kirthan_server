@@ -3,9 +3,9 @@ package org.iskon.controllers;
 import java.util.List;
 
 import org.iskon.authentication.JwtUtil;
-import org.iskon.models.EventTeamUser;
-import org.iskon.models.EventTeamUserSearch;
-import org.iskon.services.EventTeamUserService;
+import org.iskon.models.EventUser;
+import org.iskon.models.EventUserSearch;
+import org.iskon.services.EventUserService;
 import org.iskon.utils.HttpException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,21 +16,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/api/eventteamuser")
-public class EventTeamUserController {
+@RequestMapping("/api/eventuser")
+public class EventUserController {
 
 	@Autowired
-	private EventTeamUserService eventTeamUserMappingService;
+	private EventUserService eventTeamUserMappingService;
 
-	@RequestMapping(value = "/addeventteamuser", method = RequestMethod.PUT)
-	public List<EventTeamUser> addEventTeamUser(@RequestBody List<EventTeamUser> listEventTeamUser) {
+	@RequestMapping(value = "/addeventuser", method = RequestMethod.PUT)
+	public List<EventUser> addEventTeamUser(@RequestBody List<EventUser> listEventTeamUser) {
 //		List<EventTeamUser> listNewEventTeamUserMapping = new ArrayList<EventTeamUser>();
 //		for (EventTeamUser newEventTeamUserMapping : listEventTeamUserMapping) {
 //			System.out.println(newEventTeamUserMapping);
 //			EventTeamUser req = eventTeamUserMappingService.addEventTeamUser(newEventTeamUserMapping);
 //			listNewEventTeamUserMapping.add(req);
 //		}
-		List<EventTeamUser> req = eventTeamUserMappingService.addEventTeamUser(listEventTeamUser);
+		List<EventUser> req = eventTeamUserMappingService.addEventTeamUser(listEventTeamUser);
 		return req;
 		
 	}
@@ -42,16 +42,16 @@ public class EventTeamUserController {
 		
 	}
 
-	@RequestMapping(value = "/geteventteamusers", method = RequestMethod.GET)
-	public List<EventTeamUser> getEventTeamUsers(@RequestHeader("Authorization") String authHead) throws HttpException {
+	@RequestMapping(value = "/geteventusers", method = RequestMethod.GET)
+	public List<EventUser> getEventTeamUsers(@RequestHeader("Authorization") String authHead) throws HttpException {
 		//System.out.println("queryParams: "+queryParams);
-		List<EventTeamUser> req = eventTeamUserMappingService.getEventTeamUsersByUserName(getJwt(authHead));
+		List<EventUser> req = eventTeamUserMappingService.getEventTeamUsersByUserName(getJwt(authHead));
 		return req;
 	}
 
 
-	@RequestMapping(value = "/deleteeventteamuser", method = RequestMethod.PUT)
-	public List<EventTeamUser> deleteEventTeamUser(@RequestBody List<EventTeamUser> listEventTeamUser) {
+	@RequestMapping(value = "/deleteeventuser", method = RequestMethod.PUT)
+	public List<EventUser> deleteEventTeamUser(@RequestBody List<EventUser> listEventTeamUser) {
 		//System.out.println("Delete Event Team: "+listEventTeamUser.size());
 		eventTeamUserMappingService.deleteEventTeamUser(listEventTeamUser);
 		return listEventTeamUser;
@@ -64,10 +64,10 @@ public class EventTeamUserController {
 		//return listDeleteEventTeamUserMapping;
 	}
 	
-	@RequestMapping(value = "/geteventteamuserswithdescription", method = RequestMethod.PUT)
-	public List<EventTeamUser> getEventTeamUsersWithDescription() {
+	@RequestMapping(value = "/geteventuserswithdescription", method = RequestMethod.PUT)
+	public List<EventUser> getEventTeamUsersWithDescription() {
 		//System.out.println("queryParams: "+queryParams);
-		List<EventTeamUser> req =eventTeamUserMappingService.getEventTeamUsersWithDescription();
+		List<EventUser> req =eventTeamUserMappingService.getEventTeamUsersWithDescription();
 		return req;
 	}
 	

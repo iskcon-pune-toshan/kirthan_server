@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.ArrayList;
 
 import org.iskon.authentication.JwtUtil;
-import org.iskon.models.Preferences;
 import org.iskon.models.User;
 import org.iskon.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +30,7 @@ public class UserController {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
-	@Autowired
-	private PreferencesController pref;
-
+	
 	
 	@RequestMapping(value = "/getdummyuser", method = RequestMethod.GET)
 	public List<User> getDummyUser() {
@@ -64,19 +61,12 @@ public class UserController {
 			nw.generateNotification(req, "make local admin");
 		else if(req.getRoleId() == 3)
 			nw.generateNotification(req, "make user");
-		//pref.getUserId(req);
 		return req;
 	}
 	
 	@RequestMapping(value = "/updateuserdetails", method = RequestMethod.PUT)
 	public User updateUserDetails(@RequestBody User newUser) {
 		System.out.println(newUser);
-//		try {
-//		newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-//		System.out.println("User after encrypted password :" + newUser.getPassword());}
-//		catch(NullPointerException npe) {
-//			System.out.println("Password not updated");
-//		}
 		User req = userService.updateUser(newUser);
 		return req;
 	}
@@ -113,11 +103,11 @@ public class UserController {
 
 	private User getDummyUserObj()
 	{
-		User ur = User.buildUser(1, "Srinivas","Naik", "srinivasvn8@gmail.com", "srinivasvnaik",
+		User ur = User.buildUser(1, "srinivasvn8@gmail.com", "srinivasvnaik",
 				"password1234", 8007774787L, "Flat No 20, Kalyani A", "Aditya GArden City",
 				"","Warje", "Pune", 411058,"Mashrashtra", "India", "PAN",
-				"AEZPN699F", false, "Draft", "", 1, 1, "Srinivas",
-				null, new Date(), new Date(), null);
+				"AEZPN699F", "Draft", 1, 1, "Srinivas",
+				null, new Date(), new Date(), null, null);
 //		ur.setFirstName("Srinivas");
 //		ur.setLastName("Naik");
 //		ur.setEmail("srinivasvn84@gmail.com");

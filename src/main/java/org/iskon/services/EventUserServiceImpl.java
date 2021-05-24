@@ -1,9 +1,9 @@
 package org.iskon.services;
 
 import org.iskon.models.EventTeamSearch;
-import org.iskon.models.EventTeamUser;
-import org.iskon.models.EventTeamUserSearch;
-import org.iskon.repositories.EventTeamUserJpaRepository;
+import org.iskon.models.EventUser;
+import org.iskon.models.EventUserSearch;
+import org.iskon.repositories.EventUserJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
@@ -16,35 +16,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class EventTeamUserServiceImpl implements EventTeamUserService {
+public class EventUserServiceImpl implements EventUserService {
 
 	@Autowired
-	private EventTeamUserJpaRepository eventteamuserJpaRepository;
+	private EventUserJpaRepository eventteamuserJpaRepository;
 
 	@Override
-	public List<EventTeamUser> addEventTeamUser(List<EventTeamUser> listEventTeamUser)
+	public List<EventUser> addEventTeamUser(List<EventUser> listEventTeamUser)
 	{
 		return eventteamuserJpaRepository.saveAll(listEventTeamUser);
 	}
 
 	@Override
-	public void deleteEventTeamUser(List<EventTeamUser> listEventTeamUser)
+	public void deleteEventTeamUser(List<EventUser> listEventTeamUser)
 	{
 		eventteamuserJpaRepository.deleteAll(listEventTeamUser);
 	}
 	
 	@Override
-	public List<EventTeamUser> getEventTeamUsersByUserName(String username){
+	public List<EventUser> getEventTeamUsersByUserName(String username){
 		return eventteamuserJpaRepository.findByUserName(username);
 	}
 
 	@Override
-	public List<EventTeamUser> getEventTeamUsers(EventTeamUserSearch eventteamusersearch)
+	public List<EventUser> getEventTeamUsers(EventUserSearch eventteamusersearch)
 	{
-		return eventteamuserJpaRepository.findAll(new Specification<EventTeamUser>(){
+		return eventteamuserJpaRepository.findAll(new Specification<EventUser>(){
 
 			@Override
-			public Predicate toPredicate(Root<EventTeamUser> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+			public Predicate toPredicate(Root<EventUser> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
 				List<Predicate> predicates = new ArrayList<>();
 
 				if(eventteamusersearch.getId()!=null)
@@ -68,7 +68,7 @@ public class EventTeamUserServiceImpl implements EventTeamUserService {
 	}
 	
 	@Override
-	public List<EventTeamUser> getEventTeamUsersWithDescription()
+	public List<EventUser> getEventTeamUsersWithDescription()
 	{
 		return eventteamuserJpaRepository.findAllWithDescription();
 	}

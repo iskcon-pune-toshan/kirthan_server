@@ -122,7 +122,6 @@ public class NotificationWrapper{
 			ntf.setMessage("You have been promoted to local admin by " + ntf.getUpdatedBy());
 			ntf.setTargetId(user.getId());
 			user.setApprovalStatus("Approved");
-			user.setApprovalComments("Approved");
 			ntf.setUuid(UUID.randomUUID());
 			return ntfService.saveNotification(ntf); 
 		} else if(broadCastType.equalsIgnoreCase("make user")) {
@@ -138,7 +137,6 @@ public class NotificationWrapper{
 			ntf.setMessage("You have been made user by " + ntf.getUpdatedBy());
 			ntf.setTargetId(user.getId());
 			user.setApprovalStatus("Approved");
-			user.setApprovalComments("Approved");
 			ntf.setUuid(UUID.randomUUID());
 			return ntfService.saveNotification(ntf); 
 		}else if(broadCastType.equalsIgnoreCase("initiate team")) {
@@ -153,7 +151,6 @@ public class NotificationWrapper{
 			ntf.setMessage("You have been invited to create a team by " + ntf.getUpdatedBy());
 			ntf.setTargetId(user.getId());
 			user.setApprovalStatus("Approved");
-			user.setApprovalComments("Approved");
 			ntf.setUuid(UUID.randomUUID());
 			return ntfService.saveNotification(ntf); 
 		}else if(broadCastType.equalsIgnoreCase("team initiated")) {
@@ -168,7 +165,6 @@ public class NotificationWrapper{
 			ntf.setMessage("Invited user " + user.getEmail()+" has created a team");
 			ntf.setTargetId(user.getInvitedBy());
 			user.setApprovalStatus("Approved");
-			user.setApprovalComments("Approved");
 			ntf.setUuid(UUID.randomUUID());
 			return ntfService.saveNotification(ntf); 
 		}else {
@@ -181,7 +177,6 @@ public class NotificationWrapper{
 			ntf.setMessage("New User created");
 			ntf.setTargetId(user.getId());
 			user.setApprovalStatus("Approved");
-			user.setApprovalComments("Approved");
 			ntf.setUuid(UUID.randomUUID());
 			return ntfService.saveNotificationAppr(ntf); 
 		}

@@ -14,7 +14,7 @@ import java.util.List;
 public interface TeamUserJpaRepository extends JpaRepository<TeamUser, Integer> {
     List<TeamUser> findAll(Specification<TeamUser> eventSpecification);
     
-	@Query(" SELECT new org.iskon.models.TeamUser(TU.id, TU.userId, TU.teamId, TU.createdBy, TU.updatedBy, TU.createdTime, TU.updatedTime, T.teamTitle, U.userName) "
+	@Query(" SELECT new org.iskon.models.TeamUser(TU.id, TU.userId, TU.teamId, TU.createdBy, TU.updatedBy, TU.createdTime, TU.updatedTime, T.teamTitle, U.fullName) "
 			+ " FROM TeamUser TU, Team T, User U "
 			//+ " where TU.teamId= :teamId " 
 			+ " where TU.teamId = T.id " 

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 public interface UserTempleJpaRepository extends JpaRepository<UserTemple, Integer> {
 	List<UserTemple> findAll(Specification<UserTemple> eventSpecification);
 
-	@Query(" SELECT new org.iskon.models.UserTemple(UT.id, UT.templeId, UT.roleId, UT.userId, T.templeName, U.userName) "
+	@Query(" SELECT new org.iskon.models.UserTemple(UT.id, UT.templeId, UT.roleId, UT.userId, T.templeName, U.fullName) "
 			+ " FROM UserTemple UT, Temple T, User U " + " where UT.templeId = T.id " + " and UT.userId = U.id ")
 	List<UserTemple> findAllWithDescription();
 	
