@@ -56,7 +56,7 @@ public class ProspectiveUserController {
 		System.out.println(newEvent);	
 		ProspectiveUser req = prospectiveUserService.updateProspectiveUser(newEvent);
 		if(newEvent.getIsProcessed()) {
-		if(newEvent.getInviteType().equalsIgnoreCase("team")) {
+		if(newEvent.getInviteType().equals(4)) {
 			System.out.println("inside pu if invite type" + newEvent);
 			User user = userService.getUserByEmailId(newEvent.getUserEmail()).get();
 			user.setInvitedBy(userService.getUserByEmailId(newEvent.getInvitedBy()).get().getId());
@@ -65,7 +65,7 @@ public class ProspectiveUserController {
 			System.out.println(user);
 			//userService.updateUser(user);
 			ntfWrapper.generateNotification(user,"team initiated");
-		}else if(newEvent.getInviteType().equalsIgnoreCase("local_admin")) {
+		}else if(newEvent.getInviteType().equals(2)) {
 			System.out.println(newEvent);
 			User user = userService.getUserByEmailId(newEvent.getUserEmail()).get();
 			user.setInvitedBy(userService.getUserByEmailId(newEvent.getInvitedBy()).get().getId());
@@ -98,7 +98,7 @@ public class ProspectiveUserController {
 	
 	private ProspectiveUser getDummyProspectiveUserObj()
 	{
-		ProspectiveUser er = ProspectiveUser.buildProspectiveUser(null, "trialuser123@gmail.com", "teehee@gmail.com", "local admin",
+		ProspectiveUser er = ProspectiveUser.buildProspectiveUser(null, "trialuser123@gmail.com", "teehee@gmail.com", 2,
 				"411014",false);
 		return er;
 	}

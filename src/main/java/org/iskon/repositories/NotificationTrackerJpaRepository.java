@@ -8,10 +8,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface NotificationTrackerJpaRepository extends JpaRepository<NotificationTracker, Integer>{
-	@Query(	  " SELECT new org.iskon.models.NotificationTracker(n.userId, n.targetId, n.notificationId, n.targetTeamId) FROM " 
+	@Query(	  " SELECT new org.iskon.models.NotificationTracker(n.userId, n.targetId, n.notificationId) FROM " 
 			+ "NotificationTracker as n"
 			+ " where n.targetId = :id and n.notificationId = :uuid" )	
 	List<NotificationTracker> findByEventId(String uuid, int id);
+	
+	@Query(	  " SELECT new org.iskon.models.NotificationTracker(n.userId, n.targetId, n.notificationId) FROM " 
+			+ "NotificationTracker as n"
+			+ " where n.userId = :id and n.notificationId = :uuid" )	
+	NotificationTracker findByUserId(String uuid, int id);
 	
 //	@Query(	  " SELECT n.userId FROM " 
 //			+ "NotificationTracker as n"

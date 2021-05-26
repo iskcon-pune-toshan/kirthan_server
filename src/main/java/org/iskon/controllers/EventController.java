@@ -64,11 +64,11 @@ public class EventController {
 		return req;
 	}
 	
-	@PutMapping("/registerevent")
-	public Event registerEvent(@RequestBody Event newEvent) {
-		ntfWrapper.generateNotification(newEvent);
-		return newEvent;
-	}
+//	@PutMapping("/registerevent")
+//	public Event registerEvent(@RequestBody Event newEvent) {
+//		ntfWrapper.generateNotification(newEvent);
+//		return newEvent;
+//	}
 	
 	@PutMapping("/deleteevent")
 	public Event deleteEvent(@RequestBody Event newEvent) {

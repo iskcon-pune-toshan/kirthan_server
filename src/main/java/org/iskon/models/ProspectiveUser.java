@@ -34,7 +34,7 @@ public class ProspectiveUser implements Serializable {
 	private String inviteCode;
 
 	@Column(name = "invite_type")
-	private String inviteType;
+	private Integer inviteType;
 	
 	@Column(name = "is_processed")
 	private Boolean isProcessed;
@@ -44,7 +44,7 @@ public class ProspectiveUser implements Serializable {
 
 	}
 
-	private ProspectiveUser(Integer id, String userEmail, String invitedBy, String inviteType,
+	private ProspectiveUser(Integer id, String userEmail, String invitedBy, Integer inviteType,
 				  String inviteCode, Boolean isProcessed ) {
 		this.id = id;
 		this.userEmail = userEmail;
@@ -54,7 +54,7 @@ public class ProspectiveUser implements Serializable {
 		this.isProcessed = isProcessed;
 	}
 
-	public static ProspectiveUser buildProspectiveUser(Integer id, String userEmail, String invitedBy, String inviteType,
+	public static ProspectiveUser buildProspectiveUser(Integer id, String userEmail, String invitedBy, Integer inviteType,
 			  String inviteCode, Boolean isProcessed) {
 		return new ProspectiveUser(id, userEmail, invitedBy, inviteType, inviteCode, isProcessed);
 	}
@@ -71,7 +71,7 @@ public class ProspectiveUser implements Serializable {
 		return invitedBy;
 	}
 
-	public String getInviteType() {
+	public Integer getInviteType() {
 		return inviteType;
 	}
 

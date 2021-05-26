@@ -66,8 +66,8 @@ public class ProspectiveUserServiceImpl implements ProspectiveUserService {
 					predicates.add(criteriaBuilder.equal(root.get("id"), eventSearch.getId()));
 
 				if (eventSearch.getInviteType() != null)
-					predicates.add(root.get("inviteType").in(eventSearch.getInviteType()));
-
+					predicates.add(criteriaBuilder.equal(root.get("inviteType"), eventSearch.getInviteType()));
+				
 				if (eventSearch.getUserEmail() != null)
 					predicates.add(root.get("userEmail").in(eventSearch.getUserEmail()));
 				

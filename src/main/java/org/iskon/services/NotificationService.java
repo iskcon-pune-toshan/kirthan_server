@@ -36,10 +36,13 @@ import org.iskon.models.NotificationSearch;
 import org.iskon.models.NotificationTracker;
 import org.iskon.models.NotificationUi;
 import org.iskon.models.Team;
+import org.iskon.models.TeamInvite;
 import org.iskon.repositories.EventTeamJpaRepository;
 import org.iskon.repositories.NotificationApprovalJpaRepository;
 import org.iskon.repositories.NotificationJpaRepository;
 import org.iskon.repositories.NotificationTrackerJpaRepository;
+import org.iskon.repositories.TeamInviteJpaRepository;
+import org.iskon.repositories.TeamJpaRepository;
 import org.iskon.repositories.UserTokenJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,6 +59,12 @@ public class NotificationService {
 	private UserTokenJpaRepository userTokenDb;
 	@Autowired
 	NotificationTrackerJpaRepository ntfTrackerRepo;
+	
+	@Autowired
+	TeamInviteJpaRepository teamInviteDb;
+	
+	@Autowired
+	TeamJpaRepository teamDb;
 	
 
 	@Autowired
@@ -91,6 +100,7 @@ public class NotificationService {
 	public	List<NotificationUi> getAll(String username) {
 		List<NotificationUi> result = ntfApprovalDb.findByUserName( username );
 		result.addAll(ntfDb.findByUserName(username));
+		
 		result.sort(Comparator.comparing(NotificationUi::getUpdatedTime));
 		Collections.reverse(result);
 		return result; 
@@ -108,7 +118,7 @@ public class NotificationService {
 			Map<String,String> ntfData= new HashMap<>(); 
 			for(int userId : userIds) { 
 				NotificationTracker ntfTracker = new NotificationTracker(userId, ntf.getTargetId(),
-						savedNtf.getUuid().toString(), 0);
+						savedNtf.getUuid().toString());
 				ntfTracker.setStatus(false);
 				//List<String> token = userTokenDb.findDeviceTokenByUserId(userId);
 				//System.out.println(token);//get the device token from the user_token database
@@ -154,14 +164,14 @@ public class NotificationService {
 	private Boolean handleNotificationApproval(NotificationApproval ntf,List<Integer> userIds, List<Integer> teamIds ) {
 		
 		NotificationApproval savedNtf = ntfApprovalDb.save(ntf); 
-		System.out.println(teamIds);	
-		System.out.println(savedNtf.getUuid());
-		System.out.println(userIds);
+		
 		
 		for(int i =0; i< userIds.size(); i++) {
-//			List<String> token = userTokenDb.findDeviceTokenByUserId(userIds.get(i));
-//			System.out.println(token);
-			NotificationTracker ntfTracker = new NotificationTracker(userIds.get(i), ntf.getTargetId() , savedNtf.getUuid().toString(), teamIds.get(i)); 
+			NotificationTracker ntfTracker = new NotificationTracker(userIds.get(i), ntf.getTargetId() , savedNtf.getUuid().toString());
+			if(ntf.getTargetType().equalsIgnoreCase("event")) {
+				TeamInvite teamInvite = new TeamInvite(ntf.getTargetId(), ntf.getUuid(),teamIds.get(i),false);
+				teamInviteDb.save(teamInvite);
+			}
 //			if (token == null) {
 //				System.out.println("No token found for the given userId! Thus no notification can be sent to the user.");
 //				ntfTracker.setStatus(false);
@@ -216,7 +226,6 @@ public class NotificationService {
 						ArrayList<Integer> teamId = new ArrayList<>();
 						teamId.add(ntf.getTargetId());
 						List<Integer> userId = ntfDb.getTeamMemberId(teamId);
-						//List<Integer> userId = userService.getUserByEmailId(ntfDb.getTeamLeadId(teamService.getTeamById(teamId).getTeamLeadId())).get().getId();
 						return handleNotification(ntf, userId);
 					} else if(tableToQuery.equalsIgnoreCase("user_temple")){
 						ntf.setTitle("Kirtan Admin Updates");					
@@ -242,23 +251,12 @@ public class NotificationService {
 				        }
 						Period period = Period.between ( todaydate , eventDate);
 						Integer daysElapsed = period.getDays ();
- 						List<Integer> teamId = ntfDb.getTeamId(event.getEventType(),event.getCity(), (int)eventduration ,daysElapsed);
+ 						List<Integer> teamId = ntfDb.getTeamId(event.getEventType(),event.getCity(), (int)eventduration ,daysElapsed,"Approved");
 						for(int i=0; i<teamId.size();i++) {
 							Team team = teamService.getTeamById(teamId.get(i));
 							adminIds.add(userService.getUserByEmailId(team.getTeamLeadId()).get().getId());
-//							
-//							if(team.getWeekDay().equalsIgnoreCase("Anyday")){
-//								adminIds.add(userService.getUserByEmailId(team.getTeamLeadId()).get().getId());
-//							}else if(team.getWeekDay().equalsIgnoreCase(dayWeekText)){
-//								adminIds.add(userService.getUserByEmailId(team.getTeamLeadId()).get().getId());
-//							}
 						}			
 						
-						//complete function
-						//Getting week day
-						// if(!event.getPublicEvent()) {
-//				        String dayWeekText = new SimpleDateFormat("EEEE").format(event.getEventDate());
-						//adminIds.addAll(userService.getUserByEmailId(ntfDb.getTeamLeadId(teamService.getTeamById(teamId).getTeamLeadId())).get().getId()); }
 						return handleNotification(ntf,adminIds);
 					} else{
 						System.out.println("Incorrect mapping");
@@ -305,34 +303,12 @@ public class NotificationService {
 				System.out.println("Event Duration Calculated");
 				System.out.println(eventduration);
 				//event day
- 				List<Integer> teamId = ntfDb.getTeamId(event.getEventType(),event.getCity(),(int)eventduration, daysElapsed);
+ 				List<Integer> teamId = ntfDb.getTeamId(event.getEventType(),event.getCity(),(int)eventduration, daysElapsed,"Approved");
+ 				
 				for(int i=0; i<teamId.size();i++) {
 					Team team = teamService.getTeamById(teamId.get(i));
 					adminIds.add(userService.getUserByEmailId(team.getTeamLeadId()).get().getId());
-					ntf.setTargetTeamId(teamId.get(i));
 					tempIds.add(teamId.get(i));
-//					try {
-////						teamStartTime =  new SimpleDateFormat("HH:mm").parse(team.getAvailableFrom());
-////						teamEndTime = new SimpleDateFormat("HH:mm").parse(team.getAvailableTo());
-////						System.out.println(teamStartTime);
-////						System.out.println(teamEndTime);
-//						
-//					} catch (ParseException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//					if(team.getWeekDay().equalsIgnoreCase("Anyday") && (time1.after(teamStartTime) || time1.equals(teamStartTime)) && (time2.before(teamEndTime)||time2.equals(teamEndTime))) {
-//					//if(team.getWeekDay().equalsIgnoreCase("Anyday") ){
-//						
-//						adminIds.add(userService.getUserByEmailId(team.getTeamLeadId()).get().getId());
-//						tempIds.add(teamId.get(i));
-//						
-//					}else if(team.getWeekDay().equalsIgnoreCase(dayWeekText) && (time1.after(teamStartTime) || time1.equals(teamStartTime)) && (time2.before(teamEndTime)||time2.equals(teamEndTime))) {
-//					//else if(team.getWeekDay().equalsIgnoreCase(dayWeekText)){
-//						adminIds.add(userService.getUserByEmailId(team.getTeamLeadId()).get().getId());
-//						//ntf.setTargetTeamId(teamId.get(i));
-//						tempIds.add(teamId.get(i));
-//					}
 				}					
 				
 			} else if(ntf.getTargetType().equalsIgnoreCase("team")){
@@ -340,7 +316,6 @@ public class NotificationService {
 				tempIds.add(ntf.getTargetId());
 			}else {
 				adminIds = ntfDb.getAdminId();
-				ntf.setTargetTeamId(0);
 				//List<Integer> adminIds = ntfDb.getAdminId(ntf.targetId());
 			}
 			//complete function
@@ -366,16 +341,11 @@ public class NotificationService {
 			System.out.println("Notification to be updated does not exist");
 			return null;
 		}
-		if(ntfToBeUpdated.getTargetType().equalsIgnoreCase("event")) {
-			ntfToBeUpdated.setUpdatedBy(username);
-			
-			ntfToBeUpdated.setTargetTeamId(ntfDb.getTargetTeamId(ntfToBeUpdated.getUuid(),userService.getUserByEmailId(username).get().getId()));
-			
-		}
 		ntfToBeUpdated.setAction(status);
 		ntfToBeUpdated.setUpdatedBy(username);
 		ntfToBeUpdated.setUpdatedTime(new Date());
 		NotificationApproval updatedNotification = ntfApprovalDb.save(ntfToBeUpdated);
+		
 		Notification newNtf = new Notification();
 		newNtf.setMessage("Your previous request has been "+ updatedNotification.getAction()+"("+updatedNotification.getMessage()+")");
 		newNtf.setBroadcastType("single");		

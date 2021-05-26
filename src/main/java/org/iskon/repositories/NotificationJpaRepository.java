@@ -29,11 +29,6 @@ public interface NotificationJpaRepository extends JpaRepository<Notification,In
 	@Query("select DISTINCT userId from UserTemple where roleId = 4 ")
 	List<Integer> getAdminId();
 	
-	@Query("select ntf_trk.targetTeamId from NotificationTracker as ntf_trk where ntf_trk.notificationId = :uuid and ntf_trk.userId = :id")
-	Integer getTargetTeamId(String uuid, int id);
-	
-	@Query("select ntf_trk.targetTeamId from NotificationTracker as ntf_trk where ntf_trk.notificationId = :uuid")
-	List<Integer> getTargetTeams(String uuid);
 	
 	//Ntf goes to selected localAdmin while team creation 
 		@Query("select DISTINCT id from User u where u.fullName = :localAdminName ")
@@ -42,8 +37,8 @@ public interface NotificationJpaRepository extends JpaRepository<Notification,In
 	
 //	Geting Team id based on params ( Check event Time approaches)
 	// and (team.startTime <= :eventTime) and (team.endTime >= :eventTime)
-	@Query("Select t.id "+"from Team t "+"where t.category = :eventType and t.location = :eventCity and ( t.duration is NULL or t.duration>=:eventDuration ) and ( t.requestAcceptance is NULL or t.requestAcceptance = :daysBetween )")
-	List<Integer> getTeamId(String eventType, String eventCity, Integer eventDuration, Integer daysBetween);
+	@Query("Select t.id "+"from Team t "+"where t.category = :eventType and t.location = :eventCity and ( t.duration is NULL or t.duration>=:eventDuration ) and ( t.requestAcceptance is NULL or t.requestAcceptance = :daysBetween ) and t.approvalStatus = :status")
+	List<Integer> getTeamId(String eventType, String eventCity, Integer eventDuration, Integer daysBetween, String status);
 	
 	//Get team lead mail based on params
 	@Query("Select t.teamLeadId "+"from Team t "+"where t.id = :teamId")

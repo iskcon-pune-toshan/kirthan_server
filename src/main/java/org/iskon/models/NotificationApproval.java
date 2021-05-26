@@ -34,9 +34,6 @@ public class NotificationApproval implements Serializable {
 	@Column(name = "target_id")
 	private int targetId; // eventId or userid or team id
 
-	@Column(name = "target_team_id")
-	private Integer targetTeamId;
-	
 	@Column(name = "action")
 	private String action; // Approve or Reject
 
@@ -65,10 +62,6 @@ public class NotificationApproval implements Serializable {
 		return id;
 	}
 
-	public int getTargetTeamId() {
-		return targetTeamId;
-	}
-	
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -81,9 +74,6 @@ public class NotificationApproval implements Serializable {
 		this.uuid = uuid.toString();
 	}
 
-	public void setTargetTeamId(Integer teamId) {
-		this.targetTeamId = teamId;
-	}
 	public String getMessage() {
 		return message;
 	}

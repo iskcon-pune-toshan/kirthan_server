@@ -9,6 +9,9 @@ import java.util.List;
 
 import org.iskon.models.NotificationApproval;
 import org.iskon.models.NotificationUi;
+import org.iskon.models.TeamInvite;
+import org.iskon.models.Team;
+import org.iskon.repositories.TeamInviteJpaRepository;
 
 
 
@@ -33,8 +36,8 @@ public interface NotificationApprovalJpaRepository extends JpaRepository<Notific
 	NotificationApproval findNotificationApprovalByUuid(String uuid);
 	
 
-	@Query("Select n.targetTeamId from NotificationApproval n where n.targetId = :eventId and n.action = :action")
-	Integer getTeamId(Integer eventId, String action);
+	@Query("Select n.teamId from TeamInvite n where n.eventId = :eventId and n.isProcessed = :action")
+	Integer getTeamId(Integer eventId, Boolean action);
 	
 	//To find & return notification by a particular spec like createdTime, similar to findAll functions in other Repository files.
 	List<NotificationApproval> findAll(Specification<NotificationApproval> eventSpecification);

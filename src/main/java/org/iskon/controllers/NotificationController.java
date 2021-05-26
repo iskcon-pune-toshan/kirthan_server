@@ -14,9 +14,12 @@ import org.iskon.models.NotificationApproval;
 import org.iskon.models.NotificationSearch;
 import org.iskon.models.NotificationUi;
 import org.iskon.models.Team;
+import org.iskon.models.TeamInvite;
 import org.iskon.models.User;
 import org.iskon.repositories.EventTeamJpaRepository;
 import org.iskon.repositories.NotificationApprovalJpaRepository;
+import org.iskon.repositories.TeamInviteJpaRepository;
+import org.iskon.repositories.TeamJpaRepository;
 import org.iskon.services.EventService;
 import org.iskon.services.EventTeamService;
 import org.iskon.services.NotificationService;
@@ -47,6 +50,12 @@ public class NotificationController {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private TeamInviteJpaRepository teamInviteDb;
+	
+	@Autowired
+	private TeamJpaRepository teamDb;
 
 	private String getJwt(String authorizationHeader) {
 		JwtUtil jwtUtil = new JwtUtil();
@@ -122,49 +131,43 @@ public class NotificationController {
 		NotificationApproval updatedNtf = ntfs.updateApproval(status,ntfId,userName);
 		Boolean resp = true;
 		if(updatedNtf == null) resp = false; 
-		if(updatedNtf.getTargetType().equalsIgnoreCase("event") && updatedNtf.getAction().equalsIgnoreCase("Approved")) {
-			eventTeamService.addEventTeam(updatedNtf);
-		}
-		if (updatedNtf.getTargetType().equalsIgnoreCase("event")) // this is for event
+		else if (updatedNtf.getTargetType().equalsIgnoreCase("event")) // this is for event
 		{
+			TeamInvite team = teamInviteDb.findByUuid(updatedNtf.getUuid(),teamDb.getTeamIdByTeamLeadId(userName));
 			  Event event = eventService.getEventById(updatedNtf.getTargetId());
-			  //event.setApprovalComments(updatedNtf.getAction());
-			  //event.setApprovalStatus(updatedNtf.getAction()); 
-			  if(updatedNtf.getAction().equalsIgnoreCase("Approved"))
-				  event.setStatus(2);
-			  else if(updatedNtf.getAction().equalsIgnoreCase("Rejected"))
-				  event.setStatus(4);
 			  event.setUpdatedTime(new Date()); 
 			  event.setUpdatedBy(updatedNtf.getUpdatedBy());
-			  if(event.getUpdatedBy()!=null) {
-				  //if event has been processed before
-				  //that means this request is for update 
-				  //in which case notificaion should be sent to those who have joined the event
-				  //Change this according to the logic in update for events
-				  //NTF rsvp(change uodated by to event_registered
-				  Notification newNtf = new Notification();
-				  newNtf.setBroadcastType("multiple");
-				  newNtf.setCreatedBy("SYSTEM");
-				  newNtf.setCreatedTime(new Date());
-				  newNtf.setMappingTableData("event");
-				  newNtf.setMessage(updatedNtf.getMessage());
-				  newNtf.setTargetId(updatedNtf.getTargetId()); //user id of current user, change it to event_id
-				  newNtf.setTargetType("event");
-				  newNtf.setTitle(event.getEventTitle()+" Updates");
-				  newNtf.setUuid( UUID.randomUUID());
-				  ntfs.saveNotification(newNtf);
+			  if(updatedNtf.getAction().equalsIgnoreCase("Approved")) {
+				  event.setStatus(2);
+				  team.setIsProcessed(true);
+				  teamInviteDb.save(team);
+				  eventTeamService.addEventTeam(updatedNtf);}
+			  else if(updatedNtf.getAction().equalsIgnoreCase("Rejected")) {
+					  event.setStatus(4);
+					  team.setIsProcessed(false);
+					  teamInviteDb.save(team);
+					  
 			  }
+					  Notification newNtf = new Notification();
+					  newNtf.setUpdatedBy(updatedNtf.getUpdatedBy()); 
+					  newNtf.setUpdatedTime(new Date());
+					  newNtf.setBroadcastType("multiple");
+					  newNtf.setCreatedBy("SYSTEM");
+					  newNtf.setCreatedTime(new Date());
+					  newNtf.setMappingTableData("event");
+					  newNtf.setMessage(updatedNtf.getMessage());
+					  newNtf.setTargetId(updatedNtf.getTargetId()); //user id of current user, change it to event_id
+					  newNtf.setTargetType("event");
+					  newNtf.setTitle(event.getEventTitle()+" Updates");
+					  newNtf.setUuid( UUID.randomUUID());
+					  ntfs.saveNotification(newNtf);
 			  
-			  //event.setIsProcessed(true);
-			  //System.out.println("After " +event.toString());
 			  eventService.processEvent(event);
 		}
 		else if(updatedNtf.getTargetType().equalsIgnoreCase("team")) // this is for user // this needs to be changed and adjusted for event and user as well
 		{		
 			  Team team = teamService.getTeamById(updatedNtf.getTargetId());
-			  //team.setApprovalComments(updatedNtf.getAction());
 			  team.setApprovalStatus(updatedNtf.getAction()); 
-			  //team.setIsProcessed(true);
 			  team.setUpdatedBy(updatedNtf.getUpdatedBy()); //changed to get the email?
 			  team.setUpdatedTime(updatedNtf.getUpdatedTime());
 			  if(updatedNtf.getAction().equalsIgnoreCase("Approved"))

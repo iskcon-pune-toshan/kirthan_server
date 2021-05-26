@@ -199,19 +199,19 @@ public class NotificationWrapper{
 		return ntfService.saveNotificationCancel(ntf);
 	}
 	
-	public boolean generateNotification(Event event) {
-		Notification ntf = new Notification();
-		ntf.setCreatedBy(event.getCreatedBy());
-		ntf.setBroadcastType("multiple");
-		ntf.setCreatedTime(new Date());
-		ntf.setUpdatedTime(new Date());
-		ntf.setMappingTableData("event");
-		ntf.setTargetType("event");
-		ntf.setMessage("Registered Succcesfully for " + event.getEventTitle() + " ");
-		ntf.setTargetId(event.getId());
-		ntf.setUuid(UUID.randomUUID());
-		
-		return ntfService.saveNotification(ntf);
-	}
+//	public boolean generateNotification(Event event) {
+//		Notification ntf = new Notification();
+//		ntf.setCreatedBy(event.getCreatedBy());
+//		ntf.setBroadcastType("multiple");
+//		ntf.setCreatedTime(new Date());
+//		ntf.setUpdatedTime(new Date());
+//		ntf.setMappingTableData("event");
+//		ntf.setTargetType("event");
+//		ntf.setMessage("Registered Succcesfully for " + event.getEventTitle() + " ");
+//		ntf.setTargetId(event.getId());
+//		ntf.setUuid(UUID.randomUUID());
+//		
+//		return ntfService.saveNotification(ntf);
+//	}
 	
 }

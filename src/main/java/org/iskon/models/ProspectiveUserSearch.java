@@ -4,7 +4,7 @@ public class ProspectiveUserSearch {
 	private Integer id;
 	private String userEmail;
 	private String invitedBy;
-	private String inviteType;
+	private Integer inviteType;
 	private String inviteCode;
 	 private Boolean isProcessed;
 	
@@ -28,11 +28,11 @@ public class ProspectiveUserSearch {
 		this.invitedBy = invitedBy;
 	}
 
-	public String getInviteType() {
+	public Integer getInviteType() {
 		return inviteType;
 	}
 
-	public void setInviteType(String inviteType) {
+	public void setInviteType(Integer inviteType) {
 		this.inviteType = inviteType;
 	}
 

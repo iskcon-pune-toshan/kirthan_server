@@ -43,7 +43,7 @@ public class EventTeamServiceImpl implements EventTeamService {
 		//return teamuserJpaRepository.save(teamUser);
 		EventTeam listEventTeam = new EventTeam();
 		listEventTeam.setEventId(event.getId());
-		listEventTeam.setTeamId(ntfApprovalDb.getTeamId(event.getId(),"Approved"));
+		listEventTeam.setTeamId(ntfApprovalDb.getTeamId(event.getId(),true));
 		return EventTeamJpaRepository.save(listEventTeam);
 	}
 	
@@ -58,9 +58,9 @@ public class EventTeamServiceImpl implements EventTeamService {
 		System.out.println(updatedNtf);
 		EventTeam listEventTeam = new EventTeam();
 		listEventTeam.setEventId(updatedNtf.getTargetId());
-		listEventTeam.setTeamId(updatedNtf.getTargetTeamId());
-		System.out.println(teamService.getTeamById(updatedNtf.getTargetTeamId()).getTeamTitle());
-		listEventTeam.setTeamName(teamService.getTeamById(updatedNtf.getTargetTeamId()).getTeamTitle());
+		listEventTeam.setTeamId(ntfApprovalDb.getTeamId(updatedNtf.getTargetId(),true));
+		System.out.println(teamService.getTeamById(ntfApprovalDb.getTeamId(updatedNtf.getTargetId(),true)).getTeamTitle());
+		listEventTeam.setTeamName(teamService.getTeamById(ntfApprovalDb.getTeamId(updatedNtf.getTargetId(),true)).getTeamTitle());
 		System.out.println(listEventTeam);
 		EventTeamJpaRepository.save(listEventTeam);
 	}
