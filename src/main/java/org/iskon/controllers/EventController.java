@@ -108,7 +108,7 @@ public class EventController {
 	{
 		Event er = Event.buildEvent(null, "Dummy Event Title", "Dummy Event Desc", new Date(), "1 hour","Pune",
 				"Sandhya", (long) 123456788, "Add Line One", "Add Line Two","Add Line One", "Add Line Two",
-				"Add Line Three" ,"Camp", "Pune",411014, "Maharashtra", "India", "Draft", null, new Date(), new Date(), null, null, null, null, null, null,1, "Emergency","Free");
+				"Add Line Three" ,"Camp", "Pune",411014, "Maharashtra", "India", "Draft", null, new Date(), new Date(), null, null, null, null, null, null,1, "Emergency","Free","Zoom_Id");
 		return er;
 	}
 

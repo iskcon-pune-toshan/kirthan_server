@@ -81,10 +81,11 @@ public class EventServiceImpl implements EventService {
 					int dayOffSet = 0;
 					System.out.println(dayOffSet);
 					if (eventSearch.getDateInterval().equals("TODAY")) {
+						startDate=startDate.plusDays(1);
 						System.out.println("TODAY");
 						dayOffSet = 1;
 					}else if (eventSearch.getDateInterval().equals("TOMORROW")) {
-						startDate=startDate.plusDays(1);
+						startDate=startDate.plusDays(2);
 						System.out.println("TOMORROW");
 						dayOffSet = 1;
 					}
@@ -100,7 +101,7 @@ public class EventServiceImpl implements EventService {
 						int dayOfMonth = startDate.getDayOfMonth();
 						dayOffSet = startDate.lengthOfMonth() - dayOfMonth;
 					}
-					LocalDate endDate = startDate.plusDays(dayOffSet);
+					LocalDate endDate = startDate.plusDays(dayOffSet-1);
 					String end = endDate.toString();
 					//Date enddate = Date.from(endDate.atStartOfDay(defaultZoneId).toInstant());
 					Date s=java.sql.Date.valueOf(startDate);
@@ -109,7 +110,8 @@ public class EventServiceImpl implements EventService {
 				
 					try {
 						eventSearch.setEventEndDate(formatter.parse(endDate.format(dateTimeFormatter)));
-						predicates.add(criteriaBuilder.between(root.get("eventStartDate"),s,e));
+						predicates.add(criteriaBuilder.between(root.get("eventDate"),s,e));
+						System.out.println(predicates.add(criteriaBuilder.between(root.get("eventDate"),s,e)));
 						//predicates.add(criteriaBuilder.between(root.get("eventDate"), t, e));
 						
 					}
@@ -120,15 +122,19 @@ public class EventServiceImpl implements EventService {
 				}
 
 				
-				if(eventSearch.getEventStartDate() != null && eventSearch.getEventEndDate() != null)
-					predicates.add(criteriaBuilder.between(root.get("eventStartDate"), eventSearch.getEventStartDate(), eventSearch.getEventEndDate()));
-			
-				if(eventSearch.getEventStartDate() != null)
-					predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("eventStartDate"),eventSearch.getEventStartDate()));
-
-				if(eventSearch.getEventEndDate() != null)
-					predicates.add(criteriaBuilder.lessThan(root.get("eventStartDate"), eventSearch.getEventEndDate()));
-
+				/*
+				 * if(eventSearch.getEventStartDate() != null && eventSearch.getEventEndDate()
+				 * != null) predicates.add(criteriaBuilder.between(root.get("eventStartDate"),
+				 * eventSearch.getEventStartDate(), eventSearch.getEventEndDate()));
+				 * 
+				 * if(eventSearch.getEventStartDate() != null)
+				 * predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("eventStartDate"
+				 * ),eventSearch.getEventStartDate()));
+				 * 
+				 * if(eventSearch.getEventEndDate() != null)
+				 * predicates.add(criteriaBuilder.lessThan(root.get("eventStartDate"),
+				 * eventSearch.getEventEndDate()));
+				 */
 				
 				if (eventSearch.getEventType() != null)
 					predicates.add(root.get("eventType").in(eventSearch.getEventType()));

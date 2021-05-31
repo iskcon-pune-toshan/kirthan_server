@@ -32,7 +32,7 @@ public class Event implements Serializable {
 				+ ", updatedTime=" + updatedTime + ", longitudeS=" + longitudeS + ", latitudeS="
 				+ latitudeS + ", longitudeD=" + longitudeD + ", latitudeD="
 				+ latitudeD + ", eventMobility=" + eventMobility + ", isPubicEvent=" + isPublicEvent 
-				+ ", teamInviteStatus=" + teamInviteStatus + ", cancelReason=" + cancelReason + ", serviceType=" + serviceType + "]";
+				+ ", teamInviteStatus=" + teamInviteStatus + ", cancelReason=" + cancelReason + ", serviceType=" + serviceType + ",zoomId=" + zoomId + "]";
 	}
 
 	public void setUpdatedBy(String updatedBy) {
@@ -136,6 +136,9 @@ public class Event implements Serializable {
 	
 	@Column(name = "service_type")
 	private String serviceType;
+	
+	@Column(name = "zoom_id")
+	private String zoomId;
 
 	private Event(){
 
@@ -147,7 +150,7 @@ public class Event implements Serializable {
 				  String localityD,String city, Integer pincode, String state, String country,
 				  String createdBy, String updatedBy, Date createdTime, Date updatedTime, Double longitudeS,
 				  Double latitudeS, Double longitudeD, Double latitudeD, String eventMobility,
-				  Boolean isPublicEvent, Integer teamInviteStatus, String cancelReason, String serviceType ) {
+				  Boolean isPublicEvent, Integer teamInviteStatus, String cancelReason, String serviceType, String zoomId ) {
 		this.id = id;
 		this.eventTitle = eventTitle;
 		this.eventDescription = eventDescription;
@@ -179,6 +182,7 @@ public class Event implements Serializable {
 		this.teamInviteStatus = teamInviteStatus;
 		this.cancelReason = cancelReason;
 		this.serviceType = serviceType;
+		this.zoomId = zoomId;
 	}
 
 	public static Event buildEvent(Integer id, String eventTitle, String eventDescription, Date eventDate,
@@ -189,12 +193,12 @@ public class Event implements Serializable {
 								   String createdBy, String updatedBy, Date createdTime, Date updatedTime, 
 								   Double longitudeS, Double latitudeS, Double longitudeD,
 								   Double latitudeD, String eventMobility, Boolean isPublicEvent,
-								   Integer teamInviteStatus, String cancelReason, String serviceType) {
+								   Integer teamInviteStatus, String cancelReason, String serviceType, String zoomId) {
 		return new Event(id, eventTitle, eventDescription, eventDate,eventStartTime, eventEndTime, eventType,
 				phoneNumber, addLineOneS, addLineTwoS, localityS, addLineOneD, addLineTwoD, localityD,city, pincode, state, country,
 				 createdBy, updatedBy, createdTime, updatedTime, 
 				longitudeS, latitudeS, longitudeD, latitudeD, eventMobility, isPublicEvent,
-				teamInviteStatus, cancelReason, serviceType);
+				teamInviteStatus, cancelReason, serviceType, zoomId);
 	}
 
 	public Integer getId() {
@@ -320,6 +324,10 @@ public class Event implements Serializable {
 	
 	public String getServiceType() {
 		return serviceType;
+	}
+	
+	public String getZoomId() {
+		return zoomId;
 	}
 	
 }
