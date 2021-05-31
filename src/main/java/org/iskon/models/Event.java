@@ -63,7 +63,7 @@ public class Event implements Serializable {
 	private String eventEndTime;
 
 	@Column(name = "event_type")
-	private String eventType;
+	private Integer eventType;
 
 	@Column(name = "phone_number")
 	private Long phoneNumber;
@@ -142,7 +142,7 @@ public class Event implements Serializable {
 	}
 
 	private Event(Integer id, String eventTitle, String eventDescription, Date eventDate,String eventStartTime ,String eventEndTime ,
-				  String eventType, Long phoneNumber, String addLineOneS, String addLineTwoS,
+			Integer eventType, Long phoneNumber, String addLineOneS, String addLineTwoS,
 				  String localityS, String addLineOneD, String addLineTwoD,
 				  String localityD,String city, Integer pincode, String state, String country,
 				  String createdBy, String updatedBy, Date createdTime, Date updatedTime, Double longitudeS,
@@ -182,7 +182,7 @@ public class Event implements Serializable {
 	}
 
 	public static Event buildEvent(Integer id, String eventTitle, String eventDescription, Date eventDate,
-								   String eventStartTime, String eventEndTime, String eventType, Long phoneNumber,
+								   String eventStartTime, String eventEndTime, Integer eventType, Long phoneNumber,
 								   String addLineOneS, String addLineTwoS, String localityS,
 								   String addLineOneD, String addLineTwoD, String localityD,
 								   String city, Integer pincode, String state, String country,
@@ -221,7 +221,7 @@ public class Event implements Serializable {
 		return eventEndTime;
 	}
 
-	public String getEventType() {
+	public Integer getEventType() {
 		return eventType;
 	}
 

@@ -57,21 +57,21 @@ public class NotificationWrapper{
 				ntf.setUuid(UUID.randomUUID());
 				return ntfService.saveNotification(ntf);
 			} //for public event
-		else if(broadCastType.equalsIgnoreCase("public event")) {
-				Notification ntf = new Notification(); 
-				ntf.setCreatedBy(event.getCreatedBy());
-				ntf.setBroadcastType("edit");
-				ntf.setTargetType("event");	
-				ntf.setCreatedBy(event.getUpdatedBy());
-				ntf.setMessage("Event \""+event.getEventTitle()+"\" has been created");
-				System.out.println(event.getId());
-				ntf.setTargetId(userService.getUserByEmailId(event.getCreatedBy()).get().getId());
-				ntf.setCreatedTime(new Date());
-				ntf.setUpdatedTime(new Date());
-				ntf.setMappingTableData("event");
-				ntf.setUuid(UUID.randomUUID());
-				return ntfService.saveNotification(ntf);
-			}
+//		else if(broadCastType.equalsIgnoreCase("public event")) {
+//				Notification ntf = new Notification(); 
+//				ntf.setCreatedBy(event.getCreatedBy());
+//				ntf.setBroadcastType("edit");
+//				ntf.setTargetType("event");	
+//				ntf.setCreatedBy(event.getUpdatedBy());
+//				ntf.setMessage("Event \""+event.getEventTitle()+"\" has been created");
+//				System.out.println(event.getId());
+//				ntf.setTargetId(userService.getUserByEmailId(event.getCreatedBy()).get().getId());
+//				ntf.setCreatedTime(new Date());
+//				ntf.setUpdatedTime(new Date());
+//				ntf.setMappingTableData("event");
+//				ntf.setUuid(UUID.randomUUID());
+//				return ntfService.saveNotification(ntf);
+//			}
 		else {
 				NotificationApproval ntf = new NotificationApproval(); // set broadCast type to multiple in case of an update and single in case of create
 				ntf.setCreatedBy(event.getCreatedBy());
