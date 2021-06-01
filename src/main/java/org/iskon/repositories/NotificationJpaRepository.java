@@ -38,7 +38,7 @@ public interface NotificationJpaRepository extends JpaRepository<Notification,In
 //	Geting Team id based on params ( Check event Time approaches)
 	// and (team.startTime <= :eventTime) and (team.endTime >= :eventTime)
 	@Query("Select t.id "+"from Team t "+"where t.category = :eventType and t.location = :eventCity and ( t.duration is NULL or t.duration>=:eventDuration ) and ( t.requestAcceptance is NULL or t.requestAcceptance = :daysBetween ) and t.approvalStatus = :status")
-	List<Integer> getTeamId(String eventType, String eventCity, Integer eventDuration, Integer daysBetween, String status);
+	List<Integer> getTeamId(Integer eventType, String eventCity, Integer eventDuration, Integer daysBetween, String status);
 	
 	//Get team lead mail based on params
 	@Query("Select t.teamLeadId "+"from Team t "+"where t.id = :teamId")

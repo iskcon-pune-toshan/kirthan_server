@@ -25,9 +25,7 @@ public class EventController {
 	
 	@Autowired
 	private NotificationWrapper ntfWrapper;
-	
-	@Autowired
-	private NotificationController ntfc;
+
 	
 	@GetMapping("/getdummyevent")
 	public List<Event> getDummyEvent() { 		
@@ -43,8 +41,8 @@ public class EventController {
 				//NotificationWrapper ntfWrapper = new NotificationWrapper();
 		if(!newEvent.getIsPublicEvent())
 			ntfWrapper.generateNotification(req,"single");
-		else
-			ntfWrapper.generateNotification(req,"public event");
+//		else
+//			ntfWrapper.generateNotification(req,"public event");
 		return req;
 	}
 	
@@ -107,8 +105,8 @@ public class EventController {
 	private Event getDummyEventObj()
 	{
 		Event er = Event.buildEvent(null, "Dummy Event Title", "Dummy Event Desc", new Date(), "1 hour","Pune",
-				"Sandhya", (long) 123456788, "Add Line One", "Add Line Two","Add Line One", "Add Line Two",
-				"Add Line Three" ,"Camp", "Pune",411014, "Maharashtra", "India", "Draft", null, new Date(), new Date(), null, null, null, null, null, null,1, "Emergency","Free","Zoom_Id");
+				1, (long) 123456788, "Add Line One", "Add Line Two","Add Line One", "Add Line Two",
+				"Add Line Three" ,"Camp", "Pune",411014, "Maharashtra", "India", "Draft", null, new Date(), new Date(), null, null, null, null, null, null,1, "Emergency","Free","");
 		return er;
 	}
 

@@ -18,7 +18,7 @@ public class EventSearch implements Serializable {
 
     private List<String> eventLocation;
 
-    private List<String> eventType;
+    private List<Integer> eventType;
 
     private List<String> locality;
 
@@ -64,7 +64,7 @@ public class EventSearch implements Serializable {
         return eventLocation;
     }
 
-    public List<String> getEventType() {
+    public List<Integer> getEventType() {
         return eventType;
     }
 

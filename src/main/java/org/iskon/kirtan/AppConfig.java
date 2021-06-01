@@ -15,7 +15,7 @@ public class AppConfig {
 	{
 		DriverManagerDataSource dmds = new DriverManagerDataSource();
 		dmds.setDriverClassName("com.mysql.jdbc.Driver");
-		dmds.setUrl("jdbc:mysql://localhost:3306/kirtan");
+		dmds.setUrl("jdbc:mysql://localhost:3306/kirtan_dev");
 		dmds.setUsername("root");
 		dmds.setPassword("root");
 		return dmds;

@@ -105,7 +105,7 @@ public class UserController {
 	{
 		User ur = User.buildUser(1, "srinivasvn8@gmail.com", "srinivasvnaik",
 				"password1234", 8007774787L, "Flat No 20, Kalyani A", "Aditya GArden City",
-				"","Warje", "Pune", 411058,"Mashrashtra", "India", "PAN",
+				"","Warje", "Pune", 411058,"Mashrashtra", "India", 9,
 				"AEZPN699F", "Draft", 1, 1, "Srinivas",
 				null, new Date(), new Date(), null, null);
 //		ur.setFirstName("Srinivas");

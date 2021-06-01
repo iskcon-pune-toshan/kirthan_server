@@ -81,11 +81,11 @@ public class EventServiceImpl implements EventService {
 					int dayOffSet = 0;
 					System.out.println(dayOffSet);
 					if (eventSearch.getDateInterval().equals("TODAY")) {
-						startDate=startDate.plusDays(1);
+						startDate=startDate.plusDays(0);
 						System.out.println("TODAY");
 						dayOffSet = 1;
 					}else if (eventSearch.getDateInterval().equals("TOMORROW")) {
-						startDate=startDate.plusDays(2);
+						startDate=startDate.plusDays(1);
 						System.out.println("TOMORROW");
 						dayOffSet = 1;
 					}

@@ -57,7 +57,7 @@ public class Team implements Serializable {
 	private String location;
 	
 	@Column(name = "category")
-	private String category;
+	private Integer category;
 	
 	@Column(name = "experience")
 	private String experience;
@@ -108,7 +108,7 @@ public class Team implements Serializable {
 
 	}
 
-	private Team(Integer id, String teamTitle, String teamDescription,String location,String category,String experience,Long phoneNumber,String teamLeadId, String approvalStatus,
+	private Team(Integer id, String teamTitle, String teamDescription,String location,Integer category,String experience,Long phoneNumber,String teamLeadId, String approvalStatus,
 				 String createdBy, String updatedBy, Date createdTime,
 				 Date updatedTime,String localAdminArea, String localAdminName, List<TeamUser> listOfTeamMembers, Integer requestAcceptance, Integer duration) {
 		this.id = id;
@@ -140,7 +140,7 @@ public class Team implements Serializable {
 								 String approvalStatus,String createdBy, String updatedBy,
 								 Date createdTime, Date updatedTime, 
 								 String location,
-								 String category,
+								 Integer category,
 								 String experience,
 								 Long phoneNumber,
 								 String teamLeadId,String localAdminArea, String localAdminName, List<TeamUser> listOfTeamMembers, Integer requestAcceptance, Integer duration
@@ -173,7 +173,7 @@ public class Team implements Serializable {
 		return location;
 	}
 	
-	public String getCategory() {
+	public Integer getCategory() {
 		return category;
 	}
 	

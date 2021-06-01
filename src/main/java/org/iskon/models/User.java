@@ -84,7 +84,7 @@ public class User implements Serializable {
 	private String country;
 
 	@Column(name = "govt_id_type")
-	String govtIdType;
+	Integer govtIdType;
 
 	@Column(name = "govt_id")
 	String govtId;
@@ -127,7 +127,7 @@ public class User implements Serializable {
 
 	private User(Integer id, String email, String fullName, String password,
 				 Long phoneNumber, String addLineOne, String addLineTwo, String addLineThree, String locality,
-				 String city, Integer pinCode, String state, String country, String govtIdType, String govtId,
+				 String city, Integer pinCode, String state, String country, Integer govtIdType, String govtId,
 				  String approvalStatus, Integer prevRoleId,Integer roleId,
 				 String createdBy, String updatedBy, Date createdTime, Date updatedTime, Integer invitedBy, String profileUrl) {
 		this.id = id;
@@ -163,7 +163,7 @@ public class User implements Serializable {
 	public static User buildUser(Integer id, String email, String fullName,
 								 String password, Long phoneNumber, String addLineOne, String addLineTwo,
 								 String addLineThree, String locality, String city, Integer pinCode, String state,
-								 String country, String govtIdType, String govtId, 
+								 String country, Integer govtIdType, String govtId, 
 								 String approvalStatus, Integer prevRoleId, Integer roleId,
 								 String createdBy, String updatedBy, Date createdTime, Date updatedTime, Integer invitedBy, String profileUrl) {
 		return new User(id,email, fullName, password, phoneNumber, addLineOne, addLineTwo,
@@ -235,7 +235,7 @@ public class User implements Serializable {
 		return country;
 	}
 
-	public String getGovtIdType() {
+	public Integer getGovtIdType() {
 		return govtIdType;
 	}
 
