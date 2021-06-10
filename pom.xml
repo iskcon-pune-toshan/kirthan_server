@@ -10,7 +10,7 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>org.iskon</groupId>
-	<artifactId>kirtan</artifactId>
+	<artifactId>kirtan_stg</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>kirtan</name>
 	<description>Kirtan Management for Iskon</description>

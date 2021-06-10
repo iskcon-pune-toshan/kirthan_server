@@ -10,7 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 @Entity
-@Table(name="common_lookup_table")
+@Table(name="lookups")
 public class CommonLookupTable implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
