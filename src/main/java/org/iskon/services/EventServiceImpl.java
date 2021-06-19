@@ -92,14 +92,15 @@ public class EventServiceImpl implements EventService {
 					else if (eventSearch.getDateInterval().equals("This Week")) {
 						// This Week
 						System.out.println("This Week");
+						startDate=startDate.plusDays(1);
 						DayOfWeek dayOfWeek = startDate.getDayOfWeek();
-						dayOffSet = DayOfWeek.SATURDAY.minus(dayOfWeek.getValue()).getValue();
+						dayOffSet = DayOfWeek.SUNDAY.minus(dayOfWeek.getValue()).getValue();
 					}
 					else if (eventSearch.getDateInterval().equals("This Month")) {
 						System.out.println("This Month");
 						// This Month
 						int dayOfMonth = startDate.getDayOfMonth();
-						dayOffSet = startDate.lengthOfMonth() - dayOfMonth;
+						dayOffSet = startDate.lengthOfMonth() - dayOfMonth + 1;
 					}
 					LocalDate endDate = startDate.plusDays(dayOffSet-1);
 					String end = endDate.toString();
