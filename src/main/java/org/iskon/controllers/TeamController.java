@@ -74,7 +74,7 @@ public class TeamController {
 		}
 		
 //		NotificationWrapper nw = new NotificationWrapper();
-		nw.generateNotification(req,"multiple");
+//		nw.generateNotification(req,"multiple");
 		return req;
 	}
 
